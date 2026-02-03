@@ -24,6 +24,7 @@
        <div class="flex-1 overflow-y-auto px-3 mt-4">
            <nav>
                <ul class="space-y-1">
+                {{-- Dashboard --}}
                    <li>
                        <a href="#"
                            class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm
@@ -35,6 +36,54 @@
                                <polyline points="9 22 9 12 15 12 15 22" />
                            </svg>
                            Dashboard
+                       </a>
+                   </li>
+                   {{-- Products --}}
+                   <li>
+                       <a href="#"
+                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm
+                                                    bg-sidebar-nav-active text-sidebar-nav-foreground
+                                                    hover:bg-sidebar-nav-hover transition">
+                           <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                               stroke="currentColor" stroke-width="2">
+                               <path d="M7 7h.01" />
+                               <path d="M3 7l9-4 9 4-9 4-9-4Z" />
+                               <path d="M3 17l9 4 9-4" />
+                               <path d="M3 12l9 4 9-4" />
+                           </svg>
+                           Products
+                       </a>
+                   </li>
+                   {{-- Orders --}}
+                   <li>
+                       <a href="#"
+                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm
+                                                    bg-sidebar-nav-active text-sidebar-nav-foreground
+                                                    hover:bg-sidebar-nav-hover transition">
+                           <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                               stroke="currentColor" stroke-width="2">
+                               <circle cx="9" cy="21" r="1" />
+                               <circle cx="20" cy="21" r="1" />
+                               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                           </svg>
+
+                           Orders
+                       </a>
+                   </li>
+                   {{-- Categories --}}
+                   <li>
+                       <a href="#"
+                           class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm
+                                                    bg-sidebar-nav-active text-sidebar-nav-foreground
+                                                    hover:bg-sidebar-nav-hover transition">
+                           <svg class="size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                               stroke="currentColor" stroke-width="2">
+                               <rect x="3" y="3" width="7" height="7" />
+                               <rect x="14" y="3" width="7" height="7" />
+                               <rect x="3" y="14" width="7" height="7" />
+                               <rect x="14" y="14" width="7" height="7" />
+                           </svg>
+                           Categories
                        </a>
                    </li>
                </ul>
