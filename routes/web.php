@@ -1,10 +1,12 @@
 <?php
+require __DIR__.'/auth.php';
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ModeratorController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,6 +25,8 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
 // Routes SELLER 
 Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->group(function () {
 
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    
 });
 
 // Routes ADMIN
