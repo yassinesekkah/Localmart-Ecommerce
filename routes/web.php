@@ -8,7 +8,7 @@ use App\Http\Controllers\ModeratorController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('Market');
 });
 
 Route::get('/dashboard', function () {
