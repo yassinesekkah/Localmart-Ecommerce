@@ -16,8 +16,8 @@
         
     </main>
     <x-client.slider/>
-    <x-client.categories/>
-    <x-client.products/>
+    <x-client.categories :categories="$categories"/>
+    <x-client.products :products="$products"/>
     <x-client.footer />
 </body>
 

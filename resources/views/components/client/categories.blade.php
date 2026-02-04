@@ -1,141 +1,52 @@
-<section class="mt-8">
+@props(['categories'])
+<section class="mt-8 border-l-orange-600 max-h-[500px] overflow-hidden">
 	<div class="container">
 		<div class="flex flex-wrap mb-4">
 			<div class="w-full">
 				<h2 class="text-2xl font-bold">Featured Categories</h2>
 			</div>
 		</div>
+		<!-- static table img for test only -->
+		@php
+		$categoryImages = [
+		'assets/images/category/category-cleaning-essentials.jpg',
+		'assets/images/category/category-tea-coffee-drinks.jpg',
+		'assets/images/category/category-instant-food.jpg',
+		'assets/images/category/category-bakery-biscuits.jpg',
+		'assets/images/category/category-cleaning-essentials.jpg',
+		'assets/images/category/category-dairy-bread-eggs.jpg',
+		'assets/images/category/category-snack-munchies.jpg',
+		'assets/images/category/category-baby-care.jpg',
+		'assets/images/category/category-chicken-meat-fish.jpg',
+		'assets/images/category/category-pet-care.jpg',
+		'',
+		];
+		@endphp
 
-		<!-- بدل id من swiper-1 لـ swiper-categories -->
 		<div class="swiper relative" id="swiper-categories">
-			<div class="swiper-wrapper py-12">
-				<div class="swiper-slide">
+			<div class="swiper-wrapper  py-12 lg:grid lg:grid-cols-5 lg:gap-4 lg:swiper-wrapper-none">
+				@foreach ($categories as $index => $category)
+				<div class="swiper-slide lg:static">
 					<a href="#!">
-						<div class="relative rounded-lg break-words border bg-white border-gray-300 transition duration-75 hover:transition hover:duration-500 ease-in-out hover:border-green-600 hover:shadow-md">
-							<div class="py-8 text-center">
-								<img src="{{ asset('assets/images/category/category-dairy-bread-eggs.jpg') }}" alt="Dairy" class="mb-3 m-auto" />
-								<div class="text-base">Dairy, Bread & Eggs</div>
+						<div class="relative border-b-green-500 rounded-lg break-words border bg-white border-gray-300 transition duration-300 hover:border-green-600 hover:shadow-md">
+							<div class="py-4 text-center h-60 md:h-72 lg:h-auto flex flex-col justify-center">
+								<img src="{{ asset($categoryImages[$index] ?? 'assets/images/category/default.jpg') }}"
+									alt="{{ $category->name }}"
+									class="mb-3 m-auto h-24 w-24 object-contain" />
+								<div class="text-base font-semibold">{{$category->name}}</div>
+								<div class="text-base text-gray-500">{{$category->description}}</div>
 							</div>
 						</div>
 					</a>
 				</div>
-
-				<div class="swiper-slide">
-					<a href="#!">
-						<div class="relative rounded-lg break-words border bg-white border-gray-300 transition duration-75 hover:transition hover:duration-500 ease-in-out hover:border-green-600 hover:shadow-md">
-							<div class="py-8 text-center">
-								<img src="{{ asset('assets/images/category/category-snack-munchies.jpg') }}" alt="Snacks" class="mb-3 m-auto" />
-								<div class="text-base">Snack & Munchies</div>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="swiper-slide">
-					<a href="#!">
-						<div
-							class="relative rounded-lg break-words border bg-white border-gray-300 transition duration-75 hover:transition hover:duration-500 ease-in-out hover:border-green-600 hover:shadow-md">
-							<div class="py-8 text-center">
-								<img src="assets/images/category/category-bakery-biscuits.jpg" alt="Grocery Ecommerce Template"
-									class="mb-3 m-auto" />
-								<div class="text-base">Bakery & Biscuits</div>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="swiper-slide">
-					<a href="#!">
-						<div
-							class="relative rounded-lg break-words border bg-white border-gray-300 transition duration-75 hover:transition hover:duration-500 ease-in-out hover:border-green-600 hover:shadow-md">
-							<div class="py-8 text-center">
-								<img src="assets/images/category/category-instant-food.jpg" alt="Grocery Ecommerce Template"
-									class="mb-3 m-auto" />
-								<div class="text-base">Instant Food</div>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="swiper-slide">
-					<a href="#!">
-						<div
-							class="relative rounded-lg break-words border bg-white border-gray-300 transition duration-75 hover:transition hover:duration-500 ease-in-out hover:border-green-600 hover:shadow-md">
-							<div class="py-8 text-center">
-								<img src="assets/images/category/category-tea-coffee-drinks.jpg" alt="Grocery Ecommerce Template"
-									class="mb-3 m-auto" />
-								<div class="text-base">Tea, Coffee & Drinks</div>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="swiper-slide">
-					<a href="#!">
-						<div
-							class="relative rounded-lg break-words border bg-white border-gray-300 transition duration-75 hover:transition hover:duration-500 ease-in-out hover:border-green-600 hover:shadow-md">
-							<div class="py-8 text-center">
-								<img src="assets/images/category/category-atta-rice-dal.jpg" alt="Grocery Ecommerce Template"
-
-									class="mb-3 m-auto" />
-								<div class="text-base">Atta, Rice & Dal</div>
-							</div>
-						</div>
-					</a>
-				</div>
-
-				<div class="swiper-slide">
-					<a href="#!">
-						<div
-							class="relative rounded-lg break-words border bg-white border-gray-300 transition duration-75 hover:transition hover:duration-500 ease-in-out hover:border-green-600 hover:shadow-md">
-							<div class="py-8 text-center">
-								<img src="assets/images/category/category-baby-care.jpg" alt="Grocery Ecommerce Template"
-									class="mb-3 m-auto" />
-								<div class="text-base">Baby Care</div>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="swiper-slide">
-					<a href="#!">
-						<div
-							class="relative rounded-lg break-words border bg-white border-gray-300 transition duration-75 hover:transition hover:duration-500 ease-in-out hover:border-green-600 hover:shadow-md">
-							<div class="py-8 text-center">
-								<img src="assets/images/category/category-chicken-meat-fish.jpg" alt="Grocery Ecommerce Template"
-									class="mb-3 m-auto" />
-								<div class="text-base">Chicken, Meat & Fish</div>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="swiper-slide">
-					<a href="#!">
-						<div
-							class="relative rounded-lg break-words border bg-white border-gray-300 transition duration-75 hover:transition hover:duration-500 ease-in-out hover:border-green-600 hover:shadow-md">
-							<div class="py-8 text-center">
-								<img src="assets/images/category/category-cleaning-essentials.jpg" alt="Grocery Ecommerce Template"
-									class="mb-3 m-auto" />
-								<div class="text-base">Cleaning Essentials</div>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="swiper-slide">
-					<a href="#!">
-						<div
-							class="relative rounded-lg break-words border bg-white border-gray-300 transition duration-75 hover:transition hover:duration-500 ease-in-out hover:border-green-600 hover:shadow-md">
-							<div class="py-8 text-center">
-								<img src="assets/images/category/category-pet-care.jpg" alt="Grocery Ecommerce Template"
-									class="mb-3 m-auto" />
-								<div class="text-base">Pet Care</div>
-							</div>
-						</div>
-					</a>
-				</div>
-
-				<!-- Add more slides as needed -->
+				@endforeach
 			</div>
-			<!-- Add Pagination -->
 			<div class="swiper-pagination"></div>
 		</div>
 	</div>
 </section>
+
+
 
 <section>
 	<div class="container">
