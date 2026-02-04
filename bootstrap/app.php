@@ -18,23 +18,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-<<<<<<< HEAD
-        //
-        $middleware->alias(
-            [
-                'role'=> RoleMiddleware::class,
-
-            ]
-        );
-        
-=======
 
         $middleware->alias([
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
         ]);
->>>>>>> 64df08008bd3a7edb75b809c6d6e2d7438c89b5e
     })
 
     ->withExceptions(function (Exceptions $exceptions) {
