@@ -1,3 +1,4 @@
+@props(['categories'])
 <header class="">
     <!-- navbar -->
     <div class="border-b">
@@ -114,7 +115,7 @@
         <div class="container max-w-7xl mx-auto w-full xl:px-4 lg:px-0">
             <div class="offcanvas offcanvas-left lg:visible" tabindex="-1" id="navbar-default">
                 <div class="offcanvas-header pb-1">
-                    <a href="./index.html"><img src="./assets/images/logo/freshcart-logo.svg"
+                    <a href="{{'/'}}"><img src="https://localmart.com.pk/wp-content/uploads/2025/12/logo2.jpg"
                             alt="TailwindCSS eCommerce HTML Template" /></a>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x text-gray-700" width="24"
@@ -212,33 +213,15 @@
                             </li>
                             <li class="nav-item dropdown w-full lg:w-auto">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">Models</a>
+                                    aria-expanded="false">Catégorie</a>
                                 <ul class="dropdown-menu">
-
+                                    @foreach ($categories as $category)
                                     <li>
                                         <a class="dropdown-item" href="#!">
-                                            Dropdown Link
-
+                                            {{$category->name}}
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#!">
-                                            Dropdown Link
-
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#!">
-                                            Dropdown Link
-
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#!">
-                                            Dropdown Link
-
-                                        </a>
-                                    </li>
+                                    @endforeach
                                 </ul>
                             </li>
 
