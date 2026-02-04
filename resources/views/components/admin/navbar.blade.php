@@ -4,7 +4,7 @@
 >
   <!-- Left side -->
   <div class="flex items-center gap-3">
-    <!-- زر ديال sidebar (اختياري دابا) -->
+   
     <button class="lg:hidden p-2 rounded-md hover:bg-muted-hover">
       <svg class="size-5" xmlns="http://www.w3.org/2000/svg" fill="none"
         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

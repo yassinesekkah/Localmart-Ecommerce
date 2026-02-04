@@ -5,4 +5,4 @@ import Alpine from 'alpinejs';
 window.Alpine = Alpine;
 
 Alpine.start();
-console.log('Global JS loaded');
+console.log('Global JS loaded'); 
