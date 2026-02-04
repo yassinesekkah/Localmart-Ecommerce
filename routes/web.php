@@ -1,14 +1,16 @@
 <?php
+require __DIR__.'/auth.php';
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ModeratorController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('Market');
 });
 
 Route::get('/dashboard', function () {
@@ -18,12 +20,21 @@ Route::get('/dashboard', function () {
 // Routes CLIENT 
 Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->group(function () {
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 64df08008bd3a7edb75b809c6d6e2d7438c89b5e
 });
 
 // Routes SELLER 
 Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->group(function () {
+<<<<<<< HEAD
    
+=======
+
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    
+>>>>>>> 64df08008bd3a7edb75b809c6d6e2d7438c89b5e
 });
 
 // Routes ADMIN
@@ -35,7 +46,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 // Routes MODERATOR 
 Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () {
     
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 64df08008bd3a7edb75b809c6d6e2d7438c89b5e
 });
 
 Route::middleware('auth')->group(function () {
@@ -44,7 +59,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+
 
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
