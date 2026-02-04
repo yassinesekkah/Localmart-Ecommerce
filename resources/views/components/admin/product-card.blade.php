@@ -1,40 +1,62 @@
-<div class="bg-white rounded-xl shadow-sm overflow-hidden">
-    <a href="#"
-       class="flex flex-col bg-neutral-primary-soft p-5 border border-default rounded-base shadow-xs lg:flex-row">
+@props(['product'])
+
+<div
+    class="bg-white rounded-lg border border-gray-200 shadow-sm
+           hover:shadow-md transition overflow-hidden">
+
+    <div class="flex flex-col bg-neutral-primary-soft p-3">
 
         <!-- Image -->
         <img
-            class="object-cover w-full h-72 lg:h-auto lg:w-56 rounded-base mb-4 lg:mb-0"
-            src="/docs/images/blog/image-4.jpg"
-            alt=""
+            src="/assets/images/category/category-1.jpg"
+            alt="{{ $product->name }}"
+            class="w-full h-32 object-cover rounded-md mb-2"
         >
 
         <!-- Content -->
-        <div class="flex flex-col justify-between lg:p-4 leading-normal">
-            <h5 class="mb-2 text-lg font-semibold tracking-tight text-heading">
-                Streamlining your design process today
+        <div class="flex flex-col flex-1">
+
+            <!-- Category -->
+            <span
+                class="inline-block w-fit mb-1 px-2 py-0.5 text-xs font-medium
+                       text-indigo-700 bg-indigo-50 rounded">
+                {{ $product->category->name }}
+            </span>
+
+            <!-- Title -->
+            <h5 class="text-sm font-semibold text-gray-800 mb-1 truncate">
+                {{ $product->name }}
             </h5>
 
-            <p class="mb-4 text-sm text-body">
-                In today's fast-paced digital landscape, fostering seamless collaboration
-                among Developers and IT Operations.
+            <!-- Description -->
+            <p class="text-xs text-gray-500 mb-2 line-clamp-2">
+                {{ $product->description }}
             </p>
 
-            <div>
+            <!-- Price -->
+            <div class="mb-2">
+                <span class="text-base font-bold text-indigo-600">
+                    {{ number_format($product->price, 2) }} MAD
+                </span>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-2 mt-auto">
                 <button type="button"
-                    class="inline-flex items-center text-sm text-body bg-neutral-secondary-medium
-                           border border-default-medium hover:bg-neutral-tertiary-medium
-                           hover:text-heading rounded-base px-4 py-2 transition">
-                    Read more
-                    <svg class="w-4 h-4 ms-1.5 rtl:rotate-180" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round"
-                              stroke-linejoin="round" stroke-width="2"
-                              d="M19 12H5m14 0-4 4m4-4-4-4" />
-                    </svg>
+                    class="flex-1 text-xs font-medium text-white
+                           bg-emerald-600 hover:bg-emerald-500
+                           rounded px-2 py-1.5 transition">
+                    Modifier
+                </button>
+
+                <button type="button"
+                    class="flex-1 text-xs font-medium text-white
+                           bg-red-600 hover:bg-red-500
+                           rounded px-2 py-1.5 transition">
+                    Delete
                 </button>
             </div>
-        </div>
 
-    </a>
+        </div>
+    </div>
 </div>

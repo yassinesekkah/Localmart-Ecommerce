@@ -22,7 +22,7 @@
             <x-admin.navbar/>
 
             {{-- Page Content --}}
-            <main class="flex-1 pl-64 pt-3">
+            <main class=" pl-64 pt-3">
                 @yield('content')
             </main>
 
