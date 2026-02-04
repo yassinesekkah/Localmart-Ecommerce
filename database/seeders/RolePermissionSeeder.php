@@ -21,6 +21,7 @@ class RolePermissionSeeder extends Seeder
         // create permissions
         $permissions = [
             // Client
+            'view-categories',
             'view-products',
             'add-to-cart',
             'create-order',
@@ -58,6 +59,7 @@ class RolePermissionSeeder extends Seeder
         // Client role
         $clientRole = Role::firstOrCreate(['name' => 'client']);
         $clientRole->givePermissionTo([
+            'view-categories',
             'view-products',
             'add-to-cart',
             'create-order',

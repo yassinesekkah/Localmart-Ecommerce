@@ -2,193 +2,113 @@
 <header class="">
     <!-- navbar -->
     <div class="border-b">
-        <div class="bg-gray-100 py-1">
-            <div class="container">
-                <div class="flex flex-wrap">
-                    <div class="md:w-1/2 w-full text-center md:text-left"><span>Super Value Deals - Save more with coupons</span>
-                    </div>
-                    <div class="w-1/2 text-right hidden lg:block">
-                        <div class="dropdown flex justify-end">
-                            <a class="dropdown-toggle text-inherit flex items-center" href="#!" data-bs-toggle="dropdown"
-                                id="dropdownMenuLink">
-                                <span class="mr-2">
-                                    <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        id="languageIcon">
-                                        <!-- Default SVG content for English -->
-                                        <g clip-path="">
-                                            <path d="M0 0.5H16V12.5H0V0.5Z" fill="#012169" />
-                                            <path
-                                                d="M1.875 0.5L7.975 5.025L14.05 0.5H16V2.05L10 6.525L16 10.975V12.5H14L8 8.025L2.025 12.5H0V11L5.975 6.55L0 2.1V0.5H1.875Z"
-                                                fill="white" />
-                                            <path
-                                                d="M10.6 7.525L16 11.5V12.5L9.225 7.525H10.6ZM6 8.025L6.15 8.9L1.35 12.5H0L6 8.025ZM16 0.5V0.575L9.775 5.275L9.825 4.175L14.75 0.5H16ZM0 0.5L5.975 4.9H4.475L0 1.55V0.5Z"
-                                                fill="#C8102E" />
-                                            <path d="M6.025 0.5V12.5H10.025V0.5H6.025ZM0 4.5V8.5H16V4.5H0Z" fill="white" />
-                                            <path d="M0 5.325V7.725H16V5.325H0ZM6.825 0.5V12.5H9.225V0.5H6.825Z" fill="#C8102E" />
-                                        </g>
-                                    </svg>
-                                </span>
-                                <span id="selectedLanguage">English</span>
-                            </a>
-
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="#!" onclick="changeLanguage('English')">
-                                        <span>
-                                            <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="">
-                                                    <path d="M0 0.5H16V12.5H0V0.5Z" fill="#012169" />
-                                                    <path
-                                                        d="M1.875 0.5L7.975 5.025L14.05 0.5H16V2.05L10 6.525L16 10.975V12.5H14L8 8.025L2.025 12.5H0V11L5.975 6.55L0 2.1V0.5H1.875Z"
-                                                        fill="white" />
-                                                    <path
-                                                        d="M10.6 7.525L16 11.5V12.5L9.225 7.525H10.6ZM6 8.025L6.15 8.9L1.35 12.5H0L6 8.025ZM16 0.5V0.575L9.775 5.275L9.825 4.175L14.75 0.5H16ZM0 0.5L5.975 4.9H4.475L0 1.55V0.5Z"
-                                                        fill="#C8102E" />
-                                                    <path d="M6.025 0.5V12.5H10.025V0.5H6.025ZM0 4.5V8.5H16V4.5H0Z" fill="white" />
-                                                    <path d="M0 5.325V7.725H16V5.325H0ZM6.825 0.5V12.5H9.225V0.5H6.825Z" fill="#C8102E" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath>
-                                                        <rect width="16" height="12" fill="white" transform="translate(0 0.5)" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
-                                        </span>
-                                        English
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#!" onclick="changeLanguage('Deutsch')">
-                                        <span>
-                                            <svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="url(#clip0_5543_19751)">
-                                                    <path d="M0 8.5H16V12.5H0V8.5Z" fill="#FFCE00" />
-                                                    <path d="M0 0.5H16V4.5H0V0.5Z" fill="black" />
-                                                    <path d="M0 4.5H16V8.5H0V4.5Z" fill="#DD0000" />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_5543_19751">
-                                                        <rect width="16" height="12" fill="white" transform="translate(0 0.5)" />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
-                                        </span>
-                                        Deutsch
-                                    </a>
-                                </li>
-                                <!-- Add more languages as needed -->
-                            </ul>
-                        </div>
-                    </div>
+    </div>
+    <div class="pt-5">
+        <div class="container">
+            <div class="flex flex-wrap w-full items-center justify-between">
+                <div class="lg:w-1/6 md:w-1/2 w-2/5">
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        <img src="./assets/images/logo/freshcart-logo.svg" alt="TailwindCSS eCommerce HTML Template" />
+                    </a>
                 </div>
-            </div>
-        </div>
-        <div class="pt-5">
-            <div class="container">
-                <div class="flex flex-wrap w-full items-center justify-between">
-                    <div class="lg:w-1/6 md:w-1/2 w-2/5">
-                        <a class="navbar-brand" href="{{ url('/') }}">
-                            <img src="https://localmart.com.pk/wp-content/uploads/2025/12/logo2.jpg" alt="TailwindCSS eCommerce HTML Template" />
+                <div class="lg:w-2/5 hidden lg:block">
+                    <form action="#">
+                        <div class="relative">
+                            <label for="searchProducts" class="invisible hidden">Search</label>
+                            <input
+                                class="border border-gray-300 text-gray-900 rounded-lg focus:shadow-[0_0_0_.25rem_rgba(10,173,10,.25)] focus:ring-green-600 focus:ring-0 focus:border-green-600 block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
+                                type="search" placeholder="Search for products" id="searchProducts" />
+                            <button class="absolute right-0 top-0 p-3" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="16"
+                                    height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                                    <path d="M21 21l-6 -6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="lg:w-1/5 md:w-1/2 w-3/5">
+                    <div class="flex gap-6 items-center justify-end relative">
+
+                        <!-- Wishlist -->
+                        <a href="#!" class="relative text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M19.5 12.572l-7.5 7.428-7.5-7.428a5 5 0 1 1 7.5-6.566 5 5 0 1 1 7.5 6.572" />
+                            </svg>
+                            <span
+                                class="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-green-600 text-white text-xs flex items-center justify-center">
+                                5
+                            </span>
                         </a>
-                    </div>
-                    <div class="lg:w-2/5 hidden lg:block">
-                        <form action="#">
-                            <div class="relative">
-                                <label for="searchProducts" class="invisible hidden">Search</label>
-                                <input
-                                    class="border border-gray-300 text-gray-900 rounded-lg focus:shadow-[0_0_0_.25rem_rgba(10,173,10,.25)] focus:ring-green-600 focus:ring-0 focus:border-green-600 block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
-                                    type="search" placeholder="Search for products" id="searchProducts" />
-                                <button class="absolute right-0 top-0 p-3" type="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="16"
-                                        height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                                        <path d="M21 21l-6 -6" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
 
-                    <div class="lg:w-1/5 md:w-1/2 w-3/5">
-                        <div class="flex gap-6 items-center justify-end relative">
-
-                            <!-- Wishlist -->
-                            <a href="#!" class="relative text-gray-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                    stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path d="M19.5 12.572l-7.5 7.428-7.5-7.428a5 5 0 1 1 7.5-6.566 5 5 0 1 1 7.5 6.572" />
-                                </svg>
-                                <span
-                                    class="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-green-600 text-white text-xs flex items-center justify-center">
-                                    5
-                                </span>
-                            </a>
-
-                            <!-- User Dropdown -->
-                            <div class="relative z-[9999]" x-data="{ open: false }">
-                                @auth
-                                <button
-                                    @click="open = !open"
-                                    @click.outside="open = false"
-                                    class="flex items-center gap-2 text-gray-700 hover:text-gray-900">
-                                    <span class="hidden sm:block">{{ Auth::user()->name }}</span>
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M5 7l5 5 5-5" />
-                                    </svg>
-                                </button>
-
-                                <div
-                                    x-show="open"
-                                    x-transition
-                                    class="absolute right-0 mt-2 w-44 bg-white border rounded shadow-lg">
-                                    <a href="{{ route('profile.edit') }}"
-                                        class="block px-4 py-2 hover:bg-gray-100">
-                                        Profile
-                                    </a>
-
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button class="w-full text-left px-4 py-2 hover:bg-gray-100">
-                                            Logout
-                                        </button>
-                                    </form>
-                                </div>
-                                @else
-                                <a href="{{ route('login') }}" class="text-gray-600">Login</a>
-                                @endauth
-                            </div>
-
-                            <!-- Cart -->
-                            <button type="button" class="relative text-gray-700"
-                                data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasRight">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1-2.966 2.544h-6.852a3 3 0 0 1-2.965-2.544l-1.255-8.152A2 2 0 0 1 6.331 8z" />
-                                    <path d="M9 11V6a3 3 0 0 1 6 0v5" />
-                                </svg>
-                                <span
-                                    class="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-green-600 text-white text-xs flex items-center justify-center">
-                                    0
-                                </span>
-                            </button>
-
-                            <!-- Mobile Menu Button -->
-                            <button class="lg:hidden" data-bs-toggle="offcanvas" data-bs-target="#navbar-default">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path d="M4 6h16M4 12h16M4 18h16" />
+                        <!-- User Dropdown -->
+                        <div class="relative z-[9999]" x-data="{ open: false }">
+                            @auth
+                            <button
+                                @click="open = !open"
+                                @click.outside="open = false"
+                                class="flex items-center gap-2 text-gray-700 hover:text-gray-900">
+                                <span class="hidden sm:block">{{ Auth::user()->name }}</span>
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M5 7l5 5 5-5" />
                                 </svg>
                             </button>
 
+                            <div
+                                x-show="open"
+                                x-transition
+                                class="absolute right-0 mt-2 w-44 bg-white border rounded shadow-lg">
+                                <a href="{{ route('profile.edit') }}"
+                                    class="block px-4 py-2 hover:bg-gray-100">
+                                    Profile
+                                </a>
+
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button class="w-full text-left px-4 py-2 hover:bg-gray-100">
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                            @else
+                            <a href="{{ route('login') }}" class="text-gray-600">Login</a>
+                            @endauth
                         </div>
-                    </div>
 
+                        <!-- Cart -->
+                        <button type="button" class="relative text-gray-700"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasRight">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1-2.966 2.544h-6.852a3 3 0 0 1-2.965-2.544l-1.255-8.152A2 2 0 0 1 6.331 8z" />
+                                <path d="M9 11V6a3 3 0 0 1 6 0v5" />
+                            </svg>
+                            <span
+                                class="absolute -top-2 -right-2 h-5 w-5 rounded-full bg-green-600 text-white text-xs flex items-center justify-center">
+                                0
+                            </span>
+                        </button>
+
+                        <!-- Mobile Menu Button -->
+                        <button class="lg:hidden" data-bs-toggle="offcanvas" data-bs-target="#navbar-default">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+
+                    </div>
                 </div>
+
             </div>
         </div>
+    </div>
     </div>
     <nav
         class="navbar relative navbar-expand-lg lg:flex lg:flex-wrap items-center content-between text-black navbar-default">
