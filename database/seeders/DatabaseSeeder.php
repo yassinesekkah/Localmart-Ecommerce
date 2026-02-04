@@ -18,18 +18,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
-
-         Permission::create(['name' => 'edit articles']);
-         Permission::create(['name' => 'delete articles']);
-         
-
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $this->call(RolePermissionSeeder::class);
     }
 }
