@@ -33,6 +33,6 @@ class ProductController extends Controller
 
         $imagePath = null;
 
-        if()
+        
     }
 }

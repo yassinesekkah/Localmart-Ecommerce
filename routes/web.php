@@ -6,21 +6,15 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\Client\home;
+use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\ModeratorController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [home::class, 'index'])->middleware(['auth', 'verified']);
-
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+ Route::get('/', [DashboardController::class, 'index'])->name('client.dashboard')->middleware('auth');
 
 // Routes CLIENT 
 Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->group(function () {
-
-    // Categories routes
   
     
     // Products by category
