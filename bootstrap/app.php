@@ -3,13 +3,9 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-<<<<<<< HEAD
-use Spatie\Permission\Middleware\RoleMiddleware;
-=======
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
->>>>>>> 64df08008bd3a7edb75b809c6d6e2d7438c89b5e
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
