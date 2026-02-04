@@ -28,7 +28,11 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
 
 // Routes SELLER 
 Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->group(function () {
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');    
+
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+
 });
 
 // Routes ADMIN
