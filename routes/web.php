@@ -11,12 +11,13 @@ use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
- Route::get('/', [DashboardController::class, 'index'])->name('client.dashboard')->middleware('auth');
+Route::get('/', [DashboardController::class, 'index'])->name('client.dashboard')->middleware('auth', 'role:client');
 
 // Routes CLIENT 
 Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->group(function () {
-  
-    
+
+    Route::get('/', [DashboardController::class, 'index'])->name('client.dashboard');
+
     // Products by category
 });
 
@@ -26,13 +27,12 @@ Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->g
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-
 });
 
 // Routes ADMIN
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-  
-   
+
+
 
     // Categories CRUD 
     Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('categories.index');
@@ -42,15 +42,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/categories/{category}/edit', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/categories/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('categories.destroy');
-   
-   
-   
 });
 
 // Routes MODERATOR 
-Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () {
-    
-});
+Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () {});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -67,4 +62,4 @@ Route::middleware(['auth', 'role:admin|seller'])
             ->name('dashboard');
     });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
