@@ -15,16 +15,10 @@ class CategoryController extends Controller
         if (!auth()->user()->can('manage-categories')) {
             abort(403, 'Unauthorized action.');
         }
-        $categories = Category::with('parent', 'children')
-            ->ordered()
-            ->get();
+        
+        $categories = Category::latest()->get();
 
-        $rootCategories = Category::root()
-            ->with('children')
-            ->ordered()
-            ->get();
-
-        return view('admin.categories.index', compact('categories', 'rootCategories'));
+        return view('admin.categories.index', compact('categories'));
     }
 
     public function create()
@@ -32,12 +26,8 @@ class CategoryController extends Controller
         if (!auth()->user()->can('manage-categories')) {
             abort(403, 'Unauthorized action.');
         }
-        $rootCategories = Category::root()
-            ->active()
-            ->ordered()
-            ->get();
 
-        return view('admin.categories.create', compact('rootCategories'));
+        return view('admin.categories.create');
     }
 
     //enregistre categorie
@@ -46,33 +36,18 @@ class CategoryController extends Controller
         if (!auth()->user()->can('manage-categories')) {
             abort(403, 'Unauthorized action.');
         }
-        $request->validate([
-            'name' => 'required|string|max:255|unique:categories',
-            'slug' => 'nullable|string|max:255|unique:categories',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'parent_id' => 'nullable|exists:categories,id',
-            'is_active' => 'boolean',
-            'sort_order' => 'nullable|integer|min:0'
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:categories,slug',
+            'description' => 'nullable|string'
         ]);
 
-        $data = $request->except('image');
-        
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['name']);
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['name']);
         }
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/categories'), $imageName);
-            $data['image'] = 'images/categories/' . $imageName;
-        }
-
-        $data['is_active'] = $request->has('is_active');
-        $data['sort_order'] = $data['sort_order'] ?? 0;
-
-        Category::create($data);
+        Category::create($validated);
 
         return redirect()
             ->route('admin.categories.index')
@@ -91,64 +66,27 @@ class CategoryController extends Controller
         if (!auth()->user()->can('manage-categories')) {
             abort(403, 'Unauthorized action.');
         }
-        $rootCategories = Category::root()
-            ->active()
-            ->where('id', '!=', $category->id)
-            ->ordered()
-            ->get();
 
-        return view('admin.categories.edit', compact('category', 'rootCategories'));
+        return view('admin.categories.edit', compact('category'));
     }
 
     public function update(Request $request, Category $category)
     {
-        $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('categories')->ignore($category->id)
-            ],
-            'slug' => [
-                'nullable',
-                'string',
-                'max:255',
-                Rule::unique('categories')->ignore($category->id)
-            ],
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'parent_id' => 'nullable|exists:categories,id',
-            'is_active' => 'boolean',
-            'sort_order' => 'nullable|integer|min:0'
+        if (!auth()->user()->can('manage-categories')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $category->id,
+            'description' => 'nullable|string'
         ]);
 
-        $data = $request->except('image');
-        
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['name']);
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['name']);
         }
 
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($category->image && file_exists(public_path($category->image))) {
-                unlink(public_path($category->image));
-            }
-
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/categories'), $imageName);
-            $data['image'] = 'images/categories/' . $imageName;
-        }
-
-        $data['is_active'] = $request->has('is_active');
-        $data['sort_order'] = $data['sort_order'] ?? 0;
-
-        // Prevent self-parent
-        if ($data['parent_id'] == $category->id) {
-            $data['parent_id'] = null;
-        }
-
-        $category->update($data);
+        $category->update($validated);
 
         return redirect()
             ->route('admin.categories.index')
@@ -181,16 +119,5 @@ class CategoryController extends Controller
         return redirect()
             ->route('admin.categories.index')
             ->with('success', 'Category deleted successfully!');
-    }
-
-    public function toggleStatus(Category $category)
-    {
-        $category->update(['is_active' => !$category->is_active]);
-        
-        $status = $category->is_active ? 'activated' : 'deactivated';
-        
-        return redirect()
-            ->route('admin.categories.index')
-            ->with('success', "Category {$status} successfully!");
     }
 }
