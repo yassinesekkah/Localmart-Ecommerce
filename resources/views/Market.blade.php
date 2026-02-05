@@ -1,14 +1,17 @@
+
 @extends('layouts.client')
- 
+
 @section('title', 'Home')
 @section('content')
 
-
+<x-client.slider />
+<x-client.categories :categories="$categories" />
+<x-client.products :products="$products" />
 <!-- Shop Cart -->
 
 <div class="offcanvas offcanvas-right" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
 	<div class="offcanvas-header border-b">
-		<div> 
+		<div>
 			<h5 id="offcanvasRightLabel">Shop Cart</h5>
 			<span>Location in 382480</span>
 		</div>
@@ -390,28 +393,5 @@
 		</div>
 	</div>
 </div>
-	<main>
-		
-	</main>
 
- 
-
-	<!-- Libs JS -->
-<script src="./assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="./assets/libs/simplebar/dist/simplebar.min.js"></script>
-
-<!-- Theme JS -->
-
-<script src="./assets/js/theme.min.js"></script>
-
-	<script src="./assets/js/vendors/countdown.js"></script>
-
-	<script src="./assets/libs/tiny-slider/dist/min/tiny-slider.js"></script>
-	<script src="./assets/js/vendors/tns-slider.js"></script>
-	<script src="./assets/js/vendors/zoom.js"></script>
-	<script src="./assets/js/vendors/language.js"></script>
-	<!-- Swiper JS -->
-	<script src="./assets/libs/swiper/swiper-bundle.min.js"></script>
-	<script src="./assets/js/vendors/swiper.js"></script>
-	<script src="./assets/js/vendors/validation.js"></script>
 @endsection
