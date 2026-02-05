@@ -112,13 +112,13 @@
             </div>
 
             <!-- Users -->
-            <div>
+           @role('admin') <div>
                 <h3 class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2 px-2">
                     Users
                 </h3>
                 <ul class="space-y-1">
                     <li>
-                        <a href="#"
+                        <a href="{{ route('admin.usres.role') }}"
                             class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
                                     {{ request()->routeIs('admin.users.*')
                                         ? 'bg-blue-50 text-blue-700 border border-blue-200'
@@ -134,6 +134,7 @@
                     </li>
                 </ul>
             </div>
+            @endrole
         </nav>
     </div>
 
