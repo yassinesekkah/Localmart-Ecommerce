@@ -28,7 +28,7 @@
 			@php
                 $imagePath = $categoryImages[$loop->index % count($categoryImages)];
             @endphp
-			<a href="#" class="group">
+			<a href="{{ route('client.categorieProducts', $category->id) }}" class="group">
 				<div class="border border-gray-300 rounded-lg p-6 text-center hover:border-green-600 hover:shadow-md transition duration-300">
 					<div class="w-20 h-20 mx-auto mb-3 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-full flex items-center justify-center"
 						style="background-image: url('{{ asset($imagePath) }}');">
@@ -49,7 +49,7 @@
 
 
 <!-- Banner Section -->
-<section class="mt-12">
+<section class="mt-20">
 	<div class="container mx-auto px-4">
 		<div class="grid md:grid-cols-2 gap-6">
 			<div class="rounded-lg p-10 bg-gradient-to-br from-green-400 to-green-600 text-white">

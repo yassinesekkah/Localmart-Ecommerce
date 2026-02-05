@@ -156,7 +156,151 @@
             },
         });
     });
+    function openQuickViewModal() {
+    const modal = document.getElementById('quickViewModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+}
 
+function closeQuickViewModal() {
+    const modal = document.getElementById('quickViewModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+}
+
+// Existing functions (keep your original ones)
+function openOffcanvas() {
+    const offcanvas = document.getElementById('offcanvasRight');
+    const backdrop = document.getElementById('offcanvasBackdrop');
+    
+    backdrop.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    
+    setTimeout(() => {
+        offcanvas.classList.remove('translate-x-full');
+        backdrop.classList.add('opacity-100');
+    }, 10);
+}
+
+function closeOffcanvas() {
+    const offcanvas = document.getElementById('offcanvasRight');
+    const backdrop = document.getElementById('offcanvasBackdrop');
+    
+    offcanvas.classList.add('translate-x-full');
+    backdrop.classList.remove('opacity-100');
+    
+    setTimeout(() => {
+        backdrop.classList.add('hidden');
+        document.body.style.overflow = '';
+    }, 300);
+}
+
+function openQuickViewModal(productId) {
+    const modal = document.getElementById('quickViewModal');
+    const loading = document.getElementById('modalLoading');
+    
+    // Open modal
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+    
+    // Show loading spinner
+    loading.classList.remove('hidden');
+    
+    // Fetch product data
+    fetch(`/product/${encodeURIComponent(productId)}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(product => {
+        // Hide loading spinner
+        loading.classList.add('hidden');
+        
+        if (!product || product.length === 0) {
+            document.getElementById('result_Product').innerHTML = '<div class="col-span-2 p-8 text-center text-gray-500">Product not found</div>';
+            return;
+        }
+        
+        // If product is an array, get first item
+        const productData = Array.isArray(product) ? product[0] : product;
+        
+        // Update modal content with product data
+        document.getElementById('productName').textContent = productData.name || 'Product Name';
+        document.getElementById('productCategory').textContent = productData.category?.name || 'Category';
+        document.getElementById('productCategoryLink').textContent = productData.category?.name || 'Category';
+        document.getElementById('productPrice').textContent = `${productData.price || '0'} MAD`;
+        document.getElementById('productDescription').textContent = productData.description || 'No description available';
+        document.getElementById('productSKU').textContent = productData.sku || `PRD-${productData.id}`;
+        document.getElementById('productBrand').textContent = productData.brand || 'Unknown';
+        
+        // Update old price if exists
+        if (productData.old_price && productData.old_price > productData.price) {
+            document.getElementById('productOldPrice').textContent = `${productData.old_price} MAD`;
+            document.getElementById('productOldPrice').classList.remove('hidden');
+            
+            // Calculate discount
+            const discount = Math.round(((productData.old_price - productData.price) / productData.old_price) * 100);
+            document.getElementById('productDiscount').textContent = `${discount}% Off`;
+            document.getElementById('productDiscount').classList.remove('hidden');
+        } else {
+            document.getElementById('productOldPrice').classList.add('hidden');
+            document.getElementById('productDiscount').classList.add('hidden');
+        }
+        
+        // Update product image if available
+        if (productData.image) {
+            document.getElementById('productMainImage').src = productData.image;
+        }
+        
+        // Add fade-in animation
+        const resultDiv = document.getElementById('result_Product');
+        resultDiv.classList.add('opacity-0');
+        setTimeout(() => {
+            resultDiv.classList.remove('opacity-0');
+            resultDiv.classList.add('opacity-100', 'transition-opacity', 'duration-500');
+        }, 50);
+    })
+    .catch(error => {
+        console.error('Error fetching product:', error);
+        loading.classList.add('hidden');
+        document.getElementById('result_Product').innerHTML = '<div class="col-span-2 p-8 text-center text-red-500">Error loading product. Please try again.</div>';
+    });
+}
+
+function closeQuickViewModal() {
+    const modal = document.getElementById('quickViewModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+}
+
+function incrementQuantity(button) {
+    const input = button.previousElementSibling;
+    let value = parseInt(input.value);
+    if (value < parseInt(input.max)) {
+        input.value = value + 1;
+    }
+}
+
+function decrementQuantity(button) {
+    const input = button.nextElementSibling;
+    let value = parseInt(input.value);
+    if (value > parseInt(input.min)) {
+        input.value = value - 1;
+    }
+}
+
+// Close modal on escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeQuickViewModal();
+    }
+});
 </script>
 </body>
 

@@ -17,6 +17,7 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/categorie/{id}', [DashboardController::class, 'CategorieProducts'])->name('categorieProducts');
+    // Route::get('/product/{id}', [DashboardController::class, 'productDetails'])->name('categorieProducts');
 
 
     // Products by category

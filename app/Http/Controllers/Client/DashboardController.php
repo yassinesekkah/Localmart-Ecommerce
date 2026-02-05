@@ -26,4 +26,11 @@ class DashboardController extends Controller
         return view('client.categorie', compact('products', 'categories'));
 
     }
+
+    function productDetails($id){
+        $product = Product::find($id)->get();
+        dd($product);
+        return response()->json($product);
+
+    }
 }
