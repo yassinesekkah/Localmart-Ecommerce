@@ -13,8 +13,8 @@ class AdminDashboardController extends Controller
 
     $user = auth()->user();
     $productCount = Product::where('user_id', $user->id)->count();
-    
 
+    
     // Seller dashboard
     if ($user->hasRole('seller')) {
 
