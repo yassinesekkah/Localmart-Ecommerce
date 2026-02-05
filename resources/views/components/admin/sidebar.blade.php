@@ -31,8 +31,11 @@
                 <ul class="space-y-1">
                     <li>
                         <a href="{{ route('admin.dashboard') }}"
-                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                                  text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition">
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
+                                    {{ request()->routeIs('admin.dashboard')
+                                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                        : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                                 <polyline points="9 22 9 12 15 12 15 22" />
@@ -51,8 +54,11 @@
                 <ul class="space-y-1">
                     <li>
                         <a href="{{ route('admin.categories.index') }}"
-                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                                  bg-blue-50 text-blue-700 border border-blue-200">
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
+                                    {{ request()->routeIs('admin.categories.*')
+                                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                        : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <rect x="3" y="3" width="7" height="7" />
                                 <rect x="14" y="3" width="7" height="7" />
@@ -63,10 +69,13 @@
                         </a>
                     </li>
 
+                    {{-- Products --}}
                     <li>
-                        <a href="#"
-                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                                  text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition">
+                        <a href="{{ route('seller.products.index') }}"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
+                                        {{ request()->routeIs('seller.products.*')
+                                            ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                            : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path d="M7 7h.01" />
                                 <path d="M3 7l9-4 9 4-9 4-9-4Z" />
@@ -87,8 +96,10 @@
                 <ul class="space-y-1">
                     <li>
                         <a href="#"
-                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                                  text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition">
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
+                                    {{ request()->routeIs('admin.orders.*')
+                                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                        : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <circle cx="9" cy="21" r="1" />
                                 <circle cx="20" cy="21" r="1" />
@@ -108,19 +119,21 @@
                 <ul class="space-y-1">
                     <li>
                         <a href="#"
-                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
-                      text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition">
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
+                                    {{ request()->routeIs('admin.users.*')
+                                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                                        : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
+                                        
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197" />
                             </svg>
                             <span>Users</span>
                         </a>
+
                     </li>
                 </ul>
             </div>
-
-
         </nav>
     </div>
 
@@ -139,7 +152,7 @@
                     {{ auth()->user()->name }}
                 </p>
                 <p class="text-[11px] text-gray-500">
-                    Administrator
+                    {{ auth()->user()->getRoleNames()->first() }}
                 </p>
             </div>
 
