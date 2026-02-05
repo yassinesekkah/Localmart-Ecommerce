@@ -1,65 +1,25 @@
-
-<section class="mt-8">
-    <div class="container overflow-hidden">
-        <div class="swiper" id="swiper-1">
-            <div class="swiper-wrapper pb-8">
-                <!-- Slide 1 -->
-                <div class="swiper-slide"
-                    style="background: url({{ asset('assets/images/slider/slide-1.jpg') }}) no-repeat; background-size: cover; border-radius: 0.5rem; background-position: center; min-height: 400px;">
-                    <div class="lg:py-32 p-12 lg:pl-12 xl:w-2/5 md:w-3/5">
-                        <span class="inline-block p-2 text-sm align-baseline leading-none rounded-lg bg-yellow-500 text-gray-900 font-semibold">
-                            Opening Sale Discount 50%
-                        </span>
-                        <div class="my-7 flex flex-col gap-2">
-                            <h1 class="text-gray-900 text-xl lg:text-5xl font-bold leading-tight">
+ <section class="mt-8">
+            <div class="container mx-auto px-4">
+                <div class="relative rounded-lg overflow-hidden bg-gradient-to-r from-green-400 to-blue-500" style="height: 400px;">
+                    <div class="relative h-full flex items-center">
+                        <div class="max-w-xl px-12">
+                            <span class="inline-block px-3 py-2 text-sm font-semibold bg-yellow-500 text-gray-900 rounded-lg mb-4">
+                                Opening Sale Discount 50%
+                            </span>
+                            <h1 class="text-5xl font-bold text-white mb-4 leading-tight">
                                 SuperMarket For Fresh Grocery
                             </h1>
-                            <p class="text-md font-light">
+                            <p class="text-white mb-6">
                                 Introduced a new model for online grocery shopping and convenient home delivery.
                             </p>
+                            <a href="#" class="inline-flex items-center px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition">
+                                Shop Now
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </a>
                         </div>
-                        <a href="#!" class="btn inline-flex items-center gap-x-2 bg-gray-800 text-white border-gray-800 disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-gray-900 hover:border-gray-900 active:bg-gray-900 active:border-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300">
-                            Shop Now
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-right inline-block" width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M5 12l14 0" />
-                                <path d="M13 18l6 -6" />
-                                <path d="M13 6l6 6" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Slide 2 -->
-                <div class="swiper-slide"
-                    style="background: url({{ asset('assets/images/slider/slider-2.jpg') }}) no-repeat; background-size: cover; border-radius: 0.5rem; background-position: center; min-height: 400px;">
-                    <div class="lg:py-32 lg:pl-12 lg:pr-6 px-12 py-12 xl:w-2/5 md:w-3/5">
-                        <span class="inline-block p-2 text-sm align-baseline leading-none rounded-lg bg-yellow-500 text-gray-900 font-semibold">
-                            Free Shipping - orders over $100
-                        </span>
-                        <div class="my-7 flex flex-col gap-2">
-                            <h2 class="text-gray-900 text-xl lg:text-5xl font-bold leading-tight">
-                                Free Shipping on<br />orders over <span class="text-green-600">$100</span>
-                            </h2>
-                            <p class="text-md font-light">
-                                Free Shipping to First-Time Customers Only, After promotions and discounts are applied.
-                            </p>
-                        </div>
-                        <a href="#!" class="btn inline-flex items-center gap-x-2 bg-gray-800 text-white border-gray-800 disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-gray-900 hover:border-gray-900 active:bg-gray-900 active:border-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300">
-                            Shop Now
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-right inline-block" width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M5 12l14 0" />
-                                <path d="M13 18l6 -6" />
-                                <path d="M13 6l6 6" />
-                            </svg>
-                        </a>
                     </div>
                 </div>
             </div>
-
-            <!-- Pagination -->
-            <div class="swiper-pagination"></div>
-        </div>
-    </div>
-</section>
+        </section>
