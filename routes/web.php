@@ -61,8 +61,7 @@ Route::middleware(['auth', 'role:admin|seller'])
     ->name('admin.')
     ->group(function () {
 
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
-            ->name('dashboard');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     });
 
 require __DIR__ . '/auth.php';
