@@ -28,7 +28,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = auth()->user();
+
+        if ($user->hasAnyRole(['admin', 'seller', 'moderator'])) {
+            return redirect()->route('admin.dashboard');
+        }
+        ///client dashboard
+        return redirect()->route('client.dashboard');
     }
 
     /**
@@ -42,6 +48,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }

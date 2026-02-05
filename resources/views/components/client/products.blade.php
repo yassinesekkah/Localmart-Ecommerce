@@ -1,14 +1,30 @@
-<!-- Popular Products Start-->
+@props(['products'])<!-- Popular Products Start-->
 <section class="lg:my-14 my-8">
     <div class="container">
         <div class="flex flex-wrap">
             <div class="w-full mb-6">
-                <h2 class="text-lg">Popular Products</h2>
+                <h2 class="text-lg">All Products</h2>
             </div>
         </div>
+        @php
+        $categoryImages = [
+        'assets/images/products/product-img-2.jpg',
+        'assets/images/category/category-tea-coffee-drinks.jpg',
+        'assets/images/category/category-instant-food.jpg',
+        'assets/images/category/category-bakery-biscuits.jpg',
+        'assets/images/category/category-cleaning-essentials.jpg',
+        'assets/images/category/category-dairy-bread-eggs.jpg',
+        'assets/images/category/category-snack-munchies.jpg',
+        'assets/images/category/category-baby-care.jpg',
+        'assets/images/category/category-chicken-meat-fish.jpg',
+        'assets/images/category/category-pet-care.jpg',
+        '',
+        ];
+        @endphp
 
         <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:gap-4 xl:grid-cols-5">
-            <div class="relative rounded-lg break-words border bg-white border-gray-300 card-product">
+            @foreach($products as $product)
+            <div class="relative rounded-lg break-words border bg-white bg-orange-600 border-gray-300 card-product">
                 <div class="flex-auto p-4">
                     <div class="text-center relative flex justify-center">
                         <div class="absolute top-0 left-0">
@@ -56,9 +72,9 @@
                         </div>
                     </div>
                     <div class="flex flex-col gap-3">
-                        <a href="#!" class="text-decoration-none text-gray-500"><small>Snack & Munchies</small></a>
+                        <a href="#!" class="text-decoration-none text-gray-500"><small>{{$product->name}}</small></a>
                         <div class="flex flex-col gap-2">
-                            <h3 class="text-base truncate"><a href="#!">Haldiram's Sev Bhujia</a></h3>
+                            <h3 class="text-base truncate"><a href="#!">{{$product->description}}</a></h3>
                             <div class="flex items-center">
                                 <div class="flex flex-row gap-3">
                                     <small class="text-yellow-500 flex items-center">
@@ -112,8 +128,8 @@
                         </div>
                         <div class="flex justify-between items-center">
                             <div>
-                                <span class="text-gray-900 font-semibold">$18</span>
-                                <span class="line-through text-gray-500">$24</span>
+                                <span class="text-gray-900 font-semibold">${{$product->price}}</span>
+                                <span class="line-through text-gray-500">${{$product->price}}</span>
                             </div>
                             <div>
                                 <button type="button"
@@ -132,6 +148,7 @@
                     </div>
                 </div>
             </div>
+            @endforeach
             <div class="relative rounded-lg break-words border bg-white border-gray-300 card-product">
                 <div class="flex-auto p-4">
                     <div class="text-center relative flex justify-center">
@@ -139,7 +156,7 @@
                             <span
                                 class="inline-block p-1 text-center font-semibold text-sm align-baseline leading-none rounded bg-green-600 text-white">14%</span>
                         </div>
-                        <a href="#!"><img src="assets/images/products/product-img-2.jpg" alt="Grocery Ecommerce Template"
+                        <a href="#!"><img src="" alt="Grocery Ecommerce Template"
                                 class="w-full h-auto" /></a>
 
                         <div class="absolute w-full bottom-[15%] opacity-0 invisible card-product-action">
