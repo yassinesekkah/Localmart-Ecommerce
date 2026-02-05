@@ -19,11 +19,11 @@
                 <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
                     <p class="text-xs uppercase text-gray-400">Total Users</p>
                     <h3 class="mt-2 text-2xl font-semibold text-gray-800">
-                        --
+                        {{ $usersCount }}
                     </h3>
                 </div>
             @endif
-            @if ($role === 'seller')
+            
                 {{-- Products --}}
                 <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
                     <p class="text-xs uppercase text-gray-400">Products</p>
@@ -47,7 +47,7 @@
                         --
                     </h3>
                 </div>
-            @endif
+           
 
         </div>
 

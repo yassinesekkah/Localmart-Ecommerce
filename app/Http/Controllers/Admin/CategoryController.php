@@ -12,13 +12,16 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        if (!auth()->user()->can('manage-categories')) {
-            abort(403, 'Unauthorized action.');
-        }
+        // if (!auth()->user()->can('manage-categories')) {
+        //     abort(403, 'Unauthorized action.');
+        // }
+        $user = auth()->user();
+
+        $role = $user->getRoleNames()->first();
         
         $categories = Category::latest()->get();
 
-        return view('admin.categories.index', compact('categories'));
+        return view('admin.categories.index', compact('categories', 'role'));
     }
 
     public function create()
