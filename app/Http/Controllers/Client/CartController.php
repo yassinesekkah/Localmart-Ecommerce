@@ -89,7 +89,7 @@ class CartController extends Controller
 
         ///check stock
         if($cart[$productId]['quantity'] >= $cart[$productId]['stock']){
-            return back()->witch('error', 'No more stock available');
+            return back()->with('error', 'No more stock available');
         }
 
         $cart[$productId]['quantity']++;
@@ -117,5 +117,12 @@ class CartController extends Controller
         session()->put('cart', $cart);
 
         return back()->with('success', 'Quantity updated');
+    }
+
+    public function clear()
+    {
+        session()->forget('cart');
+
+        return back()->with('success', 'Cart cleared successfully');
     }
 }

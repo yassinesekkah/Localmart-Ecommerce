@@ -42,7 +42,34 @@
                                 </td>
 
                                 <td class="px-4 py-3 text-center">
-                                    {{ $item['quantity'] }}
+                                    <div class="flex items-center justify-center gap-2">
+
+                                        {{-- Decrease --}}
+                                        <form action="{{ route('client.cart.decrease', $item['id']) }}" method="POST">
+                                            @csrf
+                                            <button type="submit"
+                                                class="w-7 h-7 flex items-center justify-center
+                                                       bg-gray-200 hover:bg-gray-300 rounded">
+                                                −
+                                            </button>
+                                        </form>
+
+                                        {{-- Quantity --}}
+                                        <span class="min-w-[24px] text-sm font-medium">
+                                            {{ $item['quantity'] }}
+                                        </span>
+
+                                        {{-- Increase --}}
+                                        <form action="{{ route('client.cart.increase', $item['id']) }}" method="POST">
+                                            @csrf
+                                            <button type="submit"
+                                                class="w-7 h-7 flex items-center justify-center
+                                                     bg-gray-200 hover:bg-gray-300 rounded">
+                                                +
+                                            </button>
+                                        </form>
+
+                                    </div>
                                 </td>
 
                                 <td class="px-4 py-3 text-center font-medium">
@@ -54,9 +81,8 @@
                                         @csrf
                                         @method('DELETE')
 
-                                        <button type="submit" 
-                                                class="text-red-600 hover:text-red-800 text-sm font-medium"
-                                                    onclick="return confirm('Remove this product from cart?')">
+                                        <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium"
+                                            onclick="return confirm('Remove this product from cart?')">
                                             Remove
                                         </button>
                                     </form>
@@ -69,8 +95,16 @@
 
             </div>
 
-            {{-- Total --}}
-            <div class="flex justify-end mt-6">
+            <div class="flex justify-between items-center mt-6">
+                <form action="{{ route('client.cart.clear') }}" method="POST">
+                    @csrf
+                    <button type="submit" onclick="return confirm('Are you sure you want to clear your cart?')"
+                        class="px-4 py-2 text-sm text-red-600 border border-red-200
+                              rounded-lg hover:bg-red-50 transition">
+                        Clear cart
+                    </button>
+                </form>
+
                 <div class="bg-white border rounded-xl p-4 w-64">
                     <div class="flex justify-between text-sm mb-2">
                         <span>Total</span>
@@ -80,7 +114,8 @@
                     </div>
 
                     <button
-                        class="w-full mt-3 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                        class="w-full mt-3 px-4 py-2 bg-indigo-600 text-white
+                   rounded-lg hover:bg-indigo-700 transition">
                         Checkout
                     </button>
                 </div>
