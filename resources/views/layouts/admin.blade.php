@@ -13,7 +13,7 @@
     <div x-data="{ open: false}" class="flex min-h-screen">
 
         {{-- Sidebar --}}
-        <div x-show="open" 
+        <div :class="{'hidden': !open, 'block': open}" class="bg-gray-800 text-white w-64 h-screen p-4 lg:block lg:static"
         > <x-admin.sidebar/></div>
        
 
