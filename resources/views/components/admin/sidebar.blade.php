@@ -1,9 +1,9 @@
 <!-- Sidebar -->
-<aside class="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 flex flex-col shadow-md">
+<aside class="h-full w-64 bg-white border-r border-gray-200 flex flex-col shadow-md">
 
     <!-- Logo -->
-    <div class="px-5 pt-5 pb-4 border-b border-gray-200">
-        <a href="{{ route('admin.categories.index') }}" class="inline-block">
+    <div class="px-5 py-2 border-b border-gray-200">
+        <a href="{{ route('admin.dashboard') }}" class="inline-block">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -112,28 +112,29 @@
             </div>
 
             <!-- Users -->
-           @role('admin') <div>
-                <h3 class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2 px-2">
-                    Users
-                </h3>
-                <ul class="space-y-1">
-                    <li>
-                        <a href="{{ route('admin.usres.role') }}"
-                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
+            @role('admin')
+                <div>
+                    <h3 class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2 px-2">
+                        Users
+                    </h3>
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="{{ route('admin.usres.role') }}"
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
                                     {{ request()->routeIs('admin.users.*')
                                         ? 'bg-blue-50 text-blue-700 border border-blue-200'
                                         : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700' }}">
-                                        
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197" />
-                            </svg>
-                            <span>Users</span>
-                        </a>
 
-                    </li>
-                </ul>
-            </div>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197" />
+                                </svg>
+                                <span>Users</span>
+                            </a>
+
+                        </li>
+                    </ul>
+                </div>
             @endrole
         </nav>
     </div>
