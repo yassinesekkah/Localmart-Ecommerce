@@ -34,6 +34,7 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/categorie/{id}', [DashboardController::class, 'CategorieProducts'])->name('categorieProducts');
+    Route::get('/product/{id}', [DashboardController::class, 'productDetails']);
     // Route::get('/product/{id}', [DashboardController::class, 'productDetails'])->name('categorieProducts');
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 

@@ -9,28 +9,32 @@ use App\Models\Product;
 
 class DashboardController extends Controller
 {
-    function index(){
+    function index()
+    {
         $categories = Category::all();
-        
+
         $products = Product::all();
-       
+
         return view('Market', compact('products', 'categories'));
     }
 
-    function CategorieProducts($id){
-        
-        $categories = Category::all();
-        
-        $products = Product::where('category_id', $id)->get();
-    //    dd($products);
-        return view('client.categorie', compact('products', 'categories'));
+    function CategorieProducts($id)
+    {
 
+        $categories = Category::all();
+
+        $products = Product::where('category_id', $id)->get();
+        //    dd($products);
+        return view('client.categorie', compact('products', 'categories'));
     }
 
-    function productDetails($id){
-        $product = Product::find($id)->get();
-        dd($product);
-        return response()->json($product);
+    function productDetails($id)
+    {
+        $product = Product::with('category')->find($id);
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
 
+        return response()->json($product, 200);
     }
 }

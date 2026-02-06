@@ -7,35 +7,21 @@
 		<h2 class="text-2xl font-bold mb-6">Featured Categories</h2>
 		<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
 			<!-- static table img for test only -->
-			@php
-			$categoryImages = [
-			'assets/images/category/category-cleaning-essentials.jpg',
-			'assets/images/category/category-tea-coffee-drinks.jpg',
-			'assets/images/category/category-instant-food.jpg',
-			'assets/images/category/category-bakery-biscuits.jpg',
-			'assets/images/category/category-cleaning-essentials.jpg',
-			'assets/images/category/category-dairy-bread-eggs.jpg',
-			'assets/images/category/category-snack-munchies.jpg',
-			'assets/images/category/category-baby-care.jpg',
-			'assets/images/category/category-chicken-meat-fish.jpg',
-			'assets/images/category/category-pet-care.jpg',
-			'',
-			];
-			@endphp
+
 
 			<!-- Category Cards -->
 			@foreach ($categories as $index => $category)
-			@php
-                $imagePath = $categoryImages[$loop->index % count($categoryImages)];
-            @endphp
+
 			<a href="{{ route('client.categorieProducts', $category->id) }}" class="group">
 				<div class="border border-gray-300 rounded-lg p-6 text-center hover:border-green-600 hover:shadow-md transition duration-300">
-					<div class="w-20 h-20 mx-auto mb-3 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-full flex items-center justify-center"
-						style="background-image: url('{{ asset($imagePath) }}');">
-						
-                        @if(empty($imagePath))
-                            <span class="text-yellow-600">Aucune image</span>
-                        @endif
+					<div class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden flex items-center justify-center bg-yellow-100">
+						@if($category->image)
+						<img
+							src="{{ asset('storage/'.$category->image) }}"
+							class="w-full h-full object-cover">
+						@else
+						<span class="text-yellow-600 text-xs text-center">Aucune image</span>
+						@endif
 					</div>
 					<div class="text-base font-semibold">{{$category->name}}</div>
 					<div class="font-medium text-gray-700 group-hover:text-green-600">{{$category->description}}</div>

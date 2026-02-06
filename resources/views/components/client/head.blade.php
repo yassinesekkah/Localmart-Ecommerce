@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link href="./assets/libs/tiny-slider/dist/tiny-slider.css" rel="stylesheet" />
-    <link rel="stylesheet" href="./assets/libs/swiper/swiper-bundle.min.css" />
     <link rel="shortcut icon" type="image/x-icon" href="./assets/images/favicon/favicon.ico" />
 
     <!-- Libs CSS -->
