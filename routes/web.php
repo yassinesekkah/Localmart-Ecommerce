@@ -26,7 +26,6 @@ Route::get('/', function () {
     }
 
     return redirect()->route('admin.dashboard');
-
 });
 
 // Routes CLIENT 
@@ -35,8 +34,18 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/categorie/{id}', [DashboardController::class, 'CategorieProducts'])->name('categorieProducts');
     Route::get('/product/{id}', [DashboardController::class, 'productDetails']);
-    // Route::get('/product/{id}', [DashboardController::class, 'productDetails'])->name('categorieProducts');
+
+
+    // click dyal add to cart
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+    /// affichage dyal cart
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    ///bach nmas7o product mn cart
+    Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
+    ///nzido l quantity wast l cart
+    Route::post('/cart/increase/{product}', [CartController::class, 'increase'])->name('client.cart.increase');
+    ///na9so l quantity wast l cart                                                                             
+    Route::post('/cart/decrease/{product}', [CartController::class, 'decrease'])->name('client.cart.decrease');
 
 
     // Products by category
@@ -55,8 +64,6 @@ Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->g
 
 // Routes ADMIN
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-
-
 
     // Categories CRUD 
     Route::get('/categories/create', [App\Http\Controllers\Admin\CategoryController::class, 'create'])->name('categories.create');
