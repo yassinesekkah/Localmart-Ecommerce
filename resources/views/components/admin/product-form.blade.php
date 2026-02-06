@@ -45,6 +45,15 @@
         <input type="number" step="0.01" name="price" value="{{ old('price', $product->price ?? '') }}"
             class="w-full rounded-lg border-gray-300">
     </div>
+    {{--Quantity--}}
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+            Quantity (stock)
+        </label>
+
+        <input type="number" name="quantity" min="0" value="{{ old('quantity', $product->quantity ?? 0) }}"
+            class="w-full rounded-lg border-gray-300 focus:border-indigo-500 focus:ring-indigo-500">
+    </div>
     {{-- Description --}}
     <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">

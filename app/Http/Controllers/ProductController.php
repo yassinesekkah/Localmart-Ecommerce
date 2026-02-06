@@ -12,8 +12,8 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = auth()->user()->products()->latest()->get();
-
+        $products = Product::latest()->paginate(9);
+        
         return view('admin.products.index', compact('products'));
     }
 
@@ -30,6 +30,7 @@ class ProductController extends Controller
             'name'        => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'price'       => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
             'description' => 'nullable|string',
             'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
@@ -44,6 +45,7 @@ class ProductController extends Controller
             'name' => $validated['name'],
             'slug' => Str::slug($validated['name']),
             'price' => $validated['price'],
+            'quantity' => $validated['quantity'],
             'description' => $validated['description'],
             'image' => $imagePath,
             'category_id' => $validated['category_id'],
@@ -76,6 +78,7 @@ class ProductController extends Controller
             'name'        => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'price'       => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
             'description' => 'nullable|string',
             'image'       => 'nullable|image|max:2048',
         ]);
@@ -117,4 +120,6 @@ class ProductController extends Controller
             ->route('seller.products.index')
             ->with('success', 'Product deleted successfully');
     }
+
+    
 }

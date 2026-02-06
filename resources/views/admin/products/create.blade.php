@@ -8,9 +8,10 @@
         </h1>
 
         <x-admin.product-form
-    :categories="$categories"
-    :action="route('seller.products.store')"
-    button="Create Product"
-/>
+            :categories="$categories"
+            :action="route('seller.products.store')"
+            button="Create Product"
+        />
+        
     </div>
 @endsection
