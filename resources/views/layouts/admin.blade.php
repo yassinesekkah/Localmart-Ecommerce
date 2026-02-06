@@ -10,10 +10,12 @@
 
 <body class="bg-black-400">
 
-    <div class="flex min-h-screen">
+    <div x-data="{ open: false}" class="flex min-h-screen">
 
         {{-- Sidebar --}}
-        <x-admin.sidebar/>
+        <div x-show="open" 
+        > <x-admin.sidebar/></div>
+       
 
         {{-- Main --}}
         <div class="flex-1 flex flex-col">
@@ -22,7 +24,7 @@
             <x-admin.navbar/>
 
             {{-- Page Content --}}
-            <main class=" pl-64 pt-3">
+            <main class="sm:pl-auto lg:pl-64 pt-3">
                 @yield('content')
             </main>
 
