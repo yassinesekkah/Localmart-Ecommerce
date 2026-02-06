@@ -5,13 +5,11 @@
         <div class="flex items-center justify-between py-4">
             <!-- Logo -->
             <div class="flex items-center space-x-8">
-                <a href="{{url('/') }}" class="text-2xl font-bold text-green-600">FreshCart</a>
+                <a href="{{url('/client') }}" class="text-2xl font-bold text-green-600">FreshCart</a>
 
                 <!-- Navigation -->
                 <nav class="hidden lg:flex space-x-6 items-center">
-                    <a href="{{url('/') }}" class="text-gray-700 hover:text-green-600 transition">Home</a>
-                    <a href="#" class="text-gray-700 hover:text-green-600 transition">Shop</a>
-                    <a href="{{url('/profile')}}" class="text-gray-700 hover:text-green-600 transition">Account</a>
+                    <a href="{{url('/client') }}" class="text-gray-700 hover:text-green-600 transition">Home</a>
 
                     <!-- Category Dropdown -->
                     <div class="relative">
@@ -41,19 +39,19 @@
             </div>
 
             <!-- Search Bar -->
-            <div class="hidden md:flex flex-1 max-w-lg mx-8">
+            <!-- <div class="hidden md:flex flex-1 max-w-lg mx-8">
                 <input type="text" placeholder="Search for products..."
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-            </div>
+            </div> -->
 
             <!-- Icons -->
             <div class="flex items-center space-x-4">
                 <!-- Wishlist -->
-                <button class="text-gray-700 hover:text-green-600 transition">
+                <!-- <button class="text-gray-700 hover:text-green-600 transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
-                </button>
+                </button> -->
 
                 <!-- User Account -->
                 <div class="relative z-[9999]">
@@ -107,11 +105,7 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden lg:hidden pb-4">
             <nav class="flex flex-col space-y-2">
-                <a href="#" class="text-gray-700 hover:text-green-600 py-2 px-4 rounded hover:bg-gray-50 transition">Home</a>
-                <a href="#" class="text-gray-700 hover:text-green-600 py-2 px-4 rounded hover:bg-gray-50 transition">Shop</a>
-                <a href="#" class="text-gray-700 hover:text-green-600 py-2 px-4 rounded hover:bg-gray-50 transition">Stores</a>
-                <a href="#" class="text-gray-700 hover:text-green-600 py-2 px-4 rounded hover:bg-gray-50 transition">Pages</a>
-                <a href="#" class="text-gray-700 hover:text-green-600 py-2 px-4 rounded hover:bg-gray-50 transition">Account</a>
+                <a href="/client/dashboard" class="text-gray-700 hover:text-green-600 py-2 px-4 rounded hover:bg-gray-50 transition">Home</a>
             </nav>
 
             <!-- Mobile Search -->

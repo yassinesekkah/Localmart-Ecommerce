@@ -11,13 +11,12 @@ use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-
 // Routes CLIENT 
 Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/categorie/{id}', [DashboardController::class, 'CategorieProducts'])->name('categorieProducts');
-    // Route::get('/product/{id}', [DashboardController::class, 'productDetails'])->name('categorieProducts');
+    Route::get('/product/{id}', [DashboardController::class, 'productDetails']);
 
 
     // Products by category
