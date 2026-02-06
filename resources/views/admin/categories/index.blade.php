@@ -32,7 +32,6 @@
                     <div class="flex items-start justify-between mb-4">
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ $category->name }}</h3>
-                            <p class="text-sm text-gray-500">{{ $category->slug }}</p>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
