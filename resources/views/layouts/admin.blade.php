@@ -13,7 +13,13 @@
     <div x-data="{ open: false}" class="flex min-h-screen">
 
         {{-- Sidebar --}}
-        <div :class="{'hidden': !open, 'block': open}" class="bg-gray-800 text-white w-64 h-screen p-4 lg:block lg:static"
+        <div  :class="open ? 'translate-x-0' : '-translate-x-full'"
+        class="
+            fixed inset-y-0  z-40
+            w-64 bg-gray-800 text-white p-4
+            transform transition-transform duration-300
+            lg:static lg:translate-x-0 lg:z-auto
+        "
         > <x-admin.sidebar/></div>
        
 
@@ -24,7 +30,7 @@
             <x-admin.navbar/>
 
             {{-- Page Content --}}
-            <main class="sm:pl-auto lg:pl-64 pt-3">
+            <main class="sm:pl-auto pt-3">
                 @yield('content')
             </main>
 
