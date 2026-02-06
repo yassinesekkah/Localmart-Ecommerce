@@ -8,7 +8,6 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
 
-
             @foreach ($products as $product)
                 <div class="border border-gray-300 rounded-lg p-4 card-product relative group">
                     <div class="relative mb-4">

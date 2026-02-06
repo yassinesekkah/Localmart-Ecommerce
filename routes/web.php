@@ -43,9 +43,11 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     ///bach nmas7o product mn cart
     Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
     ///nzido l quantity wast l cart
-    Route::post('/cart/increase/{product}', [CartController::class, 'increase'])->name('client.cart.increase');
+    Route::post('/cart/increase/{product}', [CartController::class, 'increase'])->name('cart.increase');
     ///na9so l quantity wast l cart                                                                             
-    Route::post('/cart/decrease/{product}', [CartController::class, 'decrease'])->name('client.cart.decrease');
+    Route::post('/cart/decrease/{product}', [CartController::class, 'decrease'])->name('cart.decrease');
+    ///clear cart 
+    Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
 
     // Products by category
