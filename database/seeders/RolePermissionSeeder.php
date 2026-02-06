@@ -43,6 +43,7 @@ class RolePermissionSeeder extends Seeder
             'moderate-products-reviews',
             'view-all-orders',
             'view-statistics',
+            'manage-categories',
             
             // Moderator
             'delete-review',
@@ -91,6 +92,8 @@ class RolePermissionSeeder extends Seeder
         // Admin role
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $adminRole->givePermissionTo([
+            'delete-product',
+            'manage-categories',
             'manage-users',
             'manage-roles',
             'moderate-products-reviews',

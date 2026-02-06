@@ -54,13 +54,6 @@ class CategoryController extends Controller
             ->with('success', 'Category created successfully!');
     }
 
-    public function show(Category $category)
-    {
-        $category->load('parent', 'children', 'products');
-        
-        return view('admin.categories.show', compact('category'));
-    }
-
     public function edit(Category $category)
     {
         if (!auth()->user()->can('manage-categories')) {
