@@ -157,9 +157,32 @@
             });
         });
 
-        
+
+        /*************************** add review and reviews ************************************ */
+        document.getElementById('comment').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let formData = new FormData(this);
+
+            fetch(`/client/create-order/${encodeURIComponent(productId)}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        console.log('ajouter corectly', data.data);
+
+                    }
+                })
+                .catch(error => console.error('errore on this product', error));
+        });
+
     </script>
-     @stack('scripts')
+    @stack('scripts')
 </body>
 
 </html>

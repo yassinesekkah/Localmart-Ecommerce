@@ -29,7 +29,7 @@ class ProductSeeder extends Seeder
 
             Product::create([
                 'name' => $name,
-                'slug' => Str::slug($name . '-' . $i),
+                'slug' => Str::slug($name) . '-' . $i,
                 'price' => rand(50, 500),
                 'description' => 'Sample description for ' . $name,
                 'image' => null,
