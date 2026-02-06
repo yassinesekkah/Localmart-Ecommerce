@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/auth.php';
 
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ProfileController;
@@ -6,11 +7,27 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function () {
+
+    if (!auth()->check()) {
+        return redirect()->route('login');
+    }
+
+    $user = auth()->user();
+
+    if ($user->hasRole('client')) {
+        return redirect()->route('client.dashboard');
+    }
+
+    return redirect()->route('admin.dashboard');
+
+});
 
 // Routes CLIENT 
 Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->group(function () {
@@ -18,6 +35,7 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/categorie/{id}', [DashboardController::class, 'CategorieProducts'])->name('categorieProducts');
     // Route::get('/product/{id}', [DashboardController::class, 'productDetails'])->name('categorieProducts');
+    Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 
 
     // Products by category
@@ -32,7 +50,6 @@ Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->g
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-
 });
 
 // Routes ADMIN
@@ -51,7 +68,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // users role 
     Route::get('/users', [App\Http\Controllers\Admin\RoleController::class, 'index'])->name('usres.role');
     Route::post('update/roles/{id}', [App\Http\Controllers\Admin\RoleController::class, 'updateRole'])->name('roles.update');
-
 });
 
 // Routes MODERATOR 
@@ -70,7 +86,4 @@ Route::middleware(['auth', 'role:admin|seller|moderator'])
 
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-
     });
-
-require __DIR__ . '/auth.php';
