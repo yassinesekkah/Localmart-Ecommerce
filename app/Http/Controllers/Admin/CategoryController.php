@@ -77,11 +77,6 @@ class CategoryController extends Controller
                 ->with('error', 'Cannot delete category with products!');
         }
 
-        // Delete image
-        if ($category->image && file_exists(public_path($category->image))) {
-            unlink(public_path($category->image));
-        }
-
         $category->delete();
 
         return redirect()

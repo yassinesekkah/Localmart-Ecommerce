@@ -4,7 +4,7 @@
     <div class="container mx-auto px-4 py-8 ">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-gray-800">Categories Management</h1>
-            @if ($role !== 'seller')
+            @if ($role === 'admin')
                 <a href="{{ route('admin.categories.create') }}"
                     class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                     Add New Category
