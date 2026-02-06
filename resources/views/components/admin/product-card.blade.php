@@ -1,4 +1,4 @@
-@props(['product'])
+@props(['product', 'role'])
 
 <div class="bg-white rounded-lg border border-gray-200 shadow-sm
            hover:shadow-md transition overflow-hidden">
@@ -38,7 +38,7 @@
 
             <!-- Actions -->
             <div class="flex gap-2 mt-auto">
-
+                @if($role === 'seller')
                 {{-- Edit --}}
                 <a href="{{ route('seller.products.edit', $product) }}"
                     class="flex-1 text-xs font-medium text-white
@@ -46,7 +46,7 @@
                             rounded px-2 py-1.5 transition text-center">
                     Modifier
                 </a>
-
+                @endif
                 {{-- Delete --}}
                 <form action="{{ route('seller.products.destroy', $product) }}" method="POST" class="flex-1"
                     onsubmit="return confirm('Are you sure you want to delete this product?')">

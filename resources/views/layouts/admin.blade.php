@@ -19,16 +19,17 @@
         <!-- Sidebar wrapper -->
         <div :class="open ? 'translate-x-0' : '-translate-x-full'"
             class="
-            fixed inset-y-0 left-0 z-40
-            w-64 bg-white
-            transform transition-transform duration-300
-            lg:static lg:translate-x-0 lg:z-auto
-        ">
+        fixed top-0 left-0 z-40
+        w-64 h-screen
+        bg-white
+        transform transition-transform duration-300
+        lg:translate-x-0
+    ">
             <x-admin.sidebar />
         </div>
 
         <!-- Main -->
-        <div class="flex-1 flex flex-col">
+        <div class="flex-1 flex flex-col lg:ml-64">
 
             <!-- Navbar -->
             <x-admin.navbar />

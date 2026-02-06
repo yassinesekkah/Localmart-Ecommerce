@@ -56,7 +56,6 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
 // Routes SELLER 
 Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->group(function () {
 
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
@@ -90,10 +89,9 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'role:admin|seller|moderator'])
     ->prefix('admin')
-    ->name('admin.')
     ->group(function () {
 
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-        Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
+        Route::get('/products', [ProductController::class, 'index'])->name('seller.products.index');
     });
