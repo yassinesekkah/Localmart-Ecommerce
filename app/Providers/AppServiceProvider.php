@@ -24,5 +24,9 @@ class AppServiceProvider extends ServiceProvider
         View::composer('components.client.navbar', function ($view) {
             $view->with('categories', Category::all());
         });
+
+        View::composer('layouts.client', function ($view) {
+            $view->with('categories', Category::all());
+        });
     }
 }
