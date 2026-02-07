@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Reviews;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,5 +24,12 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ProductSeeder::class,
         ]);
+
+        
+        User::factory(5)->create()->each(function ($user) {
+            $user->assignRole('client');
+        });
+
+        Reviews::factory(20)->create();
     }
 }

@@ -4,7 +4,7 @@
     <div class="container mx-auto px-4 py-8 ">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-gray-800">Categories Management</h1>
-            @if ($role !== 'seller')
+            @if ($role === 'admin')
                 <a href="{{ route('admin.categories.create') }}"
                     class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                     Add New Category
@@ -32,7 +32,6 @@
                     <div class="flex items-start justify-between mb-4">
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900 mb-1">{{ $category->name }}</h3>
-                            <p class="text-sm text-gray-500">{{ $category->slug }}</p>
                         </div>
                         <div class="flex items-center space-x-2">
                             <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
@@ -74,17 +73,6 @@
                     <!-- Actions -->
                     <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                         <div class="flex space-x-2">
-                            <a href="{{ route('admin.categories.show', $category) }}"
-                                class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 transition-colors">
-                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                    </path>
-                                </svg>
-                                View
-                            </a>
                             @if($role === 'admin')
                             <a href="{{ route('admin.categories.edit', $category) }}"
                                 class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 transition-colors">
