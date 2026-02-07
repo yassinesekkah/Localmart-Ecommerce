@@ -113,11 +113,12 @@
                         </span>
                     </div>
 
-                    <button
-                        class="w-full mt-3 px-4 py-2 bg-indigo-600 text-white
-                   rounded-lg hover:bg-indigo-700 transition">
-                        Checkout
-                    </button>
+                    <form action="{{ route('client.checkout.info') }}" method="GET" class="flex justify-end pt-2">
+                        <button type="submit" class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">
+                            Order Now
+                        </button>
+                    </form>
+
                 </div>
             </div>
         @endif
