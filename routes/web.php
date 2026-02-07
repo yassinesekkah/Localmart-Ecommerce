@@ -11,6 +11,7 @@ use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -32,11 +33,9 @@ Route::get('/', function () {
 Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/categorie/{id}', [DashboardController::class, 'CategorieProducts'])->name('categorieProducts');
-    Route::get('/product/{id}', [DashboardController::class, 'productDetails']);
-
-
-    // click dyal add to cart
+    Route::get('/product/{id}', [DashboardController::class, 'CategorieProducts'])->name('categorieProducts');
+    Route::get('/product/infos/{id}', [DashboardController::class, 'productDetails']);
+    Route::post('/product/create-Review/{id}', [ReviewsController::class, 'createReview']);
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     /// affichage dyal cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
