@@ -8,6 +8,7 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Client\CartController;
+use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\ProductController;
@@ -49,7 +50,8 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     ///checkout info
     Route::get('/checkout/info', [CheckoutController::class, 'info'])->name('checkout.info');
-
+    ///store dyal form info 
+    Route::post('/checkout/info', [CheckoutController::class, 'store'])->name('checkout.storeInfo');
 
     // Products by category
 });
