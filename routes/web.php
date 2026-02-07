@@ -47,6 +47,8 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::post('/cart/decrease/{product}', [CartController::class, 'decrease'])->name('cart.decrease');
     ///clear cart 
     Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+    ///checkout info
+    Route::get('/checkout/info', [CheckoutController::class, 'info'])->name('checkout.info');
 
 
     // Products by category
