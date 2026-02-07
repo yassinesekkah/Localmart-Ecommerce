@@ -27,7 +27,6 @@ Route::get('/', function () {
     }
 
     return redirect()->route('admin.dashboard');
-
 });
 
 // Routes CLIENT 
@@ -38,6 +37,16 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::get('/product/infos/{id}', [DashboardController::class, 'productDetails']);
     Route::post('/product/create-Review/{id}', [ReviewsController::class, 'createReview']);
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+    /// affichage dyal cart
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    ///bach nmas7o product mn cart
+    Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
+    ///nzido l quantity wast l cart
+    Route::post('/cart/increase/{product}', [CartController::class, 'increase'])->name('cart.increase');
+    ///na9so l quantity wast l cart                                                                             
+    Route::post('/cart/decrease/{product}', [CartController::class, 'decrease'])->name('cart.decrease');
+    ///clear cart 
+    Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
 
     // Products by category
@@ -46,7 +55,6 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
 // Routes SELLER 
 Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->group(function () {
 
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
@@ -57,12 +65,9 @@ Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->g
 // Routes ADMIN
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
 
-
-
     // Categories CRUD 
-    Route::get('/categories/create', [App\Http\Controllers\Admin\CategoryController::class, 'create'])->name('categories.create');
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('categories.store');
-    Route::get('/categories/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'show'])->name('categories.show');
     Route::get('/categories/{category}/edit', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/categories/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('categories.destroy');
@@ -83,9 +88,9 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'role:admin|seller|moderator'])
     ->prefix('admin')
-    ->name('admin.')
     ->group(function () {
 
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
+        Route::get('/products', [ProductController::class, 'index'])->name('seller.products.index');
     });

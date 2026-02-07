@@ -12,9 +12,12 @@ class ProductController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+        $role = $user->getRoleNames()->first();
+
         $products = Product::latest()->paginate(9);
-        
-        return view('admin.products.index', compact('products'));
+
+        return view('admin.products.index', compact('products', 'role'));
     }
 
     public function create()

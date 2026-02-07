@@ -42,11 +42,34 @@
                         <div class="flex text-yellow-500 text-sm">
                             ★★★★☆
                         </div>
-                        <span class="text-sm text-gray-500">4.5 (149)</span>
                     </div>
-                    <div class="flex items-center justify-between pt-2">
-                        <div>
-                            <span class="font-semibold text-gray-900">{{ $product->price }} MAD</span>
+                    <div class="space-y-2">
+                        <a href="#"
+                            class="text-sm text-gray-500 hover:text-green-600">{{ $product->category->name ?? 'Category' }}</a>
+                        <h3 class="font-medium truncate">
+                            <a href="#" class="hover:text-green-600">{{ $product->name }}</a>
+                        </h3>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex text-yellow-500 text-sm">
+                                ★★★★☆
+                            </div>
+                            <span class="text-sm text-gray-500">4.5 (149)</span>
+                        </div>
+                        <div class="flex items-center justify-between pt-2">
+                            <div>
+                                <span class="font-semibold text-gray-900">{{ $product->price }} MAD</span>
+                            </div>
+                            <form action="{{ route('client.cart.add', $product) }} " method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="px-3 py-1.5 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    Add
+                                </button>
+                            </form>
                         </div>
                         <button onclick="quickAddToCart({{$product->id}})" class="px-3 py-1.5 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition flex items-center quick-add-btn-{{$product->id}}">
                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -56,7 +79,6 @@
                         </button>
                     </div>
                 </div>
-            </div>
             @endforeach
         </div>
     </div>
@@ -67,11 +89,16 @@
     <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onclick="closeQuickViewModal()"></div>
     <div class="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <!-- Loading Spinner -->
-        <div id="modalLoading" class="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-20 hidden">
+        <div id="modalLoading"
+            class="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-20 hidden">
             <div class="flex flex-col items-center">
-                <svg class="animate-spin h-12 w-12 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg class="animate-spin h-12 w-12 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                        stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
                 </svg>
                 <p class="mt-4 text-gray-600">Loading product...</p>
             </div>
@@ -79,8 +106,11 @@
 
         <div class="p-6">
             <!-- Close Button -->
-            <button type="button" onclick="closeQuickViewModal()" class="absolute top-4 right-4 text-gray-700 hover:text-gray-900 transition-colors z-10">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <button type="button" onclick="closeQuickViewModal()"
+                class="absolute top-4 right-4 text-gray-700 hover:text-gray-900 transition-colors z-10">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                    stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M18 6l-12 12" />
                     <path d="M6 6l12 12" />
@@ -100,7 +130,8 @@
                 <div class="space-y-4">
                     <!-- Category -->
                     <div>
-                        <a href="#" id="productCategory" class="text-sm text-gray-500 hover:text-green-600">Loading...</a>
+                        <a href="#" id="productCategory"
+                            class="text-sm text-gray-500 hover:text-green-600">Loading...</a>
                     </div>
 
                     <!-- Product Name -->
@@ -172,7 +203,8 @@
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Category:</span>
-                            <a href="#" id="productCategoryLink" class="text-green-600 hover:text-green-700">-</a>
+                            <a href="#" id="productCategoryLink"
+                                class="text-green-600 hover:text-green-700">-</a>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Brand:</span>

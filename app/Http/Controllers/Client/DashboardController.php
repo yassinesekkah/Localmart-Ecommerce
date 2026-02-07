@@ -20,7 +20,6 @@ class DashboardController extends Controller
 
     function CategorieProducts($id)
     {
-
         $categories = Category::all();
 
         $products = Product::where('category_id', $id)->get();
