@@ -52,6 +52,11 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::get('/checkout/info', [CheckoutController::class, 'info'])->name('checkout.info');
     ///store dyal form info 
     Route::post('/checkout/info', [CheckoutController::class, 'store'])->name('checkout.storeInfo');
+    ///checkout confirm page
+    Route::get('/checkout/confirm', [CheckoutController::class, 'confirm'])->name('checkout.confirm');
+    ////place order post
+    Route::post('/checkout/confirm', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
+
 
     // Products by category
 });
