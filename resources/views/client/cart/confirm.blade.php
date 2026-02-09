@@ -49,7 +49,8 @@
             {{-- Confirm Order --}}
             <form action="{{ route('client.checkout.placeOrder') }}" method="POST">
                 @csrf
-                <button type="submit" class="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800">
+                <button type="submit" class="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800"
+                    onclick="this.disabled=true; this.form.submit();">
                     Confirm Order
                 </button>
             </form>
