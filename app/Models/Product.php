@@ -32,7 +32,7 @@ class Product extends Model
 
     public function isLikeBy($user) {
         return $this->likes()->where('user_id', $user->id )->exists();
-
+    }
     public function reviews() { 
         return $this->hasMany(Reviews::class);
     }
