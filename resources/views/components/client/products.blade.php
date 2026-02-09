@@ -40,21 +40,41 @@
                         <div class="flex text-yellow-500 text-sm">
                             ★★★★☆
                         </div>
-                        <span class="text-sm text-gray-500">4.5 (149)</span>
                     </div>
-                    <div class="flex items-center justify-between pt-2">
-                        <div>
-                            <span class="font-semibold text-gray-900">{{ $product->price }} MAD</span>
+                    <div class="space-y-2">
+                        <a href="#"
+                            class="text-sm text-gray-500 hover:text-green-600">{{ $product->category->name ?? 'Category' }}</a>
+                        <h3 class="font-medium truncate">
+                            <a href="#" class="hover:text-green-600">{{ $product->name }}</a>
+                        </h3>
+                        <div class="flex items-center space-x-2">
+                            <div class="flex text-yellow-500 text-sm">
+                                ★★★★☆
+                            </div>
+                            <span class="text-sm text-gray-500">4.5 (149)</span>
                         </div>
-                        <button class="px-3 py-1.5 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 transition flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
-                            </svg>
-                            Add
-                        </button>
+                        <div class="flex items-center justify-between pt-2">
+                            <div>
+                                <span class="font-semibold text-gray-900">{{ $product->price }} MAD</span>
+                            </div>
+                            {{--lbutton dyal add rah katzid l product fel panier bghiti tbadel design mat7ayedch route--}}
+                            <form action="{{ route('client.cart.add', $product->id) }}" method="POST" class="inline">
+                                @csrf
+
+                                <button type="submit"
+                                    class="px-3 py-1.5 bg-green-600 text-white text-sm rounded-lg
+                                     hover:bg-green-700 transition flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    Add
+                                </button>
+                            </form>
+
+                        </div>
                     </div>
                 </div>
-            </div>
             @endforeach
         </div>
     </div>
@@ -65,11 +85,16 @@
     <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onclick="closeQuickViewModal()"></div>
     <div class="relative bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <!-- Loading Spinner -->
-        <div id="modalLoading" class="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-20 hidden">
+        <div id="modalLoading"
+            class="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-20 hidden">
             <div class="flex flex-col items-center">
-                <svg class="animate-spin h-12 w-12 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg class="animate-spin h-12 w-12 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                        stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
                 </svg>
                 <p class="mt-4 text-gray-600">Loading product...</p>
             </div>
@@ -77,28 +102,34 @@
 
         <div class="p-6">
             <!-- Close Button -->
-            <button type="button" onclick="closeQuickViewModal()" class="absolute top-4 right-4 text-gray-700 hover:text-gray-900 transition-colors z-10">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <button type="button" onclick="closeQuickViewModal()"
+                class="absolute top-4 right-4 text-gray-700 hover:text-gray-900 transition-colors z-10">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                    stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M18 6l-12 12" />
                     <path d="M6 6l12 12" />
                 </svg>
             </button>
 
-            <!-- Product Content (Will be populated dynamically) -->
+            <!-- Product Content -->
             <div id="result_Product" class="grid md:grid-cols-2 gap-6">
-                <!-- Default Content (shown before AJAX loads) -->
+                <!-- Left Column - Image -->
                 <div class="space-y-4">
-                    <div class="bg-gray-100 rounded-lg overflow-hidden"> hjbjkbbjkbkbkbk
-                        <img id="productMainImage" src="{{ $product->image ? asset('storage/' . $product->image) : url('https://commons.wikimedia.org/wiki/File:ZenFone_6_Mockup.svg') }}" alt="Product image" class="w-full h-96 object-cover" />
+                    <div class="bg-gray-100 rounded-lg overflow-hidden">
+                        <img id="productMainImage"
+                            src="https://via.placeholder.com/400x400/e5e7eb/1f2937?text=Loading..." alt="Product"
+                            class="w-full h-96 object-cover" />
                     </div>
-                    
                 </div>
 
+                <!-- Right Column - Details -->
                 <div class="space-y-4">
                     <!-- Category -->
                     <div>
-                        <a href="#" id="productCategory" class="text-sm text-gray-500 hover:text-green-600">Loading...</a>
+                        <a href="#" id="productCategory"
+                            class="text-sm text-gray-500 hover:text-green-600">Loading...</a>
                     </div>
 
                     <!-- Product Name -->
@@ -106,31 +137,17 @@
 
                     <!-- Rating -->
                     <div class="flex items-center gap-2">
-                        <div class="flex text-yellow-500" id="productRating">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-300" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" />
-                            </svg>
-                        </div>
-                        <span class="text-gray-500 text-sm">4.5 <span class="text-gray-400">(149 reviews)</span></span>
+                        <div class="flex text-yellow-500">★★★★☆</div>
+                        <span class="text-gray-500 text-sm">4.5 <span class="text-gray-400">(149
+                                reviews)</span></span>
                     </div>
 
                     <!-- Price -->
                     <div class="flex items-baseline gap-2">
-                        <span id="productPrice" class="text-3xl font-bold text-gray-800">$0.00</span>
-                        <span id="productOldPrice" class="text-lg line-through text-gray-400"></span>
-                        <span id="productDiscount" class="bg-red-100 text-red-600 px-2 py-1 rounded text-sm font-semibold hidden"></span>
+                        <span id="productPrice" class="text-3xl font-bold text-gray-800">0 MAD</span>
+                        <span id="productOldPrice" class="text-lg line-through text-gray-400 hidden"></span>
+                        <span id="productDiscount"
+                            class="bg-red-100 text-red-600 px-2 py-1 rounded text-sm font-semibold hidden"></span>
                     </div>
 
                     <!-- Stock Status -->
@@ -142,22 +159,29 @@
                     <!-- Description -->
                     <div class="border-t pt-4">
                         <h3 class="text-sm font-semibold text-gray-800 mb-2">Description</h3>
-                        <p id="productDescription" class="text-gray-600 text-sm">
-                            Loading product description...
-                        </p>
+                        <p id="productDescription" class="text-gray-600 text-sm">Loading...</p>
                     </div>
 
-                    <!-- Quantity & Add to Cart -->
-                    <div class="border-t pt-4 flex items-center gap-4">
-                        <div class="flex items-center">
-                            <span class="text-sm font-medium text-gray-700 mr-3">Quantity:</span>
-                            <div class="border border-gray-300 rounded-lg flex items-center">
-                                <button onclick="decrementQuantity(this)" class="w-10 h-10 text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors">-</button>
-                                <input type="number" value="1" min="1" max="10" class="w-16 text-center border-0 focus:ring-0" readonly />
-                                <button onclick="incrementQuantity(this)" class="w-10 h-10 text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors">+</button>
+                    <!-- Order Form -->
+                    <form id="orderForm" class="border-t pt-4 space-y-4">
+                        @csrf
+                        <input type="hidden" id="modal_product_id" name="product_id">
+
+                        <!-- Quantity -->
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center">
+                                <span class="text-sm font-medium text-gray-700 mr-3">Quantity:</span>
+                                <div class="border border-gray-300 rounded-lg flex items-center">
+                                    <button type="button" onclick="decrementQuantity(this)"
+                                        class="w-10 h-10 text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors">-</button>
+                                    <input type="number" name="quantity" id="orderQuantity" value="1"
+                                        min="1" max="10" class="w-16 text-center border-0 focus:ring-0"
+                                        readonly />
+                                    <button type="button" onclick="incrementQuantity(this)"
+                                        class="w-10 h-10 text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-colors">+</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
                     <!-- Action Buttons -->
                     <div class="flex gap-3">
@@ -178,7 +202,8 @@
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Category:</span>
-                            <a href="#" id="productCategoryLink" class="text-green-600 hover:text-green-700">-</a>
+                            <a href="#" id="productCategoryLink"
+                                class="text-green-600 hover:text-green-700">-</a>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Brand:</span>
@@ -187,357 +212,428 @@
                     </div>
                 </div>
             </div>
-            <div id="reviews" class="tab-content">
-                <!-- Rating Summary -->
-                <div class="bg-gray-50 rounded-lg p-6 mb-8">
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="text-center">
-                            <div class="text-6xl font-bold text-gray-900 mb-2">4.5</div>
-                            <div class="flex justify-center text-yellow-500 text-2xl mb-2">
-                                ★★★★☆
-                            </div>
-                            <p class="text-gray-600">Based on 149 reviews</p>
-                        </div>
 
-                        <div class="space-y-3">
-                            <!-- 5 stars -->
-                            <div class="flex items-center">
-                                <span class="text-sm text-gray-600 w-12">5 ★</span>
-                                <div class="flex-1 mx-4 bg-gray-200 rounded-full h-2">
-                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 70%"></div>
+            <!-- Reviews Section -->
+            <div id="reviews" class="border-t mt-6 pt-6">
+                <h3 class="text-xl font-bold mb-6">Clients Reviews</h3>
+
+                <!-- Add Review Form -->
+                @auth
+                    <div class="mb-8">
+                        <form id="reviewForm" class="space-y-4">
+                            @csrf
+                            <input type="hidden" id="product_id" name="product_id">
+
+                            <label class="flex items-center justify-start">
+                                <div
+                                    class="w-10 h-10 bg-green-400 text-white rounded-full flex items-center justify-center mr-4 font-semibold">
+                                    {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                                 </div>
-                                <span class="text-sm text-gray-600 w-12 text-right">104</span>
+                                <h4 class="font-semibold text-gray-900">{{ auth()->user()->name }}</h4>
+                            </label>
+
+                            <input type="text" name="comment" id="review_input" placeholder="Write your review..."
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-green-700 transition"
+                                required />
+
+                            <div class="flex justify-end">
+                                <button type="submit" class="text-gray-400 hover:text-green-600">
+                                    <svg class="w-8 h-8 text-green-400" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                                    </svg>
+                                </button>
                             </div>
-                            <!-- 4 stars -->
-                            <div class="flex items-center">
-                                <span class="text-sm text-gray-600 w-12">4 ★</span>
-                                <div class="flex-1 mx-4 bg-gray-200 rounded-full h-2">
-                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 20%"></div>
-                                </div>
-                                <span class="text-sm text-gray-600 w-12 text-right">30</span>
-                            </div>
-                            <!-- 3 stars -->
-                            <div class="flex items-center">
-                                <span class="text-sm text-gray-600 w-12">3 ★</span>
-                                <div class="flex-1 mx-4 bg-gray-200 rounded-full h-2">
-                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 7%"></div>
-                                </div>
-                                <span class="text-sm text-gray-600 w-12 text-right">10</span>
-                            </div>
-                            <!-- 2 stars -->
-                            <div class="flex items-center">
-                                <span class="text-sm text-gray-600 w-12">2 ★</span>
-                                <div class="flex-1 mx-4 bg-gray-200 rounded-full h-2">
-                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 2%"></div>
-                                </div>
-                                <span class="text-sm text-gray-600 w-12 text-right">3</span>
-                            </div>
-                            <!-- 1 star -->
-                            <div class="flex items-center">
-                                <span class="text-sm text-gray-600 w-12">1 ★</span>
-                                <div class="flex-1 mx-4 bg-gray-200 rounded-full h-2">
-                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 1%"></div>
-                                </div>
-                                <span class="text-sm text-gray-600 w-12 text-right">2</span>
-                            </div>
-                        </div>
+                        </form>
                     </div>
-                </div>
+                @endauth
 
-                <!-- Write Review Button -->
-                <div class="mb-8">
-                    <label for="review" class="block mb-2 text-sm font-medium text-gray-700">
-                        Review
-                    </label>
-
-                    <textarea
-                        name="review"
-                        id="review"
-                        rows="4"
-                        placeholder="Write your review..."
-                        class="
-                            w-full 
-                            px-4 py-3
-                            bg-gray-50
-                            border border-gray-300 
-                            rounded-xl 
-                            shadow-sm
-                            resize-none
-                            focus:outline-none 
-                            focus:ring-2 
-                            focus:ring-green-600 
-                            focus:border-green-700
-                            transition
-                        "></textarea>
-                    <button class="px-4 py-2 mt-1 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
-                        Ajouter Review
-                    </button>
-                </div>
-
-                <!-- Customer Reviews -->
-                <div class="space-y-6">
-                    <h3 class="text-xl font-bold mb-6">Clients Reviews</h3>
-
-                    <!-- Review 1 -->
-                    <div class="border-b border-gray-200 pb-6">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="flex items-center">
-                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-semibold mr-4">
-                                    JD
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-gray-900">John Doe</h4>
-                                    <div class="flex items-center mt-1">
-                                        <div class="flex text-yellow-500 text-sm mr-2">★★★★★</div>
-                                        <span class="text-sm text-gray-500">2 days ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="text-gray-400 hover:text-green-600">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <h5 class="font-semibold text-gray-900 mb-2">Excellent Product!</h5>
-                        <p class="text-gray-600 mb-4">
-                            This is one of the best snacks I've ever had. The taste is authentic and the quality is top-notch.
-                            Highly recommended for everyone who loves traditional Indian snacks. The packaging was also very good.
-                        </p>
-
-                        <div class="flex items-center space-x-6 text-sm">
-                            <button class="flex items-center text-gray-500 hover:text-green-600 transition">
-                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                                </svg>
-                                <span>Helpful (24)</span>
-                            </button>
-                            <button class="text-gray-500 hover:text-gray-700 transition">Reply</button>
-                        </div>
-                    </div>
-
-                    
-                    <!-- Load More -->
-                    <!-- <div class="text-center pt-4">
-                        <button class="px-6 py-2 border-2 border-green-600 text-green-600 font-semibold rounded-lg hover:bg-green-50 transition">
-                            Load More Reviews
-                        </button>
-                    </div> -->
+                <!-- Reviews List -->
+                <div id="reviewsList" class="space-y-6">
+                    <p class="text-gray-500 text-center py-4">Loading reviews...</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
 
 @push('scripts')
-<script>
-    function openQuickViewModal(productId) {
+    <script>
+        // Global variable to store current product ID
+        let currentProductId = null;
 
-        // if (e.target.closest('.quick-view-btn')) {
-        const modal = document.getElementById('quickViewModal');
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        document.body.style.overflow = 'hidden';
-        const loading = document.getElementById('modalLoading');
+        function openQuickViewModal(productId) {
+            currentProductId = productId;
+            const modal = document.getElementById('quickViewModal');
+            const loading = document.getElementById('modalLoading');
 
-        // Open modal
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        document.body.style.overflow = 'hidden';
+            // Open modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
 
-        // Show loading spinner
-        loading.classList.remove('hidden');
+            // Show loading spinner
+            loading.classList.remove('hidden');
 
-        // Fetch product data
-        fetch(`/client/product/${encodeURIComponent(productId)}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(async response => {
-                const data = await response.json();
+            // Fetch product data with comments
+            fetch(`/client/product/infos/${encodeURIComponent(productId)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(async response => {
+                    const data = await response.json();
+                    if (!response.ok) {
+                        throw data;
+                    }
+                    return data;
+                })
+                .then(product => {
+                    loading.classList.add('hidden');
 
-                if (!response.ok) {
-                    throw data;
-                }
+                    if (!product) {
+                        document.getElementById('result_Product').innerHTML =
+                            '<div class="col-span-2 p-8 text-center text-gray-500">Product not found</div>';
+                        return;
+                    }
 
-                return data;
-            })
-            .then(product => {
-                loading.classList.add('hidden');
+                    const productData = Array.isArray(product) ? product[0] : product;
 
-                if (!product) {
-                    document.getElementById('result_Product').innerHTML = '<div class="col-span-2 p-8 text-center text-gray-500">Product not found</div>';
-                    return;
-                }
 
-                // If product is an array, get first item
-                const productData = Array.isArray(product) ? product[0] : product;
+                    // Set product IDs for both forms
+                    document.getElementById('product_id').value = productData.id;
+                    document.getElementById('modal_product_id').value = productData.id;
 
-                console.log('Product Data:', productData); // Debug log
+                    // Update product details
+                    document.getElementById('productName').textContent = productData.name || 'Product Name';
+                    document.getElementById('productCategory').textContent = productData.category?.name ||
+                        'Uncategorized';
+                    document.getElementById('productCategoryLink').textContent = productData.category?.name ||
+                        'Uncategorized';
+                    document.getElementById('productPrice').textContent = `${productData.price || '0'} MAD`;
+                    document.getElementById('productDescription').textContent = productData.description ||
+                        'No description available.';
+                    document.getElementById('productSKU').textContent = productData.sku || `PRD-${productData.id}`;
+                    document.getElementById('productBrand').textContent = productData.brand || 'Generic';
 
-                // Update modal content with product data
-                document.getElementById('productName').textContent = productData.name || 'Product Name';
-                document.getElementById('productCategory').textContent = productData.category?.name || 'Uncategorized';
-                document.getElementById('productCategoryLink').textContent = productData.category?.name || 'Uncategorized';
-                document.getElementById('productPrice').textContent = `${productData.price || '0'} MAD`;
-                document.getElementById('productDescription').textContent = productData.description || 'No description available for this product.';
-                document.getElementById('productSKU').textContent = productData.sku || `PRD-${productData.id}`;
-                document.getElementById('productBrand').textContent = productData.brand || 'Generic';
+                    // Update image
+                    const imageUrl = productData.image ?
+                        `/storage/${productData.image}` :
+                        'https://via.placeholder.com/400x400/e5e7eb/1f2937?text=No+Image';
+                    document.getElementById('productMainImage').src = imageUrl;
+                    document.getElementById('productMainImage').alt = productData.name || 'Product';
 
-                // Update product images
-                const imageUrl = productData.image ?
-                    `/storage/${productData.image}` :
-                    'https://via.placeholder.com/400x400/e5e7eb/1f2937?text=No+Image';
+                    // Update old price if exists
+                    const oldPriceElement = document.getElementById('productOldPrice');
+                    const discountElement = document.getElementById('productDiscount');
 
-                document.getElementById('productMainImage').src = imageUrl;
-                document.getElementById('productMainImage').alt = productData.name || 'Product';
+                    if (productData.old_price && parseFloat(productData.old_price) > parseFloat(productData.price)) {
+                        oldPriceElement.textContent = `${productData.old_price} MAD`;
+                        oldPriceElement.classList.remove('hidden');
 
-                // Update thumbnail
-                // const thumbnailContainer = document.getElementById('productThumbnails');
-                // thumbnailContainer.innerHTML = `
-                //         <img src="${imageUrl}" 
-                //             alt="image not exist" 
-                //             class="w-full h-20 object-cover rounded cursor-pointer border-2 border-green-600" 
-                //             onclick="document.getElementById('productMainImage').src = this.src" />
-                //     `;
+                        const discount = Math.round(((parseFloat(productData.old_price) - parseFloat(productData
+                            .price)) / parseFloat(productData.old_price)) * 100);
+                        discountElement.textContent = `${discount}% Off`;
+                        discountElement.classList.remove('hidden');
+                    } else {
+                        oldPriceElement.classList.add('hidden');
+                        discountElement.classList.add('hidden');
+                    }
 
-                // Update old price if exists
-                const oldPriceElement = document.getElementById('productOldPrice');
-                const discountElement = document.getElementById('productDiscount');
+                    // Display Comments/Reviews
+                    displayReviews(productData.reviews || []);
 
-                if (productData.old_price && parseFloat(productData.old_price) > parseFloat(productData.price)) {
-                    oldPriceElement.textContent = `${productData.old_price} MAD`;
-                    oldPriceElement.classList.remove('hidden');
+                    // Fade-in animation
+                    const resultDiv = document.getElementById('result_Product');
+                    resultDiv.classList.add('opacity-0');
+                    setTimeout(() => {
+                        resultDiv.classList.remove('opacity-0');
+                        resultDiv.classList.add('opacity-100', 'transition-opacity', 'duration-500');
+                    }, 50);
+                })
+                .catch(error => {
+                    console.error('Error fetching product:', error);
+                    loading.classList.add('hidden');
+                    document.getElementById('result_Product').innerHTML = `
+                <div class="col-span-2 p-8 text-center">
+                    <div class="text-red-500 mb-2">Error loading product</div>
+                    <div class="text-gray-500 text-sm">Please try again later</div>
+                </div>
+            `;
+                });
+        }
 
-                    // Calculate discount percentage
-                    const discount = Math.round(((parseFloat(productData.old_price) - parseFloat(productData.price)) / parseFloat(productData.old_price)) * 100);
-                    discountElement.textContent = `${discount}% Off`;
-                    discountElement.classList.remove('hidden');
-                } else {
-                    oldPriceElement.classList.add('hidden');
-                    discountElement.classList.add('hidden');
-                }
+        // Quick Add to Cart (from product grid)
+        // function quickAddToCart(productId) {
+        //     const formData = new FormData();
+        //     formData.append('quantity', 1);
 
-                // Add fade-in animation
-                const resultDiv = document.getElementById('result_Product');
-                resultDiv.classList.add('opacity-0');
-                setTimeout(() => {
-                    resultDiv.classList.remove('opacity-0');
-                    resultDiv.classList.add('opacity-100', 'transition-opacity', 'duration-500');
-                }, 50);
-            })
-            .catch(error => {
-                console.error('Error fetching product:', error);
-                loading.classList.add('hidden');
-                document.getElementById('result_Product').innerHTML = `
-                        <div class="col-span-2 p-8 text-center">
-                            <div class="text-red-500 mb-2">Error loading product</div>
-                            <div class="text-gray-500 text-sm">Please try again later</div>
+        //     // Find the button using class selector
+        //     const button = document.querySelector(`.quick-add-btn-${productId}`);
+        //     const originalContent = button.innerHTML;
+
+        //     // Disable button and show loading
+        //     button.disabled = true;
+        //     button.innerHTML = '<svg class="animate-spin h-4 w-4 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+
+        //     fetch(`/client/create-order/${encodeURIComponent(productId)}`, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+        //                 'Accept': 'application/json'
+        //             },
+        //             body: formData
+        //         })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             if (data.status === 'success') {
+        //                 console.log('Product added to cart:', data.data);
+
+        //                 // Show success feedback
+        //                 button.innerHTML = '<svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>';
+        //                 button.classList.remove('bg-green-600', 'hover:bg-green-700');
+        //                 button.classList.add('bg-green-700');
+
+        //                 // Show alert
+        //                 alert('Product added to cart successfully!');
+
+        //                 // Reset button after 2 seconds
+        //                 setTimeout(() => {
+        //                     button.disabled = false;
+        //                     button.innerHTML = originalContent;
+        //                     button.classList.remove('bg-green-700');
+        //                     button.classList.add('bg-green-600', 'hover:bg-green-700');
+        //                 }, 2000);
+        //             } else {
+        //                 throw new Error(data.message || 'Failed to add product to cart');
+        //             }
+        //         })
+        //         .catch(error => {
+        //             console.error('Error adding product to cart:', error);
+        //             alert('Error adding product to cart. Please try again.');
+
+        //             // Reset button
+        //             button.disabled = false;
+        //             button.innerHTML = originalContent;
+        //         });
+        // }
+
+        function displayReviews(reviews) {
+            const reviewsList = document.getElementById('reviewsList');
+
+            if (!reviews || reviews.length === 0) {
+                reviewsList.innerHTML =
+                    '<p class="text-gray-500 text-center py-4">No reviews yet. Be the first to review this product!</p>';
+                return;
+            }
+
+            reviewsList.innerHTML = reviews.map(comment => {
+                const initials = comment.user?.name ? comment.user.name.split(' ').map(n => n[0]).join('')
+                    .toUpperCase().substring(0, 2) : 'UN';
+                const userName = comment.user?.name || 'Anonymous';
+                const timeAgo = getTimeAgo(comment.created_at);
+
+                return `
+            <div class="border-b border-gray-200 pb-6">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-semibold mr-4">
+                            ${initials}
                         </div>
-                    `;
-            });
-    }
+                        <div>
+                            <h4 class="font-semibold text-gray-900">${userName}</h4>
+                            <div class="flex items-center mt-1">
+                                <div class="flex text-yellow-500 text-sm mr-2">★★★★★</div>
+                                <span class="text-sm text-gray-500">${timeAgo}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4">${comment.comment}</p>
+            </div>
+        `;
+            }).join('');
+        }
 
-    function closeQuickViewModal() {
-        const modal = document.getElementById('quickViewModal');
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        document.body.style.overflow = '';
-    }
+        function getTimeAgo(date) {
+            const now = new Date();
+            const createdAt = new Date(date);
+            const diffInMs = now - createdAt;
+            const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 
-    // Existing functions (keep your original ones)
-    function openOffcanvas() {
-        const offcanvas = document.getElementById('offcanvasRight');
-        const backdrop = document.getElementById('offcanvasBackdrop');
+            if (diffInDays === 0) return 'Today';
+            if (diffInDays === 1) return '1 day ago';
+            if (diffInDays < 7) return `${diffInDays} days ago`;
+            if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`;
+            if (diffInDays < 365) return `${Math.floor(diffInDays / 30)} months ago`;
+            return `${Math.floor(diffInDays / 365)} years ago`;
+        }
 
-        backdrop.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+        // DOM Ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Order Form Submit (Add to Cart in Modal)
+            const orderForm = document.getElementById('orderForm');
+            if (orderForm) {
+                orderForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
 
-        setTimeout(() => {
-            offcanvas.classList.remove('translate-x-full');
-            backdrop.classList.add('opacity-100');
-        }, 10);
+                    const productId = document.getElementById('modal_product_id').value;
+                    const formData = new FormData(this);
+                    const button = document.getElementById('addToCartBtn');
+                    const originalContent = button.innerHTML;
 
-    }
+                    // Disable button and show loading
+                    button.disabled = true;
+                    button.innerHTML = `
+                <svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            `;
 
-    function closeOffcanvas() {
-        const offcanvas = document.getElementById('offcanvasRight');
-        const backdrop = document.getElementById('offcanvasBackdrop');
+                    fetch(`/client/create-order/${encodeURIComponent(productId)}`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                                'Accept': 'application/json'
+                            },
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                console.log('Product added to cart:', data.data);
 
-        offcanvas.classList.add('translate-x-full');
-        backdrop.classList.remove('opacity-100');
+                                // Show success state
+                                button.innerHTML = `
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span>Added to Cart!</span>
+                        `;
+                                button.classList.remove('bg-green-600', 'hover:bg-green-700');
+                                button.classList.add('bg-green-700');
 
-        setTimeout(() => {
-            backdrop.classList.add('hidden');
+                                // Show success message
+                                alert('Product added to cart successfully!');
+
+                                // Reset after 2 seconds
+                                setTimeout(() => {
+                                    button.disabled = false;
+                                    button.innerHTML = originalContent;
+                                    button.classList.remove('bg-green-700');
+                                    button.classList.add('bg-green-600', 'hover:bg-green-700');
+                                }, 2000);
+                            } else {
+                                throw new Error(data.message || 'Failed to add product');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error adding product:', error);
+                            alert('Error adding product to cart. Please try again.');
+
+                            // Reset button
+                            button.disabled = false;
+                            button.innerHTML = originalContent;
+                        });
+                });
+            }
+
+            // Review Form Submit - UPDATED TO USE YOUR API ENDPOINT
+            const reviewForm = document.getElementById('reviewForm');
+            if (reviewForm) {
+                reviewForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const productId = document.getElementById('product_id').value;
+                    const comment = document.getElementById('review_input').value;
+                    const submitButton = this.querySelector('button[type="submit"]');
+                    const originalButtonContent = submitButton.innerHTML;
+
+                    // Disable button and show loading
+                    submitButton.disabled = true;
+                    submitButton.innerHTML = `
+                <svg class="animate-spin h-8 w-8 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            `;
+
+                    // Create FormData
+                    const formData = new FormData();
+                    formData.append('comment', comment);
+
+                    // Send review to your specific API endpoint
+                    fetch(`/client/product/create-Review/${encodeURIComponent(productId)}`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                                'Accept': 'application/json'
+                            },
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+
+                                // Clear input
+                                document.getElementById('review_input').value = '';
+
+                                // Update reviews list with the new data from server
+                                displayReviews(data.data);
+
+                                // Show success message
+                                alert('Review submitted successfully!');
+
+                                // Reset button
+                                submitButton.disabled = false;
+                                submitButton.innerHTML = originalButtonContent;
+                            } else {
+                                throw new Error(data.message || 'Failed to submit review');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error submitting review:', error);
+                            alert(error.message || 'Error submitting review. Please try again.');
+
+                            // Reset button
+                            submitButton.disabled = false;
+                            submitButton.innerHTML = originalButtonContent;
+                        });
+                });
+            }
+        });
+
+        function closeQuickViewModal() {
+            const modal = document.getElementById('quickViewModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
             document.body.style.overflow = '';
-        }, 300);
-    }
-
-    function closeQuickViewModal() {
-        const modal = document.getElementById('quickViewModal');
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        document.body.style.overflow = '';
-    }
-
-    function incrementQuantity(button) {
-        const input = button.previousElementSibling;
-        let value = parseInt(input.value);
-        if (value < parseInt(input.max)) {
-            input.value = value + 1;
+            currentProductId = null;
         }
-    }
 
-    function decrementQuantity(button) {
-        const input = button.nextElementSibling;
-        let value = parseInt(input.value);
-        if (value > parseInt(input.min)) {
-            input.value = value - 1;
+        function incrementQuantity(button) {
+            const input = button.previousElementSibling;
+            let value = parseInt(input.value);
+            if (value < parseInt(input.max)) {
+                input.value = value + 1;
+            }
         }
-    }
 
-    // Close modal on escape key
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            closeQuickViewModal();
+        function decrementQuantity(button) {
+            const input = button.nextElementSibling;
+            let value = parseInt(input.value);
+            if (value > parseInt(input.min)) {
+                input.value = value - 1;
+            }
         }
-    });
 
-
-    function closeQuickViewModal() {
-        const modal = document.getElementById('quickViewModal');
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        document.body.style.overflow = '';
-    }
-
-    function incrementQuantity(button) {
-        const input = button.previousElementSibling;
-        let value = parseInt(input.value);
-        if (value < parseInt(input.max)) {
-            input.value = value + 1;
-        }
-    }
-
-    function decrementQuantity(button) {
-        const input = button.nextElementSibling;
-        let value = parseInt(input.value);
-        if (value > parseInt(input.min)) {
-            input.value = value - 1;
-        }
-    }
-
-    // Close modal on escape key
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            closeQuickViewModal();
-        }
-    });
-</script>
-
+        // Close modal on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeQuickViewModal();
+            }
+        });
+    </script>
 @endpush

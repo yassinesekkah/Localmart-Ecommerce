@@ -8,34 +8,42 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-black-400">
+<body class="bg-gray-100">
 
-    <div x-data="{ open: false}" class="flex min-h-screen">
+    <div x-data="{ open: false }" class="flex min-h-screen">
 
-        {{-- Sidebar --}}
-        <div  :class="open ? 'translate-x-0' : '-translate-x-full'"
-        class="
-            fixed inset-y-0  z-40
-            w-64 bg-gray-800 text-white p-4
-            transform transition-transform duration-300
-            lg:static lg:translate-x-0 lg:z-auto
-        "
-        > <x-admin.sidebar/></div>
-       
+        <!-- Overlay on mobile -->
+        <div x-show="open" @click="open = false" x-transition.opacity class="fixed inset-0 bg-black/50 z-30 lg:hidden">
+        </div>
 
-        {{-- Main --}}
-        <div class="flex-1 flex flex-col">
+        <!-- Sidebar wrapper -->
+        <div :class="open ? 'translate-x-0' : '-translate-x-full'"
+            class="
+        fixed top-0 left-0 z-40
+        w-64 h-screen
+        bg-white
+        transform transition-transform duration-300
+        lg:translate-x-0
+    ">
+            <x-admin.sidebar />
+        </div>
 
-            {{-- Navbar --}}
-            <x-admin.navbar/>
+        <!-- Main -->
+        <div class="flex-1 flex flex-col lg:ml-64">
 
-            {{-- Page Content --}}
-            <main class="sm:pl-auto pt-3">
+            <!-- Navbar -->
+            <x-admin.navbar />
+
+            <!-- Page Content -->
+            <main class="p-4">
                 @yield('content')
             </main>
 
         </div>
+
     </div>
+
 </body>
+
 
 </html>
