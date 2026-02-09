@@ -20,7 +20,6 @@ class DashboardController extends Controller
 
     function CategorieProducts($id)
     {
-
         $categories = Category::all();
 
         $products = Product::where('category_id', $id)->get();
@@ -30,7 +29,7 @@ class DashboardController extends Controller
 
     function productDetails($id)
     {
-        $product = Product::with('category')->find($id);
+        $product = Product::with(['category', 'reviews.user'])->find($id);
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
