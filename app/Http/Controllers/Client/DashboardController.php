@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Core\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
@@ -35,5 +36,10 @@ class DashboardController extends Controller
         }
 
         return response()->json($product, 200);
+    }
+    function profile(){
+
+        $user = Auth()->user();
+        return view('dashboard', compact('user'));
     }
 }

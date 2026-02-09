@@ -40,9 +40,11 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::get('/product/{id}', [DashboardController::class, 'CategorieProducts'])->name('categorieProducts');
     Route::get('/product/infos/{id}', [DashboardController::class, 'productDetails']);
     Route::post('/product/create-Review/{id}', [ReviewsController::class, 'createReview']);
+    // Add to panier
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     /// affichage dyal cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
