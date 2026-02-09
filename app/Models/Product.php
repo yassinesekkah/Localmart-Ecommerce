@@ -26,6 +26,12 @@ class Product extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function likes() {
+        return $this->hasMany(Like::class);
+    }
+
+    public function isLikeBy($user) {
+        return $this->likes()->where('user_id', $user->id )->exists();
 
     public function reviews() { 
         return $this->hasMany(Reviews::class);
