@@ -2,7 +2,7 @@
 <!-- Popular Products Start-->
 
 <!-- Popular Products -->
-<section class="my-14">
+<section id="products" class="my-14">
     <div class="container mx-auto px-4">
         <h2 class="text-2xl font-bold mb-6">Products</h2>
 
