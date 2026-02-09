@@ -2,7 +2,7 @@
 
 @php
     $cart = session('cart', []);
-    $cartCount = collect($cart)->sum('quantity');
+    $cartCount = collect($cart)->count('cart');
 @endphp
 <!-- Header/Navbar -->
 <header class="bg-white shadow-sm sticky top-0 z-50">
@@ -60,7 +60,7 @@
 
                         <div id="dropdownMenu"
                             class="hidden absolute right-0 mt-2 w-44 bg-white border rounded shadow-lg opacity-0 transform scale-95 transition-all duration-200">
-                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 hover:bg-gray-100">
+                            <a href="{{ route('client.profile') }}" class="block px-4 py-2 hover:bg-gray-100">
                                 Profile
                             </a>
 
