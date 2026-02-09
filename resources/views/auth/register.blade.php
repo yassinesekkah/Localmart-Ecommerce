@@ -13,7 +13,7 @@
             <div>
                 <x-input-label for="name" :value="__('Name')" class="text-[#235338]" />
                 <x-text-input id="name"
-                              class="block mt-1 w-full h-12 border-2 border-[#235338] rounded text-[#91c19d] placeholder-[#235338]"
+                              class="block mt-1 w-full h-12 border-2 border-[#235338] rounded  placeholder-[#235338]"
                               type="text"
                               name="name"
                               :value="old('name')"
@@ -25,7 +25,7 @@
             <div>
                 <x-input-label for="email" :value="__('Email')" class="text-[#235338]" />
                 <x-text-input id="email"
-                              class="block mt-1 w-full h-12 border-2 border-[#235338] rounded text-[#91c19d] placeholder-[#235338]"
+                              class="block mt-1 w-full h-12 border-2 border-[#235338] rounded  placeholder-[#235338]"
                               type="email"
                               name="email"
                               :value="old('email')"
@@ -37,7 +37,7 @@
             <div>
                 <x-input-label for="password" :value="__('Password')" class="text-[#235338]" />
                 <x-text-input id="password"
-                              class="block mt-1 w-full h-12 border-2 border-[#235338] rounded text-[#91c19d] placeholder-[#235338]"
+                              class="block mt-1 w-full h-12 border-2 border-[#235338] rounded  placeholder-[#235338]"
                               type="password"
                               name="password"
                               required autocomplete="new-password" />
@@ -48,7 +48,7 @@
             <div>
                 <x-input-label for="password_confirmation" :value="__('Confirm Password')" class="text-[#235338]" />
                 <x-text-input id="password_confirmation"
-                              class="block mt-1 w-full h-12 border-2 border-[#235338] rounded text-[#91c19d] placeholder-[#235338]"
+                              class="block mt-1 w-full h-12 border-2 border-[#235338] rounded  placeholder-[#235338]"
                               type="password"
                               name="password_confirmation"
                               required autocomplete="new-password" />

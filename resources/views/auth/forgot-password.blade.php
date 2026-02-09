@@ -1,4 +1,6 @@
 <x-guest-layout>
+    <div class="min-h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
     <div class="mb-4 text-sm text-gray-600">
         {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
     </div>
@@ -20,6 +22,8 @@
             <x-primary-button>
                 {{ __('Email Password Reset Link') }}
             </x-primary-button>
+        </div>
+        </div>
         </div>
     </form>
 </x-guest-layout>
