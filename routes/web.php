@@ -15,6 +15,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewsController;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Mail;
+
 Route::get('/', function () {
 
     if (!auth()->check()) {
@@ -28,15 +30,36 @@ Route::get('/', function () {
     }
 
     return redirect()->route('admin.dashboard');
+})->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+//mail
+Route::get('/test-mail', function () {
+    Mail::raw('Test Mailtrap', function ($message) {
+        $message->to('test@test.com')
+                ->subject('Test Email');
+    });
+
+    return 'Mail envoyé !';
+});
+
+
 
 // Routes CLIENT 
 Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::get('/product/{id}', [DashboardController::class, 'CategorieProducts'])->name('categorieProducts');
     Route::get('/product/infos/{id}', [DashboardController::class, 'productDetails']);
     Route::post('/product/create-Review/{id}', [ReviewsController::class, 'createReview']);
+    // Add to panier
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     /// affichage dyal cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -52,6 +75,16 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::get('/checkout/info', [CheckoutController::class, 'info'])->name('checkout.info');
     ///store dyal form info 
     Route::post('/checkout/info', [CheckoutController::class, 'store'])->name('checkout.storeInfo');
+    ///checkout confirm page
+    Route::get('/checkout/confirm', [CheckoutController::class, 'confirm'])->name('checkout.confirm');
+    ////place order post
+    Route::post('/checkout/confirm', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
+
+    // routes/web.php
+    Route::get('/checkout/thank-you/{order}', [CheckoutController::class, 'thankYou'])->name('checkout.thankyou')
+    ->middleware(['auth']);
+
+
 
     // Products by category
 });
@@ -84,11 +117,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 // Routes MODERATOR 
 Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () {});
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+
 
 Route::middleware(['auth', 'role:admin|seller|moderator'])
     ->prefix('admin')

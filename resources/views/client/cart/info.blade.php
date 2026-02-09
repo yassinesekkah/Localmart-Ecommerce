@@ -12,22 +12,22 @@
 
                 <div class="mb-4">
                     <label class="block text-sm mb-1">Full Name</label>
-                    <input type="text" name="full_name" value="{{ old('full_name') }}" class="w-full border rounded-lg p-2">
+                    <input type="text" name="full_name" value="{{ old('full_name', $checkoutInfo['full_name'] ?? '') }}" class="w-full border rounded-lg p-2">
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-sm mb-1">Phone</label>
-                    <input type="text" name="phone" value="{{ old('phone') }}" class="w-full border rounded-lg p-2">
+                    <input type="text" name="phone" value="{{ old('phone', $checkoutInfo['phone'] ?? '') }}" class="w-full border rounded-lg p-2">
                 </div>
 
                 <div class="mb-4">
                     <label class="block text-sm mb-1">Address</label>
-                    <input type="text" name="address" value="{{ old('address') }}" class="w-full border rounded-lg p-2">
+                    <input type="text" name="address" value="{{ old('address', $checkoutInfo['address'] ?? '') }}" class="w-full border rounded-lg p-2">
                 </div>
 
                 <div class="mb-6">
                     <label class="block text-sm mb-1">City</label>
-                    <input type="text" name="city" value="{{ old('city') }}" class="w-full border rounded-lg p-2">
+                    <input type="text" name="city" value="{{ old('city', $checkoutInfo['city'] ?? '') }}" class="w-full border rounded-lg p-2">
                 </div>
 
                 <button type="submit" class="bg-black text-white px-6 py-3 rounded-lg">

@@ -11,7 +11,7 @@
             <div>
                 <x-input-label for="email" :value="__('Email')" class="text-[#235338]" />
                 <x-text-input id="email"
-                              class="block mt-1 w-full h-12 border-2 border-[#235338] rounded text-[#91c19d] placeholder-[#235338]"
+                              class="block mt-1 w-full h-12 border-2 border-[#235338] rounded  placeholder-[#235338]"
                               type="email"
                               name="email"
                               :value="old('email')"
@@ -23,7 +23,7 @@
             <div>
                 <x-input-label for="password" :value="__('Password')" class="text-[#235338]" />
                 <x-text-input id="password"
-                              class="block mt-1 w-full h-12 border-2 border-[#235338] rounded text-[#91c19d] placeholder-[#235338]"
+                              class="block mt-1 w-full h-12 border-2 border-[#235338] rounded  placeholder-[#235338]"
                               type="password"
                               name="password"
                               required autocomplete="current-password" />
