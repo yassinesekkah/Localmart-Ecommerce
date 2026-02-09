@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -39,8 +43,8 @@ class CheckoutController extends Controller
     {
         $cart = session('cart', []);
         $checkoutInfo = session('checkout_info');
-        
-        if(!$cart || !$checkoutInfo){
+
+        if (empty($cart) || empty($checkoutInfo)) {
 
             return redirect()->route('client.cart.index')->with('error', 'Checkout session expired');
         }
@@ -54,17 +58,19 @@ class CheckoutController extends Controller
         $checkoutInfo = session('checkout_info');
         $user = auth()->user();
 
-        if(!$cart || !$checkoutInfo){
+
+
+        if (empty($cart) || empty($checkoutInfo)) {
             return redirect()->route('client.cart.index')->with('error', 'Checkout session expired');
         }
 
         ///kandeclariw begin dyal transaction kaykhalina had algo ima yetabe9 try kolha wla rollback 
         DB::beginTransaction();
 
-        try{
+        try {
             ///total calcul
-            $tatol = 0;
-            foreach($cart as $item){
+            $total = 0;
+            foreach ($cart as $item) {
                 $total += $item['price'] * $item['quantity'];
             }
 
@@ -73,18 +79,18 @@ class CheckoutController extends Controller
                 'user_id' => $user->id,
                 'full_name' => $checkoutInfo['full_name'],
                 'phone' => $checkoutInfo['phone'],
-                'address' => $checkoutInfo['adress'],
+                'address' => $checkoutInfo['address'],
                 'city' => $checkoutInfo['city'],
                 'total' => $total,
                 'status'  => 'pending',
             ]);
 
             ////create order items
-            foreach($cart as $item){
+            foreach ($cart as $item) {
                 $product = Product::lockForUpdate()->find($item['id']);
 
                 ///check quantity
-                if($product->quantity < $item['quantity']){
+                if ($product->quantity < $item['quantity']) {
                     throw new \Exception("Insifusant stock for {$product->name}");
                 }
 
@@ -104,16 +110,29 @@ class CheckoutController extends Controller
 
             DB::commit();
 
-            return redirect()->route('client.orders.index')
-                            ->with('success', 'Order placed successfully');
+            return redirect()->route('client.checkout.thankyou', $order->id);
+        } catch (\Exception $e) {
 
-            
-        }catch(\Exception $e){
-            
             DB::rollBack();
 
-            return redirect()->route('client.checkout.confirm')
-                            ->with('error', $e->getMessage());
+            return redirect()->route('client.cart.index')
+                ->with('error', $e->getMessage());
         }
+    }
+
+    public function thankYou(Order $order)
+    {
+        if ($order->user_id !== auth()->id()) {
+            abort(403);
+        }
+        $firstItem = $order->items()->with('product.category')->first();
+
+        $category = null;
+
+        if($firstItem && $firstItem->product && $firstItem->product->catogory){
+            $category = $firstItem->product->category;
+        }
+
+        return view('client.cart.thank-you', compact('order', 'category'));
     }
 }

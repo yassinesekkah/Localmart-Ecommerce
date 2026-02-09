@@ -57,6 +57,11 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     ////place order post
     Route::post('/checkout/confirm', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
 
+    // routes/web.php
+    Route::get('/checkout/thank-you/{order}', [CheckoutController::class, 'thankYou'])->name('checkout.thankyou')
+    ->middleware(['auth']);
+
+
 
     // Products by category
 });
