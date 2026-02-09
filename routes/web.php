@@ -15,6 +15,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewsController;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Mail;
+
 Route::get('/', function () {
 
     if (!auth()->check()) {
@@ -29,6 +31,19 @@ Route::get('/', function () {
 
     return redirect()->route('admin.dashboard');
 });
+
+
+//mail
+Route::get('/test-mail', function () {
+    Mail::raw('Test Mailtrap', function ($message) {
+        $message->to('test@test.com')
+                ->subject('Test Email');
+    });
+
+    return 'Mail envoyé !';
+});
+
+
 
 // Routes CLIENT 
 Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->group(function () {
