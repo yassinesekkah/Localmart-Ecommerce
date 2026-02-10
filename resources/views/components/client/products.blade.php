@@ -12,12 +12,15 @@
                     <div class="relative mb-4">
                         <span
                             class="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded font-semibold">Sale</span>
+                                    <livewire:product-favorites :product="$product"  :key="'product-'.$product->id" />
+
                         <div class="w-full h-48 rounded mb-3 flex items-center justify-center bg-cover bg-center"
                             style="background-image: url('{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300/e5e7eb/1f2937?text=No+Image' }}');">
                             @if (empty($product->image))
                                 <span class="text-yellow-600">Aucune image</span>
                             @endif
                         </div>
+                        
                         <div
                             class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2 opacity-0 invisible card-product-action transition-all duration-300">
                             <!-- Quick View Button -->
@@ -32,6 +35,7 @@
                             </button>
                         </div>
                     </div>
+                    
                     <div class="space-y-2">
                         <a href="#"
                             class="text-sm text-gray-500 hover:text-green-600">{{ $product->category->name ?? 'Category' }}</a>
@@ -39,10 +43,7 @@
                             <a href="#" class="hover:text-green-600">{{ $product->name }}</a>
                         </h3>
                         <div class="flex items-center space-x-2">
-                            <div class="flex text-yellow-500 text-sm">
-                                ★★★★☆
-                            </div>
-                            <span class="text-sm text-gray-500">4.5 (149)</span>
+                            <span class="text-sm text-gray-500">{{ $product->likes->count() }}</span>
                         </div>
                         <div class="flex items-center justify-between pt-2">
                             <div>
@@ -62,6 +63,9 @@
                                     Add
                                 </button>
                             </form>
+                                <div class="flex justify-center items-end mb-0 pb-0">
+        <livewire:product-likes :product="$product"  :key="'product-'.$product->id" />
+    </div>
 
                         </div>
                     </div>
@@ -188,7 +192,7 @@
 
     <!-- Likes Component -->
     <div class="flex justify-center items-end mb-0 pb-0">
-        <livewire:product-likes :product="$product" />
+        <livewire:product-likes :product="$product"   />
     </div>
 
 </div>

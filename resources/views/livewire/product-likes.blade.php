@@ -15,7 +15,7 @@
     @endif
 
     <!-- Number under the heart -->
-    <span class="text-xs text-black mt-1">{{ $product->likes->count() }}</span>
+    <span class="text-xs text-black mt-1">{{ $product->likes->count()}}</span>
 </button>
 
 

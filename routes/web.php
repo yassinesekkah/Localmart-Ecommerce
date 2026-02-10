@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\DashboardController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewsController;
@@ -62,6 +63,9 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::get('/checkout/confirm', [CheckoutController::class, 'confirm'])->name('checkout.confirm');
     ////place order post
     Route::post('/checkout/confirm', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
+
+    Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite');
+
 
 
     // Products by category
