@@ -95,7 +95,7 @@
                 </h3>
                 <ul class="space-y-1">
                     <li>
-                        <a href="#"
+                        <a href="{{ route('orders.index') }}"
                             class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition
                                     {{ request()->routeIs('admin.orders.*')
                                         ? 'bg-blue-50 text-blue-700 border border-blue-200'
