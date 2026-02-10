@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/test-mail', function () {
     Mail::raw('Test Mailtrap', function ($message) {
         $message->to('test@test.com')
-                ->subject('Test Email');
+            ->subject('Test Email');
     });
 
     return 'Mail envoyé !';
@@ -83,7 +83,7 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
 
     // routes/web.php
     Route::get('/checkout/thank-you/{order}', [CheckoutController::class, 'thankYou'])->name('checkout.thankyou')
-    ->middleware(['auth']);
+        ->middleware(['auth']);
 
 
 
@@ -98,6 +98,11 @@ Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->g
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    
+    ///order status
+    Route::patch('/orders/{order}/ship', [OrderController::class, 'ship'])->name('orders.ship');
+    Route::patch('/orders/{order}/deliver', [OrderController::class, 'deliver'])->name('orders.deliver');
+    Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 });
 
 // Routes ADMIN
@@ -120,8 +125,7 @@ Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('modera
 
 
 
-Route::middleware(['auth', 'role:admin|seller|moderator'])
-    ->prefix('admin')
+Route::middleware(['auth', 'role:admin|seller|moderator'])->prefix('admin')
     ->group(function () {
 
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
