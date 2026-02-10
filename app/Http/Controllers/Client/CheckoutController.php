@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
+    // Afficher info checkout
     public function info(Request $request)
     {
         $cart = session()->get('cart', []);
@@ -24,6 +25,7 @@ class CheckoutController extends Controller
         return view('client.cart.info', compact('cart', 'checkoutInfo'));
     }
 
+    // Stocker info checkout dans session
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -38,6 +40,7 @@ class CheckoutController extends Controller
         return redirect()->route('client.checkout.confirm');
     }
 
+    // Afficher page de confirmation
     public function confirm()
     {
         $cart = session('cart', []);
@@ -51,6 +54,7 @@ class CheckoutController extends Controller
         return view('client.cart.confirm', compact('cart', 'checkoutInfo'));
     }
 
+    // Place order + notifications
     public function placeOrder(Request $request, OrderNotificationService $notificationService)
     {
         $cart = session('cart');
@@ -65,11 +69,13 @@ class CheckoutController extends Controller
         DB::beginTransaction();
 
         try {
+            // Calcul total
             $total = 0;
             foreach ($cart as $item) {
                 $total += $item['price'] * $item['quantity'];
             }
 
+            // Create order
             $order = Order::create([
                 'user_id' => $user->id,
                 'full_name' => $checkoutInfo['full_name'],
@@ -80,6 +86,7 @@ class CheckoutController extends Controller
                 'status' => 'pending',
             ]);
 
+            // Create order items + update stock
             foreach ($cart as $item) {
                 $product = Product::lockForUpdate()->find($item['id']);
 
@@ -99,16 +106,19 @@ class CheckoutController extends Controller
 
             DB::commit();
 
-            // Clear session after success
+            // Clear session
             session()->forget(['cart', 'checkout_info']);
 
-            // Send notifications AFTER commit
+            //  notifications
             $notificationService->sendOrderNotifications($order);
 
+            // message 
+            session()->flash('success', 'Commande passée avec succès !');
+
+            // Redirect 
             return redirect()->route('client.checkout.thankyou', $order->id);
 
         } catch (\Exception $e) {
-
             DB::rollBack();
 
             return redirect()->route('client.cart.index')
@@ -116,6 +126,7 @@ class CheckoutController extends Controller
         }
     }
 
+    // Thank you page
     public function thankYou(Order $order)
     {
         if ($order->user_id !== auth()->id()) {
