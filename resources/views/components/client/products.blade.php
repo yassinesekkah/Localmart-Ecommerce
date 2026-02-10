@@ -11,33 +11,21 @@
         <!-- Products Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             @foreach ($products as $product)
-                <!-- Product Card -->
-                <div onclick="openQuickViewModal({{ $product->id }})"
-                    class="group bg-white border cursor-pointer border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all duration-300">
-                    <!-- Product Image Container -->
-                    <div class="relative mb-4 overflow-hidden rounded-lg">
-                        <!-- Sale Badge -->
-                        @if ($product->old_price && $product->old_price > $product->price)
-                            <span
-                                class="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-semibold px-2.5 py-1 rounded-md">
-                                Sale
-                            </span>
-                        @endif
+                <div class="border border-gray-300 rounded-lg p-4 card-product relative group">
+                    <div class="relative mb-4">
+                        <span
+                            class="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded font-semibold">Sale</span>
+                                    <livewire:product-favorites :product="$product"  :key="'product-'.$product->id" />
 
-                        <!-- Product Image -->
-                        <div class="relative h-48 bg-gray-100 rounded-lg overflow-hidden">
-                            <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300/e5e7eb/1f2937?text=No+Image' }}"
-                                alt="{{ $product->name }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-
+                        <div class="w-full h-48 rounded mb-3 flex items-center justify-center bg-cover bg-center"
+                            style="background-image: url('{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300/e5e7eb/1f2937?text=No+Image' }}');">
                             @if (empty($product->image))
                                 <span class="absolute inset-0 flex items-center justify-center text-sm text-gray-500">
                                     No image available
                                 </span>
                             @endif
                         </div>
-
-                        <!-- Hover Actions -->
+                        
                         <div
                             class="absolute inset-x-0 bottom-4 flex justify-center items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <!-- Quick View Button -->
@@ -63,27 +51,15 @@
                             </button>
                         </div>
                     </div>
-
-                    <!-- Product Info -->
-                    <div class="space-y-3">
-                        <!-- Category -->
-                        <a href="#" class="text-xs text-gray-500 hover:text-green-600 transition-colors">
-                            {{ $product->category->name ?? 'Uncategorized' }}
-                        </a>
-
-                        <!-- Product Name -->
-                        <h3 class="font-semibold text-gray-900 line-clamp-2 min-h-[2.5rem]">
-                            <a href="#" class="hover:text-green-600 transition-colors">
-                                {{ $product->name }}
-                            </a>
+                    
+                    <div class="space-y-2">
+                        <a href="#"
+                            class="text-sm text-gray-500 hover:text-green-600">{{ $product->category->name ?? 'Category' }}</a>
+                        <h3 class="font-medium truncate">
+                            <a href="#" class="hover:text-green-600">{{ $product->name }}</a>
                         </h3>
-
-                        <!-- Rating -->
-                        <div class="flex items-center gap-2">
-                            <div class="flex text-yellow-400 text-sm">
-                                ★★★★☆
-                            </div>
-                            <span class="text-xs text-gray-500">(149)</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm text-gray-500">{{ $product->likes->count() }}</span>
                         </div>
 
                         <!-- Price & Add to Cart -->
@@ -112,6 +88,10 @@
                                     <span>Add</span>
                                 </button>
                             </form>
+                                <div class="flex justify-center items-end mb-0 pb-0">
+        <livewire:product-likes :product="$product"  :key="'product-'.$product->id" />
+    </div>
+
                         </div>
                     </div>
                 </div>
@@ -251,16 +231,10 @@
                                     </div>
                                 </div>
 
-                                <!-- Add to Cart Button -->
-                                <button type="submit" id="addToCartBtn"
-                                    class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-200">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                    </svg>
-                                    <span>Add to Cart</span>
-                                </button>
-                            </form>
+    <!-- Likes Component -->
+    <div class="flex justify-center items-end mb-0 pb-0">
+        <livewire:product-likes :product="$product"   />
+    </div>
 
                             <livewire:product-likes :product="$product" :key="'product-like-' . $product->id" />
 

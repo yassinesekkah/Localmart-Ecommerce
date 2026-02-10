@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\DashboardController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewsController;
@@ -81,6 +82,7 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     ////place order post
     Route::post('/checkout/confirm', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
 
+    Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite');
     // routes/web.php
     Route::get('/checkout/thank-you/{order}', [CheckoutController::class, 'thankYou'])->name('checkout.thankyou')
     ->middleware(['auth']);
