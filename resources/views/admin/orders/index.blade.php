@@ -14,7 +14,9 @@
                         <th class="p-3">Total</th>
                         <th class="p-3">Status</th>
                         <th class="p-3">Date</th>
+                        @if(auth()->user()->hasRole('seller') )
                         <th class="p-3">Actions</th>
+                        @endif
                     </tr>
                 </thead>
 
@@ -40,30 +42,44 @@
                             <td class="p-3">{{ $order->created_at->format('d M Y') }}</td>
 
                             {{-- Actions --}}
-                            <td class="p-3 flex gap-2">
+                            @if (auth()->user()->hasRole('seller'))
+                                <td class="p-3 flex gap-2">
 
-                                {{-- Ship --}}
-                                @if ($order->status === 'pending')
-                                    <button class="px-3 py-1 text-xs bg-blue-600 text-white rounded">
-                                        Ship
-                                    </button>
-                                @endif
+                                    {{-- Ship --}}
+                                    @if ($order->status === 'pending')
+                                        <form method="POST" action="{{ route('seller.orders.ship', $order) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button class="px-3 py-1 text-xs bg-blue-600 text-white rounded">
+                                                Ship
+                                            </button>
+                                        </form>
+                                    @endif
 
-                                {{-- Deliver --}}
-                                @if ($order->status === 'shipped')
-                                    <button class="px-3 py-1 text-xs bg-green-600 text-white rounded">
-                                        Deliver
-                                    </button>
-                                @endif
+                                    {{-- Deliver --}}
+                                    @if ($order->status === 'shipped')
+                                        <form method="POST" action="{{ route('seller.orders.deliver', $order) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button class="px-3 py-1 text-xs bg-green-600 text-white rounded">
+                                                Deliver
+                                            </button>
+                                        </form>
+                                    @endif
 
-                                {{-- Cancel (admin only) --}}
-                                @if (auth()->user()->hasRole('admin') && $order->status === 'pending')
-                                    <button class="px-3 py-1 text-xs bg-red-600 text-white rounded">
-                                        Cancel
-                                    </button>
-                                @endif
+                                    {{-- Cancel --}}
+                                    @if ($order->status === 'pending')
+                                        <form method="POST" action="{{ route('seller.orders.cancel', $order) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button class="px-3 py-1 text-xs bg-red-600 text-white rounded">
+                                                Cancel
+                                            </button>
+                                        </form>
+                                    @endif
 
-                            </td>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
 
