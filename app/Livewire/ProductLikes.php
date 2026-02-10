@@ -21,7 +21,7 @@ class ProductLikes extends Component
             ]);
         }
 
-        $this->product->refresh();
+        $this->product = $this->product->refresh();
     }
     public function render()
     {

@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Services\OrderNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
+    // Afficher info checkout
     public function info(Request $request)
     {
         $cart = session()->get('cart', []);
         $checkoutInfo = session()->get('checkout_info');
 
-        ///check ila cart khawia
         if (empty($cart)) {
             return back()->with('error', 'Your cart is empty');
         }
@@ -25,6 +25,7 @@ class CheckoutController extends Controller
         return view('client.cart.info', compact('cart', 'checkoutInfo'));
     }
 
+    // Stocker info checkout dans session
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -39,42 +40,42 @@ class CheckoutController extends Controller
         return redirect()->route('client.checkout.confirm');
     }
 
+    // Afficher page de confirmation
     public function confirm()
     {
         $cart = session('cart', []);
         $checkoutInfo = session('checkout_info');
 
         if (empty($cart) || empty($checkoutInfo)) {
-
-            return redirect()->route('client.cart.index')->with('error', 'Checkout session expired');
+            return redirect()->route('client.cart.index')
+                ->with('error', 'Checkout session expired');
         }
 
         return view('client.cart.confirm', compact('cart', 'checkoutInfo'));
     }
 
-    public function placeOrder(Request $request)
+    // Place order + notifications
+    public function placeOrder(Request $request, OrderNotificationService $notificationService)
     {
         $cart = session('cart');
         $checkoutInfo = session('checkout_info');
         $user = auth()->user();
 
-
-
         if (empty($cart) || empty($checkoutInfo)) {
-            return redirect()->route('client.cart.index')->with('error', 'Checkout session expired');
+            return redirect()->route('client.cart.index')
+                ->with('error', 'Checkout session expired');
         }
 
-        ///kandeclariw begin dyal transaction kaykhalina had algo ima yetabe9 try kolha wla rollback 
         DB::beginTransaction();
 
         try {
-            ///total calcul
+            // Calcul total
             $total = 0;
             foreach ($cart as $item) {
                 $total += $item['price'] * $item['quantity'];
             }
 
-            ///create order on db
+            // Create order
             $order = Order::create([
                 'user_id' => $user->id,
                 'full_name' => $checkoutInfo['full_name'],
@@ -82,16 +83,15 @@ class CheckoutController extends Controller
                 'address' => $checkoutInfo['address'],
                 'city' => $checkoutInfo['city'],
                 'total' => $total,
-                'status'  => 'pending',
+                'status' => 'pending',
             ]);
 
-            ////create order items
+            // Create order items + update stock
             foreach ($cart as $item) {
                 $product = Product::lockForUpdate()->find($item['id']);
 
-                ///check quantity
                 if ($product->quantity < $item['quantity']) {
-                    throw new \Exception("Insifusant stock for {$product->name}");
+                    throw new \Exception("Insufficient stock for {$product->name}");
                 }
 
                 OrderItem::create([
@@ -101,18 +101,24 @@ class CheckoutController extends Controller
                     'quantity' => $item['quantity'],
                 ]);
 
-                ///na9so mn stoch l quantity lifel order
                 $product->decrement('quantity', $item['quantity']);
             }
 
-            ///clear session
-            session()->forget(['cart', 'checkout_info']);
-
             DB::commit();
 
-            return redirect()->route('client.checkout.thankyou', $order->id);
-        } catch (\Exception $e) {
+            // Clear session
+            session()->forget(['cart', 'checkout_info']);
 
+            //  notifications
+            $notificationService->sendOrderNotifications($order);
+
+            // message 
+            session()->flash('success', 'Commande passée avec succès !');
+
+            // Redirect 
+            return redirect()->route('client.checkout.thankyou', $order->id);
+
+        } catch (\Exception $e) {
             DB::rollBack();
 
             return redirect()->route('client.cart.index')
@@ -120,16 +126,17 @@ class CheckoutController extends Controller
         }
     }
 
+    // Thank you page
     public function thankYou(Order $order)
     {
         if ($order->user_id !== auth()->id()) {
             abort(403);
         }
-        $firstItem = $order->items()->with('product.category')->first();
 
+        $firstItem = $order->items()->with('product.category')->first();
         $category = null;
 
-        if($firstItem && $firstItem->product && $firstItem->product->catogory){
+        if ($firstItem && $firstItem->product && $firstItem->product->category) {
             $category = $firstItem->product->category;
         }
 
