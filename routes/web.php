@@ -112,6 +112,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // users role 
     Route::get('/users', [App\Http\Controllers\Admin\RoleController::class, 'index'])->name('usres.role');
     Route::post('update/roles/{id}', [App\Http\Controllers\Admin\RoleController::class, 'updateRole'])->name('roles.update');
+    
+    //|||||||||||||||||||||||||||
+    // archevier review clients |
+    //|||||||||||||||||||||||||||
+    Route::get('review/{id}/Delete', [ReviewsController::class, 'Delete'])->name('admin.review.Delete');
 });
 
 // Routes MODERATOR 
@@ -126,4 +131,8 @@ Route::middleware(['auth', 'role:admin|seller|moderator'])
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
         Route::get('/products', [ProductController::class, 'index'])->name('seller.products.index');
+        Route::get('/ShowReview/{id}', [ReviewsController::class, 'show'])->name('ShowReview');
     });
+
+
+        
