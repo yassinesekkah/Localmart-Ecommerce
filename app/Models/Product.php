@@ -23,10 +23,11 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function user()
+    public function seller()
     {
-        return $this->belongsTo(User::class);
+    return $this->belongsTo(User::class, 'user_id');
     }
+
     public function likes() {
         return $this->hasMany(Like::class);
     }
