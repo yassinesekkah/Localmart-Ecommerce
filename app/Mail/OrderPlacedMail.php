@@ -2,10 +2,9 @@
 
 namespace App\Mail;
 
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class OrderPlacedMail extends Mailable
@@ -13,34 +12,17 @@ class OrderPlacedMail extends Mailable
     use Queueable, SerializesModels;
 
     public $order;
-    public $seller;
+    public $recipient;
 
-    public function __construct($order, $seller = null)
+    public function __construct(Order $order, $recipient = null)
     {
         $this->order = $order;
-        $this->seller = $seller;
+        $this->recipient = $recipient;
     }
 
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Nouvelle commande reçue - LocalMart',
-        );
-    }
-
-    public function content(): Content
-    {
-        return new Content(
-            view: 'emails.order_placed',
-            with: [
-                'order' => $this->order,
-                'seller' => $this->seller,
-            ],
-        );
-    }
-
-    public function attachments(): array
-    {
-        return [];
+        return $this->subject('Nouvelle commande')
+                    ->view('emails.order_placed');
     }
 }

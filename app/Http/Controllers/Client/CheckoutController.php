@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -18,7 +17,6 @@ class CheckoutController extends Controller
         $cart = session()->get('cart', []);
         $checkoutInfo = session()->get('checkout_info');
 
-        ///check ila cart khawia
         if (empty($cart)) {
             return back()->with('error', 'Your cart is empty');
         }
@@ -46,36 +44,32 @@ class CheckoutController extends Controller
         $checkoutInfo = session('checkout_info');
 
         if (empty($cart) || empty($checkoutInfo)) {
-
-            return redirect()->route('client.cart.index')->with('error', 'Checkout session expired');
+            return redirect()->route('client.cart.index')
+                ->with('error', 'Checkout session expired');
         }
 
         return view('client.cart.confirm', compact('cart', 'checkoutInfo'));
     }
 
-    public function placeOrder(Request $request)
+    public function placeOrder(Request $request, OrderNotificationService $notificationService)
     {
         $cart = session('cart');
         $checkoutInfo = session('checkout_info');
         $user = auth()->user();
 
-
-
         if (empty($cart) || empty($checkoutInfo)) {
-            return redirect()->route('client.cart.index')->with('error', 'Checkout session expired');
+            return redirect()->route('client.cart.index')
+                ->with('error', 'Checkout session expired');
         }
 
-        ///kandeclariw begin dyal transaction kaykhalina had algo ima yetabe9 try kolha wla rollback 
         DB::beginTransaction();
 
         try {
-            ///total calcul
             $total = 0;
             foreach ($cart as $item) {
                 $total += $item['price'] * $item['quantity'];
             }
 
-            ///create order on db
             $order = Order::create([
                 'user_id' => $user->id,
                 'full_name' => $checkoutInfo['full_name'],
@@ -83,16 +77,14 @@ class CheckoutController extends Controller
                 'address' => $checkoutInfo['address'],
                 'city' => $checkoutInfo['city'],
                 'total' => $total,
-                'status'  => 'pending',
+                'status' => 'pending',
             ]);
 
-            ////create order items
             foreach ($cart as $item) {
                 $product = Product::lockForUpdate()->find($item['id']);
 
-                ///check quantity
                 if ($product->quantity < $item['quantity']) {
-                    throw new \Exception("Insifusant stock for {$product->name}");
+                    throw new \Exception("Insufficient stock for {$product->name}");
                 }
 
                 OrderItem::create([
@@ -102,20 +94,19 @@ class CheckoutController extends Controller
                     'quantity' => $item['quantity'],
                 ]);
 
-                ///na9so mn stoch l quantity lifel order
                 $product->decrement('quantity', $item['quantity']);
             }
 
-            ///clear session
-            session()->forget(['cart', 'checkout_info']);
-
-            /// Envoyer les emails de notification
-            $notificationService = new OrderNotificationService();
-            $notificationService->sendOrderNotifications($order);
-
             DB::commit();
 
+            // Clear session after success
+            session()->forget(['cart', 'checkout_info']);
+
+            // Send notifications AFTER commit
+            $notificationService->sendOrderNotifications($order);
+
             return redirect()->route('client.checkout.thankyou', $order->id);
+
         } catch (\Exception $e) {
 
             DB::rollBack();
@@ -130,11 +121,11 @@ class CheckoutController extends Controller
         if ($order->user_id !== auth()->id()) {
             abort(403);
         }
-        $firstItem = $order->items()->with('product.category')->first();
 
+        $firstItem = $order->items()->with('product.category')->first();
         $category = null;
 
-        if($firstItem && $firstItem->product && $firstItem->product->catogory){
+        if ($firstItem && $firstItem->product && $firstItem->product->category) {
             $category = $firstItem->product->category;
         }
 
