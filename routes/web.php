@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\DashboardController;
@@ -126,4 +127,5 @@ Route::middleware(['auth', 'role:admin|seller|moderator'])
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
         Route::get('/products', [ProductController::class, 'index'])->name('seller.products.index');
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     });
