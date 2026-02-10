@@ -1,3 +1,5 @@
+<x-app-layout>
+
 <div>
     <!-- Wishlist Button -->
 <button wire:click="toggleLike"
