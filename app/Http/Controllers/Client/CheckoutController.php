@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Services\OrderNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -107,6 +108,10 @@ class CheckoutController extends Controller
 
             ///clear session
             session()->forget(['cart', 'checkout_info']);
+
+            /// Envoyer les emails de notification
+            $notificationService = new OrderNotificationService();
+            $notificationService->sendOrderNotifications($order);
 
             DB::commit();
 
