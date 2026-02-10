@@ -120,15 +120,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // users role 
     Route::get('/users', [App\Http\Controllers\Admin\RoleController::class, 'index'])->name('usres.role');
     Route::post('update/roles/{id}', [App\Http\Controllers\Admin\RoleController::class, 'updateRole'])->name('roles.update');
-    
-    //|||||||||||||||||||||||||||
-    // archevier review clients |
-    //|||||||||||||||||||||||||||
-    Route::get('review/{id}/Delete', [ReviewsController::class, 'Delete'])->name('admin.review.Delete');
 });
 
 // Routes MODERATOR 
-Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () {});
+Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () {
+    
+    // delete review clients
+    Route::get('review/{id}/Delete', [ReviewsController::class, 'Delete'])->name('admin.review.Delete');
+});
 
 
 

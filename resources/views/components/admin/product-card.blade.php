@@ -117,20 +117,35 @@
                 </div>
 
                 <!-- Right Column - Scrollable Content -->
-                <div class="flex flex-col overflow-hidden">
+                <div class="flex flex-col overflow-hidden overflow-y-auto">
                     <!-- Product Details (Fixed at top) -->
-                    <div class="p-6 border-b border-gray-200">
+                    <div class="p-2 border-b border-gray-200">
 
                         <!-- Price -->
-                        <div class="flex items-baseline gap-2 mb-4">
-                            <span id="modalProductPrice" class="text-3xl font-bold bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent">
+                        <div class="flex items-baseline gap-2 mb-4 text-md font-bold ">
+                            <span>Price:</span>
+                            <span id="modalProductPrice" class="bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent">
                                 {{ number_format($product->price, 2) }} MAD
+                            </span>
+                        </div>
+                        <!-- Quantity -->
+                        <div class="flex items-baseline gap-2 mb-4 text-md font-bold ">
+                            <span>Quantity:</span>
+                            <span id="modalProductPrice" class="bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent">
+                                {{ $product->quantity }}
+                            </span>
+                        </div>
+                        <!-- descritopn -->
+                        <div class="flex items-baseline gap-2 mb-4 text-md font-bold ">
+                            <span>description:</span>
+                            <span id="modalProductPrice" class="bg-gradient-to-r from-gray-700 text-[12px] to-gray-600 bg-clip-text text-transparent">
+                                {{ $product->description }}
                             </span>
                         </div>
                     </div>
 
                     <!-- Reviews Section (Scrollable) -->
-                    <div class="flex-1 overflow-y-auto p-6">
+                    <div class="flex-1 p-4">
                         <h3 class="text-lg font-bold text-gray-900 mb-4 sticky top-0 bg-white pb-2">
                             Customer Reviews
                         </h3>
@@ -305,7 +320,7 @@
                             
                             <!-- Review Actions -->
                             
-                        @if($role === 'admin')
+                        @if($role === 'moderator')
                             <div class="flex justify-end items-end gap-4 mt-3">
                                 <a href="/admin/review/${review.id}/Delete"
                                 class="text-md text-red-500 hover:text-lg hover:text-red-700 transition-all">
