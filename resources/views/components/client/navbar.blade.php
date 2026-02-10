@@ -1,8 +1,8 @@
 @props(['categories'])
 
 @php
-$cart = session('cart', []);
-$cartCount = collect($cart)->sum('quantity');
+    $cart = session('cart', []);
+    $cartCount = collect($cart)->count('cart');
 @endphp
 <!-- Header/Navbar -->
 <header class="bg-white shadow-sm sticky top-0 z-50">

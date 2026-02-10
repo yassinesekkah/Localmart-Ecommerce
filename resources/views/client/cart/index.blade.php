@@ -114,7 +114,7 @@
                     </div>
 
                     <form action="{{ route('client.checkout.info') }}" method="GET" class="flex justify-end pt-2">
-                        <button type="submit" class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">
+                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
                             Order Now
                         </button>
                     </form>

@@ -19,33 +19,33 @@
 
     {{-- Toast messages --}}
     @if (session('success'))
-        <div id="toast"
-            class="fixed bottom-5 left-5 z-50 flex items-center gap-3
+    <div id="toast"
+        class="fixed bottom-5 left-5 z-50 flex items-center gap-3
                 bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg
                 transform translate-y-6 opacity-0
                 transition-all duration-500">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-            <span class="text-sm font-medium">
-                {{ session('success') }}
-            </span>
-        </div>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span class="text-sm font-medium">
+            {{ session('success') }}
+        </span>
+    </div>
     @endif
 
     @if (session('error'))
-        <div id="toast"
-            class="fixed bottom-5 left-5 z-50 flex items-center gap-3
+    <div id="toast"
+        class="fixed bottom-5 left-5 z-50 flex items-center gap-3
                 bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg
                 transform translate-y-6 opacity-0
                 transition-all duration-500">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-            <span class="text-sm font-medium">
-                {{ session('error') }}
-            </span>
-        </div>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span class="text-sm font-medium">
+            {{ session('error') }}
+        </span>
+    </div>
     @endif
 
 
@@ -213,7 +213,7 @@
                 })
                 .catch(error => console.error('errore on this product', error));
         });
-
+        
     </script>
     @stack('scripts')
 </body>

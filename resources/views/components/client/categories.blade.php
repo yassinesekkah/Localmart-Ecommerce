@@ -10,24 +10,20 @@
 
 
 			<!-- Category Cards -->
-			@foreach ($categories as $index => $category)
+			@php
+			$colors = ['bg-green-300', 'bg-red-300', 'bg-blue-400', 'bg-yellow-300', 'bg-green-600'];
+			@endphp
 
+			@foreach ($categories as $index => $category)
 			<a href="{{ route('client.categorieProducts', $category->id) }}" class="group">
-				<div class="border border-gray-300 rounded-lg p-6 text-center hover:border-green-600 hover:shadow-md transition duration-300">
-					<div class="w-20 h-20 mx-auto mb-3 rounded-full overflow-hidden flex items-center justify-center bg-yellow-100">
-						@if($category->image)
-						<img
-							src="{{ asset('storage/'.$category->image) }}"
-							class="w-full h-full object-cover">
-						@else
-						<span class="text-yellow-600 text-xs text-center">Aucune image</span>
-						@endif
-					</div>
-					<div class="text-base font-semibold">{{$category->name}}</div>
-					<div class="font-medium text-gray-700 group-hover:text-green-600">{{$category->description}}</div>
+				<div class="{{ $colors[$index % count($colors)] }} border border-gray-300 rounded-lg p-6 text-center hover:border-green-600 hover:shadow-md transition duration-300">
+					<span class="">
+						{{ $category->description }}
+					</span>
 				</div>
 			</a>
 			@endforeach
+
 		</div>
 	</div>
 </section>

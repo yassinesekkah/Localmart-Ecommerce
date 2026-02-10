@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\DashboardController;
@@ -15,6 +16,8 @@ use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewsController;
 use Illuminate\Support\Facades\Route;
+
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/', function () {
 
@@ -37,13 +40,28 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+//mail
+Route::get('/test-mail', function () {
+    Mail::raw('Test Mailtrap', function ($message) {
+        $message->to('test@test.com')
+                ->subject('Test Email');
+    });
+
+    return 'Mail envoyé !';
+});
+
+
+
 // Routes CLIENT 
 Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::get('/product/{id}', [DashboardController::class, 'CategorieProducts'])->name('categorieProducts');
     Route::get('/product/infos/{id}', [DashboardController::class, 'productDetails']);
     Route::post('/product/create-Review/{id}', [ReviewsController::class, 'createReview']);
+    // Add to panier
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     /// affichage dyal cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -65,6 +83,9 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::post('/checkout/confirm', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
 
     Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite');
+    // routes/web.php
+    Route::get('/checkout/thank-you/{order}', [CheckoutController::class, 'thankYou'])->name('checkout.thankyou')
+    ->middleware(['auth']);
 
 
 
@@ -108,4 +129,5 @@ Route::middleware(['auth', 'role:admin|seller|moderator'])
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
         Route::get('/products', [ProductController::class, 'index'])->name('seller.products.index');
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     });
