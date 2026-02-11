@@ -30,10 +30,22 @@ class AuthenticatedSessionController extends Controller
 
         $user = auth()->user();
 
+        //  Vérifier si l'utilisateur est interdit
+        if ($user->is_banned) {
+            Auth::logout();
+
+            return redirect()->route('login')
+                ->withErrors([
+                    'email' => 'Votre compte a été interdit par l\'administrateur.'
+                ]);
+        }
+
+        // Redirection selon rôle
         if ($user->hasAnyRole(['admin', 'seller', 'moderator'])) {
             return redirect()->route('admin.dashboard');
         }
-        ///client dashboard
+
+        // Client dashboard
         return redirect()->route('client.dashboard');
     }
 
@@ -51,5 +63,3 @@ class AuthenticatedSessionController extends Controller
         return redirect('/login');
     }
 }
-
-
