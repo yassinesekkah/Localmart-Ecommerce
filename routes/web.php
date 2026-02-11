@@ -139,6 +139,7 @@ Route::middleware(['auth', 'role:admin|seller|moderator'])->prefix('admin')
         Route::get('/products', [ProductController::class, 'index'])->name('seller.products.index');
         Route::get('/ShowReview/{id}', [ReviewsController::class, 'show'])->name('ShowReview');
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     });
 
 

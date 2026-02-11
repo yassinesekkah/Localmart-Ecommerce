@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
-    public function index() 
+    public function index()
     {
         $orders = Order::latest()->get();
 
@@ -19,12 +19,10 @@ class OrderController extends Controller
     }
 
 
-    
+    public function ship(Order $order)
+    {
 
-
-    public function ship(Order $order){
-
-        if($order->status !== 'pending'){
+        if ($order->status !== 'pending') {
             return back()->with('error', 'order cannot be shipped');
         }
         $order->update(['status' => 'shipped']);
@@ -41,7 +39,7 @@ class OrderController extends Controller
 
     public function deliver(Order $order)
     {
-        if($order->status !== 'shipped'){
+        if ($order->status !== 'shipped') {
             return back()->with('error', 'order cannot be delivered');
         }
         $order->update(['status' => 'delivered']);
@@ -55,7 +53,7 @@ class OrderController extends Controller
 
     public function cancel(Order $order)
     {
-        if($order->status !== 'pending'){
+        if ($order->status !== 'pending') {
             return back()->with('error', 'order cannot be canceled');
         }
         $order->update(['status' => 'canceled']);
