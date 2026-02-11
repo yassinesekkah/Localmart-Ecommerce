@@ -12,12 +12,12 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             @foreach ($products as $product)
             <!-- Product Card -->
-            <div onclick="openQuickViewModal({{ $product->id }})" class="group bg-white border cursor-pointer border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all duration-300">
+            <div class="group bg-white border cursor-pointer border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all duration-300">
                 <!-- Product Image Container -->
                 <div class="relative mb-4">
                     <livewire:product-favorites :product="$product" :key="'product-'.$product->id" />
 
-                    <div class="w-full h-48 rounded mb-3 flex items-center justify-center bg-cover bg-center"
+                    <div  onclick="openQuickViewModal({{ $product->id }})" class="w-full h-48 rounded mb-3 flex items-center justify-center bg-cover bg-center"
                         style="background-image: url('{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300/e5e7eb/1f2937?text=No+Image' }}');">
                         @if (empty($product->image))
                         <span class="absolute inset-0 flex items-center justify-center text-sm text-gray-500">
