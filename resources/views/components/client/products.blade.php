@@ -5,7 +5,7 @@
     <div class="container mx-auto px-4">
         <!-- Section Header -->
         <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-900">Products</h2>
+            <h2 class="text-3xl font-bold text-gray-900">Recent Products</h2>
         </div>
 
         <!-- Products Grid -->
@@ -19,7 +19,6 @@
                         @livewire('product-likes', ['product'=>$product, 'key'=>$product->id])
                     </div>
 
-
                     <div onclick="openQuickViewModal({{ $product->id }})" class="w-full h-48 rounded mb-3 flex items-center justify-center bg-cover bg-center"
                         style="background-image: url('{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300/e5e7eb/1f2937?text=No+Image' }}');">
                         @if (empty($product->image))
@@ -32,7 +31,6 @@
                 <!-- Product Info -->
                 <div class="space-y-3">
                     <div class=" cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
-
 
                         <!-- Category -->
                         <a href="#" class="text-xs text-gray-500 hover:text-green-600 transition-colors">
