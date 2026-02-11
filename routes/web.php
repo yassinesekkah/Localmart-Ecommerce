@@ -100,7 +100,7 @@ Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->g
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-    
+
     ///order status
     Route::patch('/orders/{order}/ship', [OrderController::class, 'ship'])->name('orders.ship');
     Route::patch('/orders/{order}/deliver', [OrderController::class, 'deliver'])->name('orders.deliver');

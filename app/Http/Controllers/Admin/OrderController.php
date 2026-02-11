@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Mail\OrderStatusUpdatedMail;
+use Illuminate\Support\Facades\Mail;
+
+
 
 class OrderController extends Controller
 {
@@ -15,6 +19,9 @@ class OrderController extends Controller
     }
 
 
+    
+
+
     public function ship(Order $order){
 
         if($order->status !== 'pending'){
@@ -22,7 +29,13 @@ class OrderController extends Controller
         }
         $order->update(['status' => 'shipped']);
 
+        Mail::to($order->user->email)
+         ->send(new OrderStatusUpdatedMail($order));
+
+
         return back()->with('success', 'order shipped');
+
+        
     }
 
 
@@ -32,6 +45,9 @@ class OrderController extends Controller
             return back()->with('error', 'order cannot be delivered');
         }
         $order->update(['status' => 'delivered']);
+        Mail::to($order->user->email)
+        ->send(new OrderStatusUpdatedMail($order));
+
 
         return back()->with('success', 'order delivered');
     }
@@ -44,6 +60,14 @@ class OrderController extends Controller
         }
         $order->update(['status' => 'canceled']);
 
+        Mail::to($order->user->email)
+        ->send(new OrderStatusUpdatedMail($order));
+
+
         return back()->with('success', 'order canceled');
     }
+
+
+
+    
 }
