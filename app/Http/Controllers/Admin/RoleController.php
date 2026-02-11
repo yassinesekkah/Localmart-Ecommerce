@@ -26,4 +26,17 @@ class RoleController extends Controller
    $uesrRole->syncRoles($request->roles);
    return redirect()->back();
    }
+
+
+
+   public function toggleBan($id)
+{
+    $user = User::findOrFail($id);
+
+    $user->is_banned = !$user->is_banned;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Statut utilisateur mis à jour.');
+}
+
 }

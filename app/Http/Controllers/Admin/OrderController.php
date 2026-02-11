@@ -14,26 +14,34 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::latest()->get();
-
         return view('admin.orders.index', compact('orders'));
+    }
+
+
+    public function shipForm(Order $order)
+    {
+        if ($order->status !== 'pending') {
+            return back()->with('error', 'order cannot be shipped');
+        }
+        $order->load('items.product');
+        
+        return view('admin.orders.ship', compact('order'));
     }
 
 
     public function ship(Order $order)
     {
-
         if ($order->status !== 'pending') {
             return back()->with('error', 'order cannot be shipped');
         }
         $order->update(['status' => 'shipped']);
 
         Mail::to($order->user->email)
-         ->send(new OrderStatusUpdatedMail($order));
+            ->send(new OrderStatusUpdatedMail($order));
 
-
-        return back()->with('success', 'order shipped');
-
-        
+        return redirect()
+            ->route('orders.index')
+            ->with('success', 'Order shipped successfully');
     }
 
 
@@ -44,7 +52,7 @@ class OrderController extends Controller
         }
         $order->update(['status' => 'delivered']);
         Mail::to($order->user->email)
-        ->send(new OrderStatusUpdatedMail($order));
+            ->send(new OrderStatusUpdatedMail($order));
 
 
         return back()->with('success', 'order delivered');
@@ -59,13 +67,9 @@ class OrderController extends Controller
         $order->update(['status' => 'canceled']);
 
         Mail::to($order->user->email)
-        ->send(new OrderStatusUpdatedMail($order));
+            ->send(new OrderStatusUpdatedMail($order));
 
 
         return back()->with('success', 'order canceled');
     }
-
-
-
-    
 }

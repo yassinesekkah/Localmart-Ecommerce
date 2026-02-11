@@ -46,14 +46,10 @@
                                 <td class="p-3 flex gap-2">
 
                                     {{-- Ship --}}
-                                    @if ($order->status === 'pending')
-                                        <form method="POST" action="{{ route('seller.orders.ship', $order) }}">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button class="px-3 py-1 text-xs bg-blue-600 text-white rounded">
+                                    @if ($order->status === 'pending')    
+                                            <a href="{{ route('seller.orders.ship', $order) }}" class="px-3 py-1 text-xs bg-blue-600 text-white rounded">
                                                 Ship
-                                            </button>
-                                        </form>
+                                            </a> 
                                     @endif
 
                                     {{-- Deliver --}}
