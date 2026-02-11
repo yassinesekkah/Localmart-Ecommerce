@@ -42,6 +42,9 @@
         </div>
 
     </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+
 
     @if (session('success') || session('error'))
         <div id="toast"

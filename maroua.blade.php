@@ -23,14 +23,26 @@
                 @foreach($users as $user)
                 <tr>
                     <td class="px-4 py-3">{{ $user->name }}</td>
+
                     <td class="px-4 py-3">
                         <span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
                             {{ $user->roles->pluck('name')->join(', ') ?: 'No Role' }}
                         </span>
+
+                        {{-- Afficher statut si interdit --}}
+                        @if($user->is_banned)
+                            <span class="ml-2 inline-block bg-red-100 text-red-800 px-2 py-1 rounded text-sm">
+                                Interdit
+                            </span>
+                        @endif
                     </td>
-                    <td class="px-4 py-3 flex flex-rew gap-4">
-                        <form method="POST" action="{{ route('admin.roles.update', $user->id) }}" class="flex flex-rew gap-4">
+
+                    <td class="px-4 py-3">
+
+                        {{-- Form Update Roles --}}
+                        <form method="POST" action="{{ route('admin.roles.update', $user->id) }}" class="flex flex-col gap-2">
                             @csrf
+
                             <div class="flex flex-wrap gap-2">
                                 @foreach($roles as $role)
                                     <label class="flex items-center gap-1 bg-gray-50 px-2 py-1 rounded border hover:bg-gray-100 cursor-pointer">
@@ -41,13 +53,14 @@
                                     </label>
                                 @endforeach
                             </div>
+
                             <button type="submit"
                                 class="mt-2 bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition">
                                 Update Roles
                             </button>
                         </form>
 
-                         {{-- Form Ban / Unban --}}
+                        {{-- Form Ban / Unban --}}
                         <form method="POST" action="{{ route('admin.users.ban', $user->id) }}" class="mt-2">
                             @csrf
                             @method('PATCH')
@@ -64,12 +77,14 @@
                                 </button>
                             @endif
                         </form>
+
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+
     <div>
         {{ $users->links() }}
     </div>
