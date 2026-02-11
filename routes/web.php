@@ -123,7 +123,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 // Routes MODERATOR 
-Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () { });
+Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () {
+    
+    // delete review clients
+    Route::get('review/{id}/Delete', [ReviewsController::class, 'Delete'])->name('admin.review.Delete');
+});
 
 
 
@@ -133,10 +137,9 @@ Route::middleware(['auth', 'role:admin|seller|moderator'])->prefix('admin')
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
         Route::get('/products', [ProductController::class, 'index'])->name('seller.products.index');
+        Route::get('/ShowReview/{id}', [ReviewsController::class, 'show'])->name('ShowReview');
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     });
 
 
-
-
-
+        
