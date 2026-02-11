@@ -103,6 +103,7 @@ Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->g
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
     ///order status
+    Route::get('/orders/{order}/ship', [OrderController::class, 'shipForm'])->name('orders.ship.form');
     Route::patch('/orders/{order}/ship', [OrderController::class, 'ship'])->name('orders.ship');
     Route::patch('/orders/{order}/deliver', [OrderController::class, 'deliver'])->name('orders.deliver');
     Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
@@ -125,7 +126,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
 // Routes MODERATOR 
 Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () {
-    
+
     // delete review clients
     Route::get('review/{id}/Delete', [ReviewsController::class, 'Delete'])->name('admin.review.Delete');
 });
@@ -140,6 +141,7 @@ Route::middleware(['auth', 'role:admin|seller|moderator'])->prefix('admin')
         Route::get('/products', [ProductController::class, 'index'])->name('seller.products.index');
         Route::get('/ShowReview/{id}', [ReviewsController::class, 'show'])->name('ShowReview');
         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     });
 
 

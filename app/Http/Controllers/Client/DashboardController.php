@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Core\Auth;
 use App\Http\Controllers\Controller;
+use App\Livewire\ProductLikes;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
@@ -14,8 +15,7 @@ class DashboardController extends Controller
     {
         $categories = Category::all();
 
-        $products = Product::all();
-
+        $products = Product::with(['category', 'likes'])->withCount('likes')->get();
         return view('Market', compact('products', 'categories'));
     }
 
@@ -30,14 +30,18 @@ class DashboardController extends Controller
 
     function productDetails($id)
     {
-        $product = Product::with(['category', 'reviews.user'])->find($id);
+        $product = Product::with(['category', 'reviews.user', 'likes'])->find($id);
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
 
+        $product->likes_count = $product->likes->count();
+        $product->is_liked = auth()->check() ? $product->isLikeBy(auth()->user()) : false;
         return response()->json($product, 200);
     }
-    function profile(){
+
+    function profile()
+    {
 
         $user = Auth()->user();
         return view('dashboard', compact('user'));

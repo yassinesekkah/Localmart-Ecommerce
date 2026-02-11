@@ -5,6 +5,8 @@
     <x-client.head />
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+     
+@livewireStyles
 </head>
 
 <body class="font-sans antialiased ">
@@ -50,6 +52,8 @@
 
 
 
+@livewireScripts
+@stack('scripts')
     <!-- Libs JS -->
     <script>
         function toggleDropdown(event) {
@@ -216,6 +220,7 @@
         
     </script>
     @stack('scripts')
+
 </body>
 
 </html>
