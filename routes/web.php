@@ -16,6 +16,7 @@ use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\RoleController;
 
 use Illuminate\Support\Facades\Mail;
 
@@ -142,4 +143,9 @@ Route::middleware(['auth', 'role:admin|seller|moderator'])->prefix('admin')
     });
 
 
-        
+    Route::patch('/admin/users/{id}/ban', [RoleController::class, 'toggleBan'])
+    ->name('admin.users.ban');
+
+
+
+
