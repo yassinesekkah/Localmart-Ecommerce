@@ -5,7 +5,7 @@
     <div class="container mx-auto px-4">
         <!-- Section Header -->
         <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-900">Products</h2>
+            <h2 class="text-3xl font-bold text-gray-900">Recent Products</h2>
         </div>
 
         <!-- Products Grid -->
