@@ -9,15 +9,16 @@ use Livewire\Component;
 class ProductLikes extends Component
 {
     public Product $product;
-    public function toggleLike(){
+    public function toggleLike($productId){
+
         $user = auth()->user();
 
         if ($this->product->isLikeBy($user)) {
-            Like::where('user_id', $user->id)->where('product_id' , $this->product->id)->delete();
+            Like::where('user_id', $user->id)->where('product_id' , $productId)->delete();
         }else{
             Like::create([
                 'user_id' => $user->id ,
-                'product_id' => $this->product->id
+                'product_id' => $productId
             ]);
         }
 

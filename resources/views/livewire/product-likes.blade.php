@@ -1,6 +1,8 @@
+<x-app-layout>
+
 <div>
     <!-- Wishlist Button -->
-<button wire:click="toggleLike"
+<button wire:click="toggleLike({{ $product->id }})"
     class="w-12 h-12 bg-white rounded-lg flex flex-col items-center justify-center relative">
     
     @if (!$product->isLikeBy(auth()->user()))
