@@ -12,10 +12,13 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             @foreach ($products as $product)
             <!-- Product Card -->
-            <div class="group bg-white border cursor-pointer border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all duration-300">
+            <div class="group bg-white border  border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all duration-300">
                 <!-- Product Image Container -->
-                <div class="relative mb-4">
-                    <livewire:product-favorites :product="$product" :key="'product-'.$product->id" />
+                <div class="relative mb-4 cursor-pointer">
+                    <div class="absolute top-3 right-3 z-10">
+                        @livewire('product-likes', ['product'=>$product, 'key'=>$product->id])
+                    </div>
+
 
                     <div  onclick="openQuickViewModal({{ $product->id }})" class="w-full h-48 rounded mb-3 flex items-center justify-center bg-cover bg-center"
                         style="background-image: url('{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300/e5e7eb/1f2937?text=No+Image' }}');">
@@ -26,30 +29,32 @@
                         @endif
                     </div>
                 </div>
-
                 <!-- Product Info -->
                 <div class="space-y-3">
-                    <!-- Category -->
-                    <a href="#" class="text-xs text-gray-500 hover:text-green-600 transition-colors">
-                        {{ $product->category->name ?? 'Uncategorized' }}
-                    </a>
+                    <div class=" cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
 
-                    <!-- Product Name -->
-                    <h3 class="font-semibold text-gray-900 line-clamp-2 min-h-[2.5rem]">
-                        <a href="#" class="hover:text-green-600 transition-colors">
-                            {{ $product->name }}
+
+                        <!-- Category -->
+                        <a href="#" class="text-xs text-gray-500 hover:text-green-600 transition-colors">
+                            {{ $product->category->name ?? 'Uncategorized' }}
                         </a>
-                    </h3>
 
-                    <!-- Rating -->
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm text-gray-500">{{ $product->likes->count() }} Like</span>
+                        <!-- Product Name -->
+                        <h3 class="font-semibold text-gray-900 line-clamp-2 min-h-[2.5rem]">
+                            <a href="#" class="hover:text-green-600 transition-colors">
+                                {{ $product->name }}
+                            </a>
+                        </h3>
+
+                        <!-- Rating -->
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-gray-500">{{ $product->likes->count() }} Like</span>
+                        </div>
                     </div>
-
                     <!-- Price & Add to Cart -->
                     <div class="flex items-center justify-between pt-2">
                         <!-- Price -->
-                        <div class="flex flex-col">
+                        <div class="flex flex-col cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
                             <span class="text-lg font-bold text-gray-900">{{ number_format($product->price, 2) }} MAD</span>
                             @if($product->old_price && $product->old_price > $product->price)
                             <span class="text-xs text-gray-400 line-through">{{ number_format($product->old_price, 2) }} MAD</span>
@@ -68,7 +73,6 @@
 
                             </button>
                         </form>
-                      <livewire:product-likes :product="$product" />
 
                     </div>
                 </div>
@@ -203,8 +207,8 @@
                                     </button>
                                 </form>
                                 <!-- Likes Component -->
-                                <div class="flex justify-center items-end mb-0 pb-0">
-                                    <livewire:product-likes :product="$product" />
+                                <div id="like-container" class="flex justify-center items-end mb-0 pb-0">
+                                    @livewire('product-likes', ['product'=>$product], key('product-like-'.$product->id))
                                 </div>
 
                             </div>
@@ -327,11 +331,17 @@
                 });
 
                 const data = await response.json();
-
+                Livewire.rescan();
                 if (!response.ok) throw data;
 
                 this.loading.classList.add('hidden');
                 this.populateProductData(data);
+
+                if (window.Livewire) {
+                    Livewire.dispatch('updateProduct', {
+                        id: data.id
+                    });
+                }
 
             } catch (error) {
                 console.error('Error fetching product:', error);
@@ -370,6 +380,17 @@
 
             // Update image
             this.updateProductImage(productData);
+
+            // Update like
+            document.getElementById('likesCount').textContent = productData.likes_count;
+            const heartIcon = document.getElementById('heartIcon');
+            if (productData.is_liked) {
+                heartIcon.classList.add('text-red-500');
+                heartIcon.classList.remove('text-gray-400');
+            } else {
+                heartIcon.classList.add('text-gray-400');
+                heartIcon.classList.remove('text-red-500');
+            }
 
             // Update pricing
             this.updatePricing(productData);

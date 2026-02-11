@@ -8,24 +8,29 @@ use Livewire\Component;
 
 class ProductLikes extends Component
 {
-    public Product $product;
-    public function toggleLike(){
+    public Product $product; // Khass t-koun public bach Livewire y-sync-iha
+    public $status = '';
+    public function toggleLike($productId){
 
         $user = auth()->user();
+        if (!$user) return redirect()->route('/login');
 
         if ($this->product->isLikeBy($user)) {
-            Like::where('user_id', $user->id)->where('product_id' , $this->product->id )->delete();
+            Like::where('user_id', $user->id)->where('product_id' , $productId)->delete();
+            $this->status = 'Dis-Like 👎';
         }else{
             Like::create([
                 'user_id' => $user->id ,
                 'product_id' => $this->product->id
             ]);
+            $this->status = 'liked 👍';
         }
 
       $this->product->refresh();
     }
     public function render()
     {
+
         return view('livewire.product-likes');
     }
 }
