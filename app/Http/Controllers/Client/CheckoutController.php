@@ -121,7 +121,7 @@ class CheckoutController extends Controller
         if ($order->user_id !== auth()->id()) {
             abort(403);
         }
-
+        
         $firstItem = $order->items()->with('product.category')->first();
         $category = null;
 
