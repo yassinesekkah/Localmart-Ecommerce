@@ -18,7 +18,7 @@
 			<a href="{{ route('client.categorieProducts', $category->id) }}" class="group">
 				<div class="{{ $colors[$index % count($colors)] }} border border-gray-300 rounded-lg p-6 text-center hover:border-green-600 hover:shadow-md transition duration-300">
 					<span class="">
-						{{ $category->description }}
+						{{ $category->name }}
 					</span>
 				</div>
 			</a>
