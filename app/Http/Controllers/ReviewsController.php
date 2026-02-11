@@ -46,7 +46,7 @@ class ReviewsController extends Controller
     function show($productId)
     {
 
-        $reviews = Product::with('reviews.user')
+        $reviews = Product::with('reviews.user','likes')
             ->find($productId);
         if (!$reviews) {
             return response()->json(['message' => 'aucun review'], 404);
