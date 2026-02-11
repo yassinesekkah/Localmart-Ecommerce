@@ -24,6 +24,7 @@ class OrderController extends Controller
             return back()->with('error', 'order cannot be shipped');
         }
         $order->load('items.product');
+        
         return view('admin.orders.ship', compact('order'));
     }
 
@@ -39,7 +40,7 @@ class OrderController extends Controller
             ->send(new OrderStatusUpdatedMail($order));
 
         return redirect()
-            ->route('admin.orders.index')
+            ->route('orders.index')
             ->with('success', 'Order shipped successfully');
     }
 

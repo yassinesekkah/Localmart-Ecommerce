@@ -43,7 +43,18 @@
 
     </div>
 
+    @if (session('success') || session('error'))
+        <div id="toast"
+            class="fixed top-6 right-6 
+                translate-y-6 opacity-0
+                transition-all duration-300
+                px-6 py-3 rounded-lg shadow-lg z-50
+                {{ session('success') ? 'bg-green-600' : 'bg-red-600' }}
+                text-white">
+
+            {{ session('success') ?? session('error') }}
+        </div>
+    @endif
+
 </body>
-
-
 </html>
