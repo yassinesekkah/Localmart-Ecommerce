@@ -20,7 +20,7 @@
                     </div>
 
 
-                    <div onclick="openQuickViewModal({{ $product->id }})" class="w-full h-48 rounded mb-3 flex items-center justify-center bg-cover bg-center"
+                    <div  onclick="openQuickViewModal({{ $product->id }})" class="w-full h-48 rounded mb-3 flex items-center justify-center bg-cover bg-center"
                         style="background-image: url('{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300/e5e7eb/1f2937?text=No+Image' }}');">
                         @if (empty($product->image))
                         <span class="absolute inset-0 flex items-center justify-center text-sm text-gray-500">

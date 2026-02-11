@@ -21,12 +21,12 @@ class ProductLikes extends Component
         }else{
             Like::create([
                 'user_id' => $user->id ,
-                'product_id' => $productId
+                'product_id' => $this->product->id
             ]);
             $this->status = 'liked 👍';
         }
 
-        $this->product = $this->product->refresh();
+      $this->product->refresh();
     }
     public function render()
     {
