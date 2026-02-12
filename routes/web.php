@@ -110,7 +110,7 @@ Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->g
     ///order status
     Route::get('/orders/{order}/ship', [OrderController::class, 'shipForm'])->name('orders.ship.form');
     Route::patch('/orders/{order}/ship', [OrderController::class, 'ship'])->name('orders.ship');
-    Route::patch('/orders/{order}/deliver', [OrderController::class, 'deliver'])->name('orders.deliver');
+    // Route::patch('/orders/{order}/deliver', [OrderController::class, 'deliver'])->name('orders.deliver');
     Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 });
 
