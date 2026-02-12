@@ -5,71 +5,78 @@
     <div class="container mx-auto px-4">
         <!-- Section Header -->
         <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-900">Products</h2>
+            <h2 class="text-3xl font-bold text-gray-900">Recent Products</h2>
         </div>
 
         <!-- Products Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             @foreach ($products as $product)
             <!-- Product Card -->
-            <div class="group bg-white border cursor-pointer border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all duration-300">
+            <div class="group bg-white border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all duration-300">
                 <!-- Product Image Container -->
-                <div class="relative mb-4">
-                    <livewire:product-favorites :product="$product" :key="'product-'.$product->id" />
+                <div class="relative mb-4 cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
 
-                    <div  onclick="openQuickViewModal({{ $product->id }})" class="w-full h-48 rounded mb-3 flex items-center justify-center bg-cover bg-center"
+                    <div class="w-full h-48 rounded-lg overflow-hidden bg-cover bg-center relative"
                         style="background-image: url('{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300/e5e7eb/1f2937?text=No+Image' }}');">
+
                         @if (empty($product->image))
-                        <span class="absolute inset-0 flex items-center justify-center text-sm text-gray-500">
-                            No image available
-                        </span>
+                        <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
+                            <span class="text-sm text-gray-500">No image available</span>
+                        </div>
                         @endif
+                    </div>
+
+                    <!-- Livewire Like Button (Top Right - Absolute Position) -->
+                    <div class="absolute top-0 right-1 z-10" onclick="event.stopPropagation()">
+                        @livewire('product-likes', ['product' => $product], key($product->id))
                     </div>
                 </div>
 
-                <!-- Product Info -->
+                <!-- Product Info (Clickable to open modal) -->
                 <div class="space-y-3">
-                    <!-- Category -->
-                    <a href="#" class="text-xs text-gray-500 hover:text-green-600 transition-colors">
-                        {{ $product->category->name ?? 'Uncategorized' }}
-                    </a>
-
-                    <!-- Product Name -->
-                    <h3 class="font-semibold text-gray-900 line-clamp-2 min-h-[2.5rem]">
-                        <a href="#" class="hover:text-green-600 transition-colors">
-                            {{ $product->name }}
+                    <div class="cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
+                        <!-- Category -->
+                        <a href="#" class="text-xs text-gray-500 hover:text-green-600 transition-colors" onclick="event.stopPropagation()">
+                            {{ $product->category->name ?? 'Uncategorized' }}
                         </a>
-                    </h3>
 
-                    <!-- Rating -->
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm text-gray-500">{{ $product->likes->count() }} Like</span>
+                        <!-- Product Name -->
+                        <h3 class="font-semibold text-gray-900 line-clamp-2 min-h-[2.5rem]">
+                            <a href="#" class="hover:text-green-600 transition-colors" onclick="event.stopPropagation()">
+                                {{ $product->name }}
+                            </a>
+                        </h3>
+
+                        <!-- Like Count -->
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-gray-500">{{ $product->likes->count() }} Favorite{{ $product->likes->count() !== 1 ? 's' : '' }}</span>
+                        </div>
                     </div>
 
                     <!-- Price & Add to Cart -->
-                    <div class="flex items-center justify-between pt-2">
-                        <!-- Price -->
-                        <div class="flex flex-col">
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+                        <!-- Price (Clickable to open modal) -->
+                        <div class="flex flex-col cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
                             <span class="text-lg font-bold text-gray-900">{{ number_format($product->price, 2) }} MAD</span>
                             @if($product->old_price && $product->old_price > $product->price)
                             <span class="text-xs text-gray-400 line-through">{{ number_format($product->old_price, 2) }} MAD</span>
                             @endif
                         </div>
 
-                        <!-- Add to Cart Button -->
-                        <form action="{{ route('client.cart.add', $product->id) }}" method="POST" class="inline-block">
+                        <!-- Add to Cart Button (Does NOT open modal) -->
+                        <form action="{{ route('client.cart.add', $product->id) }}" method="POST" class="inline-block" onclick="event.stopPropagation()">
                             @csrf
                             <button type="submit"
-                                class="flex items-center gap-1 px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                </svg>
-                                <span>Add</span>
-
+                                class="flex items-center gap-1 px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md">
+                                <svg class="w-6 h-6 texy-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4
+                            M7 13L5.4 5
+                            M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17
+                            m0 0a2 2 0 100 4 2 2 0 000-4
+                            zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
                             </button>
                         </form>
-                      <livewire:product-likes :product="$product" />
-
                     </div>
                 </div>
             </div>
@@ -113,7 +120,7 @@
                     <div id="result_Product" class="grid md:grid-cols-2 gap-8">
                         <!-- Left Column - Image -->
                         <div class="space-y-4">
-                            <div class="bg-gray-100 rounded-xl overflow-hidden aspect-square">
+                            <div class="bg-gray-100 rounded-xl overflow-hidden aspect-square relative">
                                 <img id="productMainImage"
                                     src="https://via.placeholder.com/500x500/e5e7eb/1f2937?text=Loading..."
                                     alt="Product"
@@ -135,15 +142,18 @@
                                 Loading...
                             </h2>
 
-                            <!-- Rating -->
+                            <!-- Like Count -->
                             <div class="flex items-center gap-3">
-                                <span class="text-sm text-gray-500">{{ $product->likes->count() }} Like</span>
-
+                                <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                                </svg>
+                                <span id="productLikes" class="text-sm text-gray-600 font-medium">0 Likes</span>
                             </div>
 
                             <!-- Price -->
                             <div class="flex items-baseline gap-3">
-                                <span id="productPrice" class="text-xl font-bold text-gray-900">0 MAD</span>
+                                <span id="productPrice" class="text-3xl font-bold text-gray-900">0 MAD</span>
                                 <span id="productOldPrice" class="text-xl text-gray-400 line-through hidden"></span>
                                 <span id="productDiscount" class="px-3 py-1 bg-red-100 text-red-600 text-sm font-semibold rounded-full hidden"></span>
                             </div>
@@ -167,47 +177,40 @@
                             </div>
 
                             <!-- Order Form -->
-                            <div class="flex ">
-                                <form action="{{ route('client.cart.add', $product->id ?? 0) }}" method="POST" class="space-y-6 border-t border-gray-200 pt-6">
-                                    @csrf
-                                    <input type="hidden" id="modal_product_id" name="product_id">
+                            <form action="{{ route('client.cart.add', 0) }}" method="POST" id="orderForm" class="space-y-6 border-t border-gray-200 pt-6">
+                                @csrf
+                                <input type="hidden" id="modal_product_id" name="product_id">
 
-                                    <!-- Quantity Selector -->
-                                    <div class="flex items-center gap-4">
-                                        <label class="text-sm font-semibold text-gray-700">Quantity:</label>
-                                        <div class="inline-flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                                            <button type="button" onclick="decrementQuantity(this)"
-                                                class="px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                                                </svg>
-                                            </button>
-                                            <input type="number" name="quantity" id="orderQuantity" value="1" min="1" max="10"
-                                                class="w-16 px-4 py-3 text-center border-x border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500" readonly />
-                                            <button type="button" onclick="incrementQuantity(this)"
-                                                class="px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                                </svg>
-                                            </button>
-                                        </div>
+                                <!-- Quantity Selector -->
+                                <div class="flex items-center gap-4">
+                                    <label class="text-sm font-semibold text-gray-700">Quantity:</label>
+                                    <div class="inline-flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                                        <button type="button" onclick="decrementQuantity(this)"
+                                            class="px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                                            </svg>
+                                        </button>
+                                        <input type="number" name="quantity" id="orderQuantity" value="1" min="1" max="10"
+                                            class="w-16 px-4 py-3 text-center border-x border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500" readonly />
+                                        <button type="button" onclick="incrementQuantity(this)"
+                                            class="px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            </svg>
+                                        </button>
                                     </div>
-
-                                    <!-- Add to Cart Button -->
-                                    <button type="submit" id="addToCartBtn"
-                                        class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-200">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                        </svg>
-                                        <span>Add to Cart</span>
-                                    </button>
-                                </form>
-                                <!-- Likes Component -->
-                                <div class="flex justify-center items-end mb-0 pb-0">
-                                    <livewire:product-likes :product="$product" />
                                 </div>
 
-                            </div>
+                                <!-- Add to Cart Button -->
+                                <button type="submit" id="addToCartBtn"
+                                    class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-200">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    <span>Add to Cart</span>
+                                </button>
+                            </form>
 
                             <!-- Product Meta -->
                             <div class="space-y-3 border-t border-gray-200 pt-6">
@@ -233,7 +236,7 @@
 
                         <!-- Add Review Form (Authenticated Users Only) -->
                         @auth
-                        <div class="mb-8 p-6 bg-gray-50 rounded-xl">
+                        <div class="relative mb-8 p-6 bg-gray-50 rounded-xl">
                             <form id="reviewForm" class="space-y-4">
                                 @csrf
                                 <input type="hidden" id="product_id" name="product_id">
@@ -257,6 +260,10 @@
                                             <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                                         </svg>
                                     </button>
+                                </div>
+                                <!-- ✅ Single Livewire Favorites Button - top right of image -->
+                                <div id="modalFavoriteWrapper" class="absolute top-4 right-4 z-10">
+                                    @livewire('product-favorites', key('modal-favorites'))
                                 </div>
                             </form>
                         </div>
@@ -297,6 +304,11 @@
             this.currentProductId = productId;
             this.showModal();
             this.loadProduct(productId);
+
+            // ✅ Dispatch Livewire event to load the correct product's favorites
+            if (typeof Livewire !== 'undefined') {
+                Livewire.dispatch('load-product-favorites', { id: productId });
+            }
         }
 
         // Close modal
@@ -352,7 +364,19 @@
             this.setElementValue('product_id', productData.id);
             this.setElementValue('modal_product_id', productData.id);
 
-            // Update text content
+            // Check stock
+            if (productData.quantity <= 0) {
+                document.getElementById('addToCartBtn').disabled = true;
+                document.getElementById('orderForm').classList.add('cursor-not-allowed', 'opacity-50');
+            }
+
+            // Update add button 'form' action
+            const orderForm = document.getElementById('orderForm');
+            if (orderForm) {
+                orderForm.action = `/client/cart/add/${productData.id}`;
+            }
+
+            // Update text content by id
             this.setElementText('productName', productData.name || 'Product Name');
             this.setElementText('productCategory', productData.category?.name || 'Uncategorized');
             this.setElementText('productCategoryLink', productData.category?.name || 'Uncategorized');
@@ -360,12 +384,18 @@
             this.setElementText('productDescription', productData.description || 'No description available.');
             this.setElementText('productSKU', productData.sku || `PRD-${productData.id}`);
             this.setElementText('productBrand', productData.brand || 'LocalMarket');
-            let Stok = document.querySelector('.Stock')
-            Stok.textContent = productData.quantity
+
+            // Update likes count
+            const likesCount = productData.likes?.length || 0;
+            this.setElementText('productLikes', `${likesCount} Favorite${likesCount !== 1 ? 's' : ''}`);
+
+            // Update stock
+            let Stok = document.querySelector('.Stock');
+            Stok.textContent = productData.quantity;
             if (productData.quantity <= 5) {
-                let style = document.querySelector('.Stok1')
-                style.classList.remove('bg-green-700')
-                style.classList.add('bg-red-500')
+                let style = document.querySelector('.Stok1');
+                style.classList.remove('bg-green-700');
+                style.classList.add('bg-red-500');
             }
 
             // Update image
@@ -420,9 +450,13 @@
 
             if (!reviews || reviews.length === 0) {
                 reviewsList.innerHTML = `
-                <p class="text-gray-500 text-center py-4">
-                    No reviews yet. Be the first to review this product!
-                </p>
+                <div class="text-center py-8">
+                    <svg class="w-16 h-16 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                    </svg>
+                    <p class="text-gray-500 font-medium">No reviews yet</p>
+                    <p class="text-gray-400 text-sm mt-1">Be the first to review this product!</p>
+                </div>
             `;
                 return;
             }
@@ -439,21 +473,19 @@
             const timeAgo = this.getTimeAgo(review.created_at);
 
             return `
-            <div class="border-b border-gray-200 pb-6 mb-6">
-                <div class="flex items-start justify-between mb-3">
-                    <div class="flex items-center">
-                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center font-bold text-green-600 mr-4">
-                            ${initials}
-                        </div>
-                        <div>
+            <div class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center font-bold text-green-600 flex-shrink-0">
+                        ${initials}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between mb-1">
                             <h4 class="font-semibold text-gray-900">${userName}</h4>
-                            <div class="flex items-center mt-1">
-                                <span class="text-sm text-gray-500">${timeAgo}</span>
-                            </div>
+                            <span class="text-xs text-gray-500">${timeAgo}</span>
                         </div>
+                        <p class="text-gray-600 text-sm">${review.comment}</p>
                     </div>
                 </div>
-                <p class="text-gray-600">${review.comment}</p>
             </div>
         `;
         }
@@ -507,78 +539,10 @@
 
         // Setup event listeners
         setupEventListeners() {
-            // Add to Cart Form
-            const orderForm = document.getElementById('orderForm');
-            if (orderForm) {
-                orderForm.addEventListener('submit', (e) => this.handleAddToCart(e));
-            }
-
-            // Review Form
             const reviewForm = document.getElementById('reviewForm');
             if (reviewForm) {
                 reviewForm.addEventListener('submit', (e) => this.handleSubmitReview(e));
             }
-        }
-
-        // Handle Add to Cart
-        async handleAddToCart(e) {
-            e.preventDefault();
-
-            const productId = document.getElementById('modal_product_id').value;
-            const form = e.target;
-            const button = document.getElementById('addToCartBtn');
-            const originalContent = button.innerHTML;
-
-            try {
-                // Show loading
-                button.disabled = true;
-                button.innerHTML = this.getSpinnerHTML();
-
-                const formData = new FormData(form);
-                const response = await fetch(`/client/create-order/${encodeURIComponent(productId)}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-                        'Accept': 'application/json'
-                    },
-                    body: formData
-                });
-
-                const data = await response.json();
-
-                if (data.status === 'success') {
-                    this.showAddToCartSuccess(button, originalContent);
-                } else {
-                    throw new Error(data.message || 'Failed to add product');
-                }
-
-            } catch (error) {
-                console.error('Error adding product:', error);
-                alert('Error adding product to cart. Please try again.');
-                button.disabled = false;
-                button.innerHTML = originalContent;
-            }
-        }
-
-        // Show Add to Cart success
-        showAddToCartSuccess(button, originalContent) {
-            button.innerHTML = `
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>Added to Cart!</span>
-        `;
-            button.classList.remove('bg-green-600', 'hover:bg-green-700');
-            button.classList.add('bg-green-700');
-
-            alert('Product added to cart successfully!');
-
-            setTimeout(() => {
-                button.disabled = false;
-                button.innerHTML = originalContent;
-                button.classList.remove('bg-green-700');
-                button.classList.add('bg-green-600', 'hover:bg-green-700');
-            }, 2000);
         }
 
         // Handle Submit Review
@@ -591,7 +555,6 @@
             const originalButtonContent = submitButton.innerHTML;
 
             try {
-                // Show loading
                 submitButton.disabled = true;
                 submitButton.innerHTML = this.getSpinnerHTML('green');
 
@@ -610,13 +573,9 @@
                 const data = await response.json();
 
                 if (data.status === 'success') {
-                    // Clear input
                     document.getElementById('review_input').value = '';
-
-                    // Update reviews
                     this.displayReviews(data.data);
-
-                    // Reset button
+                    alert('Review submitted successfully!');
                     submitButton.disabled = false;
                     submitButton.innerHTML = originalButtonContent;
                 } else {
@@ -651,33 +610,19 @@
         }
     }
 
-    // ========================================
-    // QUANTITY CONTROLS
-    // ========================================
-
     function incrementQuantity(button) {
         const input = button.previousElementSibling;
         const value = parseInt(input.value);
         const max = parseInt(input.max);
-
-        if (value < max) {
-            input.value = value + 1;
-        }
+        if (value < max) input.value = value + 1;
     }
 
     function decrementQuantity(button) {
         const input = button.nextElementSibling;
         const value = parseInt(input.value);
         const min = parseInt(input.min);
-
-        if (value > min) {
-            input.value = value - 1;
-        }
+        if (value > min) input.value = value - 1;
     }
-
-    // ========================================
-    // GLOBAL FUNCTIONS (for HTML onclick)
-    // ========================================
 
     let quickViewModal;
 
@@ -693,10 +638,6 @@
             quickViewModal.close();
         }
     }
-
-    // ========================================
-    // INITIALIZATION
-    // ========================================
 
     document.addEventListener('DOMContentLoaded', function() {
         quickViewModal = new QuickViewModal();
