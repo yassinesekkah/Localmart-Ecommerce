@@ -1,48 +1,88 @@
 @extends('layouts.client')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-4">Historique des commandes</h1>
+    <div class="container mx-auto p-8">
 
-    @if($orders->isEmpty())
-        <p>Vous n'avez aucune commande pour le moment.</p>
-    @else
-        <div class="grid gap-4"> 
+        <h1 class="text-2xl font-bold mb-6">
+            Historique des commandes
+        </h1>
 
-            @foreach($orders as $order)
-                <div class="border p-4 rounded shadow-sm">
-                    <div class="flex justify-between mb-2">
-                        <span class="font-semibold">Commande #{{ $order->id }}</span>
-                        <span class="text-gray-500">{{ $order->created_at->format('d/m/Y H:i') }}</span>
-                    </div>
+        @if ($orders->isEmpty())
+            <p>Vous n'avez aucune commande pour le moment.</p>
+        @else
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 space-4">
 
-                    <div class="mb-2">
-                        @foreach($order->items as $item)
-                            <div class="flex justify-between">
-                                <span>{{ $item->product->name }} x {{ $item->quantity }}</span>
-                                <span>{{ number_format($item->price, 2) }} MAD</span>
+                @foreach ($orders as $order)
+                    @php
+                        $firstItem = $order->items->first();
+                        $firstProduct = $firstItem?->product;
+                    @endphp
+
+                    <div class="bg-white rounded-xl shadow p-5 flex items-center justify-between">
+
+                        {{-- Left Section --}}
+                        <div class="flex items-center gap-4">
+
+                            {{-- Product Image --}}
+                            @if ($firstProduct && $firstProduct->image)
+                                <img src="{{ asset('storage/' . $firstProduct->image) }}"
+                                    class="w-20 h-20 object-cover rounded-lg">
+                            @else
+                                <div class="w-20 h-20 bg-gray-200 rounded-lg"></div>
+                            @endif
+
+                            {{-- Order Info --}}
+                            <div>
+                                <p class="font-semibold text-lg">
+                                    Commande #{{ $order->id }}
+                                </p>
+
+                                <p class="text-sm text-gray-500">
+                                    {{ $order->created_at->format('d/m/Y H:i') }}
+                                </p>
+
+                                <p class="text-sm mt-1">
+                                    {{ $order->items->count() }} produit(s)
+                                </p>
+
+                                <p class="font-medium mt-1">
+                                    Total: {{ number_format($order->total, 2) }} MAD
+                                </p>
                             </div>
-                        @endforeach
-                    </div>
 
-                    <div class="text-right font-bold">
-                        Total: {{ number_format($order->total, 2) }} MAD
-                    </div>
+                        </div>
 
-                    <div class="text-right mt-1">
-                        Statut: 
-                        @if($order->status == 'pending')
-                            <span class="text-yellow-500 font-semibold">En attente</span>
-                        @elseif($order->status == 'completed')
-                            <span class="text-green-600 font-semibold">Livrée</span>
-                        @elseif($order->status == 'canceled')
-                            <span class="text-red-600 font-semibold">Annulée</span>
-                        @endif
-                    </div>
-                </div>
-            @endforeach
+                        {{-- Right Section --}}
+                        <div class="flex flex-col items-end gap-3">
 
-        </div>
-    @endif
-</div>
+                            {{-- Status --}}
+                            @php
+                                $statusStyles = [
+                                    'pending' => 'bg-yellow-50 text-yellow-600 border border-yellow-200',
+                                    'shipped' => 'bg-blue-50 text-blue-600 border border-blue-200',
+                                    'delivered' => 'bg-green-50 text-green-600 border border-green-200',
+                                    'cancelled' => 'bg-red-50 text-red-600 border border-red-200',
+                                ];
+                            @endphp
+
+                            <span
+                                class="px-2.5 py-1 text-xs font-medium rounded-full 
+                                      {{ $statusStyles[$order->status] ?? 'bg-gray-100 text-gray-600 border border-gray-200' }}">
+                                {{ ucfirst($order->status) }}
+                            </span>
+
+                            {{-- Details Button --}}
+                            <a href="{{ route('client.orders.show', $order) }}"
+                                class="px-4 py-2 bg-gray-900 text-white text-sm rounded-lg 
+                                                 hover:bg-gray-700 transition shadow-sm">
+                                Voir détails
+                            </a>
+
+                        </div>
+
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
 @endsection
