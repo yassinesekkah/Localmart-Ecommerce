@@ -14,14 +14,11 @@
             <!-- Product Card -->
             <div class="group bg-white border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all duration-300">
                 <!-- Product Image Container -->
-                <div class="relative mb-4 cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
-                    <!-- Product Image -->
-                     <div class="absolute top-1 left-12 z-10" onclick="event.stopPropagation()">
-                     @livewire ('product-favorites', ['product'=>$product] , key($product->id))
-                     </div>
+                <div class="relative mb-4 cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
+
                     <div class="w-full h-48 rounded-lg overflow-hidden bg-cover bg-center relative"
                         style="background-image: url('{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300/e5e7eb/1f2937?text=No+Image' }}');">
-                        
+
                         @if (empty($product->image))
                         <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
                             <span class="text-sm text-gray-500">No image available</span>
@@ -30,14 +27,14 @@
                     </div>
 
                     <!-- Livewire Like Button (Top Right - Absolute Position) -->
-                    <div class="absolute top-3 right-3 z-10" onclick="event.stopPropagation()">
+                    <div class="absolute top-0 right-1 z-10" onclick="event.stopPropagation()">
                         @livewire('product-likes', ['product' => $product], key($product->id))
                     </div>
                 </div>
 
                 <!-- Product Info (Clickable to open modal) -->
                 <div class="space-y-3">
-                    <div class="cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
+                    <div class="cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
                         <!-- Category -->
                         <a href="#" class="text-xs text-gray-500 hover:text-green-600 transition-colors" onclick="event.stopPropagation()">
                             {{ $product->category->name ?? 'Uncategorized' }}
@@ -52,14 +49,14 @@
 
                         <!-- Like Count -->
                         <div class="flex items-center gap-2">
-                            <span class="text-sm text-gray-500">{{ $product->likes->count() }} Like{{ $product->likes->count() !== 1 ? 's' : '' }}</span>
+                            <span class="text-sm text-gray-500">{{ $product->likes->count() }} Favorite{{ $product->likes->count() !== 1 ? 's' : '' }}</span>
                         </div>
                     </div>
 
                     <!-- Price & Add to Cart -->
                     <div class="flex items-center justify-between pt-2 border-t border-gray-100">
                         <!-- Price (Clickable to open modal) -->
-                        <div class="flex flex-col cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
+                        <div class="flex flex-col cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
                             <span class="text-lg font-bold text-gray-900">{{ number_format($product->price, 2) }} MAD</span>
                             @if($product->old_price && $product->old_price > $product->price)
                             <span class="text-xs text-gray-400 line-through">{{ number_format($product->old_price, 2) }} MAD</span>
@@ -71,10 +68,13 @@
                             @csrf
                             <button type="submit"
                                 class="flex items-center gap-1 px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                                </svg>
-                                <span>Add</span>
+                                <svg class="w-6 h-6 texy-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4
+                            M7 13L5.4 5
+                            M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17
+                            m0 0a2 2 0 100 4 2 2 0 000-4
+                            zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
                             </button>
                         </form>
                     </div>
@@ -125,11 +125,6 @@
                                     src="https://via.placeholder.com/500x500/e5e7eb/1f2937?text=Loading..."
                                     alt="Product"
                                     class="w-full h-full object-cover" />
-                                
-                                <!-- Like Button in Modal -->
-                                <div id="modalLikeButton" class="absolute top-4 right-4">
-                                    <!-- This will be populated with Livewire component -->
-                                </div>
                             </div>
                         </div>
 
@@ -150,8 +145,8 @@
                             <!-- Like Count -->
                             <div class="flex items-center gap-3">
                                 <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" 
-                                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd"
+                                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
                                 </svg>
                                 <span id="productLikes" class="text-sm text-gray-600 font-medium">0 Likes</span>
                             </div>
@@ -241,7 +236,7 @@
 
                         <!-- Add Review Form (Authenticated Users Only) -->
                         @auth
-                        <div class="mb-8 p-6 bg-gray-50 rounded-xl">
+                        <div class="relative mb-8 p-6 bg-gray-50 rounded-xl">
                             <form id="reviewForm" class="space-y-4">
                                 @csrf
                                 <input type="hidden" id="product_id" name="product_id">
@@ -265,6 +260,10 @@
                                             <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                                         </svg>
                                     </button>
+                                </div>
+                                <!-- ✅ Single Livewire Favorites Button - top right of image -->
+                                <div id="modalFavoriteWrapper" class="absolute top-4 right-4 z-10">
+                                    @livewire('product-favorites', key('modal-favorites'))
                                 </div>
                             </form>
                         </div>
@@ -305,6 +304,11 @@
             this.currentProductId = productId;
             this.showModal();
             this.loadProduct(productId);
+
+            // ✅ Dispatch Livewire event to load the correct product's favorites
+            if (typeof Livewire !== 'undefined') {
+                Livewire.dispatch('load-product-favorites', { id: productId });
+            }
         }
 
         // Close modal
@@ -359,18 +363,20 @@
             // Set product IDs
             this.setElementValue('product_id', productData.id);
             this.setElementValue('modal_product_id', productData.id);
-            // chack stok
-            if(productData.quantity <= 0){
+
+            // Check stock
+            if (productData.quantity <= 0) {
                 document.getElementById('addToCartBtn').disabled = true;
                 document.getElementById('orderForm').classList.add('cursor-not-allowed', 'opacity-50');
-}
-            // Update add buuton 'from' action
+            }
+
+            // Update add button 'form' action
             const orderForm = document.getElementById('orderForm');
             if (orderForm) {
                 orderForm.action = `/client/cart/add/${productData.id}`;
             }
 
-            // Update text content
+            // Update text content by id
             this.setElementText('productName', productData.name || 'Product Name');
             this.setElementText('productCategory', productData.category?.name || 'Uncategorized');
             this.setElementText('productCategoryLink', productData.category?.name || 'Uncategorized');
@@ -378,11 +384,11 @@
             this.setElementText('productDescription', productData.description || 'No description available.');
             this.setElementText('productSKU', productData.sku || `PRD-${productData.id}`);
             this.setElementText('productBrand', productData.brand || 'LocalMarket');
-            
+
             // Update likes count
             const likesCount = productData.likes?.length || 0;
-            this.setElementText('productLikes', `${likesCount} Like${likesCount !== 1 ? 's' : ''}`);
-            
+            this.setElementText('productLikes', `${likesCount} Favorite${likesCount !== 1 ? 's' : ''}`);
+
             // Update stock
             let Stok = document.querySelector('.Stock');
             Stok.textContent = productData.quantity;
@@ -533,7 +539,6 @@
 
         // Setup event listeners
         setupEventListeners() {
-            // Review Form
             const reviewForm = document.getElementById('reviewForm');
             if (reviewForm) {
                 reviewForm.addEventListener('submit', (e) => this.handleSubmitReview(e));
@@ -550,7 +555,6 @@
             const originalButtonContent = submitButton.innerHTML;
 
             try {
-                // Show loading
                 submitButton.disabled = true;
                 submitButton.innerHTML = this.getSpinnerHTML('green');
 
@@ -569,16 +573,9 @@
                 const data = await response.json();
 
                 if (data.status === 'success') {
-                    // Clear input
                     document.getElementById('review_input').value = '';
-
-                    // Update reviews
                     this.displayReviews(data.data);
-
-                    // Show success message
                     alert('Review submitted successfully!');
-
-                    // Reset button
                     submitButton.disabled = false;
                     submitButton.innerHTML = originalButtonContent;
                 } else {
@@ -613,33 +610,19 @@
         }
     }
 
-    // ========================================
-    // QUANTITY CONTROLS
-    // ========================================
-
     function incrementQuantity(button) {
         const input = button.previousElementSibling;
         const value = parseInt(input.value);
         const max = parseInt(input.max);
-
-        if (value < max) {
-            input.value = value + 1;
-        }
+        if (value < max) input.value = value + 1;
     }
 
     function decrementQuantity(button) {
         const input = button.nextElementSibling;
         const value = parseInt(input.value);
         const min = parseInt(input.min);
-
-        if (value > min) {
-            input.value = value - 1;
-        }
+        if (value > min) input.value = value - 1;
     }
-
-    // ========================================
-    // GLOBAL FUNCTIONS (for HTML onclick)
-    // ========================================
 
     let quickViewModal;
 
@@ -655,10 +638,6 @@
             quickViewModal.close();
         }
     }
-
-    // ========================================
-    // INITIALIZATION
-    // ========================================
 
     document.addEventListener('DOMContentLoaded', function() {
         quickViewModal = new QuickViewModal();
