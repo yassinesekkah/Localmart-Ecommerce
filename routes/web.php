@@ -61,6 +61,7 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::get('/product/{id}', [DashboardController::class, 'CategorieProducts'])->name('categorieProducts');
     Route::get('/product/infos/{id}', [DashboardController::class, 'productDetails']);
+    Route::get('/product/Quantity/{productId}', [ProductController::class, 'getProductQuantity']);
     Route::post('/product/create-Review/{id}', [ReviewsController::class, 'createReview']);
     // Add to panier
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
