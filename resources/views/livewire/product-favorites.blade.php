@@ -1,4 +1,5 @@
 <div class="absolute right-2">
+    @if($product)
     <button wire:click="toggleFavorite"
         class="w-12 h-12 rounded-lg flex flex-col items-center justify-center relative">
 
@@ -14,4 +15,7 @@
         @endif
 
     </button>
+    @else
+        <div class="animate-pulse bg-gray-200 w-10 h-10 rounded-full"></div>
+    @endif
 </div>
