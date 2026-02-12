@@ -87,7 +87,9 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     // routes/web.php
     Route::get('/checkout/thank-you/{order}', [CheckoutController::class, 'thankYou'])->name('checkout.thankyou')
         ->middleware(['auth']);
-
+    //client order route
+    Route::get('/orders', [OrderController::class, 'clientIndex'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'clientShow'])->name('orders.show');
 
 
     // Products by category
@@ -145,11 +147,5 @@ Route::middleware(['auth', 'role:admin|seller|moderator'])->prefix('admin')
     });
 
 
-    Route::patch('/admin/users/{id}/ban', [RoleController::class, 'toggleBan'])
+Route::patch('/admin/users/{id}/ban', [RoleController::class, 'toggleBan'])
     ->name('admin.users.ban');
-
-
-//order route
-Route::get('/client/orders', [OrderController::class, 'index'])
-     ->name('client.orders.index')
-     ->middleware('auth');

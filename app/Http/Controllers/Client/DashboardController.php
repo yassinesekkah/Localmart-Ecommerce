@@ -42,7 +42,6 @@ class DashboardController extends Controller
 
     function profile()
     {
-
         $user = Auth()->user();
         return view('dashboard', compact('user'));
     }
