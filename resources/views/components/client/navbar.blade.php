@@ -11,7 +11,9 @@
         <div class="flex items-center justify-between py-4">
             <!-- Logo -->
             <div class="flex items-center space-x-8">
-                <a href="{{ url('/client') }}" class="text-2xl font-bold text-green-600">FreshCart</a>
+                <a href="{{ url('/client') }}" class="text-2xl font-bold text-green-600">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="LocalMart" class="h-10">
+                </a>
 
                 <!-- Navigation -->
                 <nav class="hidden lg:flex space-x-6 items-center">

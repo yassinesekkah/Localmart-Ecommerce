@@ -1,7 +1,7 @@
 <div>
     <!-- Wishlist Button -->
     <button wire:click="toggleLike({{ $product->id }})"
-        class="w-12 h-12 bg-white rounded-lg flex flex-col items-center justify-center relative">
+        class="w-8 h-8 rounded-lg flex flex-col items-center justify-center relative">
 
         @if (!$product->isLikeBy(auth()->user()))
         <svg class="w-10 h-10 text-gray-500 transition-transform duration-200 transform hover:scale-125" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -14,8 +14,6 @@
         </svg>
         @endif
 
-        <!-- Number under the heart -->
-        <span class="text-xs text-black mt-1">{{ $product->likes->count()}}</span>
     </button>
 
 </div>
