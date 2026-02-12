@@ -14,8 +14,8 @@
             <!-- Product Card -->
             <div class="group bg-white border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all duration-300">
                 <!-- Product Image Container -->
-                <div class="relative mb-4 cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
-
+                <div class="relative mb-4 cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
+                    
                     <div class="w-full h-48 rounded-lg overflow-hidden bg-cover bg-center relative"
                         style="background-image: url('{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300/e5e7eb/1f2937?text=No+Image' }}');">
 
@@ -36,21 +36,16 @@
                 <div class="space-y-3">
                     <div class="cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
                         <!-- Category -->
-                        <a href="#" class="text-xs text-gray-500 hover:text-green-600 transition-colors" onclick="event.stopPropagation()">
+                        <span class="text-xs text-gray-500 hover:text-green-600 transition-colors" onclick="openQuickViewModal({{ $product->id }})">
                             {{ $product->category->name ?? 'Uncategorized' }}
-                        </a>
+                        </span>
 
                         <!-- Product Name -->
                         <h3 class="font-semibold text-gray-900 line-clamp-2 min-h-[2.5rem]">
-                            <a href="#" class="hover:text-green-600 transition-colors" onclick="event.stopPropagation()">
+                            <span class="hover:text-green-600 transition-colors" onclick="openQuickViewModal({{ $product->id }})">
                                 {{ $product->name }}
-                            </a>
+                            </span>
                         </h3>
-
-                        <!-- Like Count -->
-                        <div class="flex items-center gap-2">
-                            <span class="text-sm text-gray-500">{{ $product->likes->count() }} Favorite{{ $product->likes->count() !== 1 ? 's' : '' }}</span>
-                        </div>
                     </div>
 
                     <!-- Price & Add to Cart -->
@@ -69,12 +64,12 @@
                             <button type="submit"
                                 class="flex items-center gap-1 px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md">
                                 <svg class="w-6 h-6 texy-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4
                             M7 13L5.4 5
                             M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17
                             m0 0a2 2 0 100 4 2 2 0 000-4
                             zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
+                                </svg>
                             </button>
                         </form>
                     </div>
@@ -160,7 +155,7 @@
 
                             <!-- Stock Status -->
                             <div class="flex items-center gap-2">
-                                <span class="Stok1 px-3 py-1 bg-green-600 text-white text-xs font-semibold rounded-full">
+                                <span class="Stok1 px-3 py-1 text-white text-xs font-semibold rounded-full">
                                     Stock
                                 </span>
                                 <span class="Stock text-sm text-gray-600 font-medium"></span>
@@ -252,8 +247,7 @@
                                 <!-- Review Input -->
                                 <div class="relative">
                                     <input type="text" name="comment" id="review_input" placeholder="Write your review..."
-                                        class="w-full pl-4 pr-12 py-3 bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        required />
+                                        class="w-full pl-4 pr-12 py-3 bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" />
                                     <button type="submit"
                                         class="absolute right-3 top-1/2 -translate-y-1/2 text-green-600 hover:text-green-700 focus:outline-none">
                                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -307,7 +301,9 @@
 
             // ✅ Dispatch Livewire event to load the correct product's favorites
             if (typeof Livewire !== 'undefined') {
-                Livewire.dispatch('load-product-favorites', { id: productId });
+                Livewire.dispatch('load-product-favorites', {
+                    id: productId
+                });
             }
         }
 
@@ -396,6 +392,10 @@
                 let style = document.querySelector('.Stok1');
                 style.classList.remove('bg-green-700');
                 style.classList.add('bg-red-500');
+            } else {
+                let style = document.querySelector('.Stok1');
+                style.classList.add('bg-green-700');
+                style.classList.remove('bg-red-500');
             }
 
             // Update image
