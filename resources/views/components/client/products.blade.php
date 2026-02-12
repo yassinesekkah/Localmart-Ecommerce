@@ -15,10 +15,8 @@
             <div class="group bg-white border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all duration-300">
                 <!-- Product Image Container -->
                 <div class="relative mb-4 cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
-                    
                     <div class="w-full h-48 rounded-lg overflow-hidden bg-cover bg-center relative"
                         style="background-image: url('{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300/e5e7eb/1f2937?text=No+Image' }}');">
-
                         @if (empty($product->image))
                         <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
                             <span class="text-sm text-gray-500">No image available</span>
@@ -26,23 +24,23 @@
                         @endif
                     </div>
 
-                    <!-- Livewire Like Button (Top Right - Absolute Position) -->
+                    <!-- Livewire Like Button -->
                     <div class="absolute top-0 right-1 z-10" onclick="event.stopPropagation()">
                         @livewire('product-likes', ['product' => $product], key($product->id))
                     </div>
                 </div>
 
-                <!-- Product Info (Clickable to open modal) -->
+                <!-- Product Info -->
                 <div class="space-y-3">
-                    <div class="cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
+                    <div class="cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
                         <!-- Category -->
-                        <span class="text-xs text-gray-500 hover:text-green-600 transition-colors" onclick="openQuickViewModal({{ $product->id }})">
+                        <span class="text-xs text-gray-500 hover:text-green-600 transition-colors">
                             {{ $product->category->name ?? 'Uncategorized' }}
                         </span>
 
                         <!-- Product Name -->
                         <h3 class="font-semibold text-gray-900 line-clamp-2 min-h-[2.5rem]">
-                            <span class="hover:text-green-600 transition-colors" onclick="openQuickViewModal({{ $product->id }})">
+                            <span class="hover:text-green-600 transition-colors">
                                 {{ $product->name }}
                             </span>
                         </h3>
@@ -50,25 +48,21 @@
 
                     <!-- Price & Add to Cart -->
                     <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                        <!-- Price (Clickable to open modal) -->
-                        <div class="flex flex-col cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
+                        <!-- Price -->
+                        <div class="flex flex-col cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
                             <span class="text-lg font-bold text-gray-900">{{ number_format($product->price, 2) }} MAD</span>
                             @if($product->old_price && $product->old_price > $product->price)
                             <span class="text-xs text-gray-400 line-through">{{ number_format($product->old_price, 2) }} MAD</span>
                             @endif
                         </div>
 
-                        <!-- Add to Cart Button (Does NOT open modal) -->
+                        <!-- Add to Cart Button -->
                         <form action="{{ route('client.cart.add', $product->id) }}" method="POST" class="inline-block" onclick="event.stopPropagation()">
                             @csrf
                             <button type="submit"
                                 class="flex items-center gap-1 px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md">
-                                <svg class="w-6 h-6 texy-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4
-                            M7 13L5.4 5
-                            M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17
-                            m0 0a2 2 0 100 4 2 2 0 000-4
-                            zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
                             </button>
                         </form>
@@ -81,14 +75,13 @@
 </section>
 
 <!-- Quick View Modal -->
-<div id="quickViewModal" class="fixed flex items-center justify-center inset-0 z-50 hidden">
+<div id="quickViewModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
     <!-- Backdrop -->
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeQuickViewModal()"></div>
 
-    <!-- Modal Container -->
-    <div class="relative min-h-screen flex items-center justify-center p-4">
-        <!-- Modal Content -->
-        <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden">
+    <!-- Modal Content -->
+    <div class="relative w-full max-w-5xl">
+        <div class="relative bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-hidden">
             <!-- Loading Spinner -->
             <div id="modalLoading" class="absolute inset-0 bg-white/90 backdrop-blur-sm flex items-center justify-center z-20 hidden">
                 <div class="text-center">
@@ -137,15 +130,6 @@
                                 Loading...
                             </h2>
 
-                            <!-- Like Count -->
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
-                                </svg>
-                                <span id="productLikes" class="text-sm text-gray-600 font-medium">0 Likes</span>
-                            </div>
-
                             <!-- Price -->
                             <div class="flex items-baseline gap-3">
                                 <span id="productPrice" class="text-3xl font-bold text-gray-900">0 MAD</span>
@@ -155,10 +139,10 @@
 
                             <!-- Stock Status -->
                             <div class="flex items-center gap-2">
-                                <span class="Stok1 px-3 py-1 text-white text-xs font-semibold rounded-full">
+                                <span id="stockBadge" class="px-3 py-1 text-white text-xs font-semibold rounded-full bg-green-600">
                                     Stock
                                 </span>
-                                <span class="Stock text-sm text-gray-600 font-medium"></span>
+                                <span id="stockQuantity" class="text-sm text-gray-600 font-medium"></span>
                             </div>
 
                             <!-- Description -->
@@ -174,7 +158,7 @@
                             <!-- Order Form -->
                             <form action="{{ route('client.cart.add', 0) }}" method="POST" id="orderForm" class="space-y-6 border-t border-gray-200 pt-6">
                                 @csrf
-                                <input type="hidden" id="modal_product_id" name="product_id">
+                                <input type="hidden" id="modal_product_id" name="product_id" value="">
 
                                 <!-- Quantity Selector -->
                                 <div class="flex items-center gap-4">
@@ -199,11 +183,11 @@
 
                                 <!-- Add to Cart Button -->
                                 <button type="submit" id="addToCartBtn"
-                                    class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-200">
+                                    class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-200 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-300">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
-                                    <span>Add to Cart</span>
+                                    <span id="addToCartText">Add to Cart</span>
                                 </button>
                             </form>
 
@@ -229,7 +213,7 @@
                     <div id="reviews" class="mt-12 border-t border-gray-200 pt-8">
                         <h3 class="text-2xl font-bold text-gray-900 mb-6">Customer Reviews</h3>
 
-                        <!-- Add Review Form (Authenticated Users Only) -->
+                        <!-- Add Review Form -->
                         @auth
                         <div class="relative mb-8 p-6 bg-gray-50 rounded-xl">
                             <form id="reviewForm" class="space-y-4">
@@ -255,7 +239,8 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <!-- ✅ Single Livewire Favorites Button - top right of image -->
+
+                                <!-- Favorites Button -->
                                 <div id="modalFavoriteWrapper" class="absolute top-4 right-4 z-10">
                                     @livewire('product-favorites', key('modal-favorites'))
                                 </div>
@@ -274,12 +259,12 @@
     </div>
 </div>
 
+<!-- Success Popup -->
+<div id="successPopup" class="fixed top-5 right-5 hidden items-center gap-2 bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg transition-all duration-300 z-50">
+</div>
+
 @push('scripts')
 <script>
-    // ========================================
-    // QUICK VIEW MODAL - Product Management
-    // ========================================
-
     class QuickViewModal {
         constructor() {
             this.currentProductId = null;
@@ -293,21 +278,16 @@
             this.setupEscapeKey();
         }
 
-        // Open modal and load product
         open(productId) {
             this.currentProductId = productId;
             this.showModal();
             this.loadProduct(productId);
 
-            // ✅ Dispatch Livewire event to load the correct product's favorites
             if (typeof Livewire !== 'undefined') {
-                Livewire.dispatch('load-product-favorites', {
-                    id: productId
-                });
+                Livewire.dispatch('load-product-favorites', { id: productId });
             }
         }
 
-        // Close modal
         close() {
             this.modal.classList.add('hidden');
             this.modal.classList.remove('flex');
@@ -315,7 +295,6 @@
             this.currentProductId = null;
         }
 
-        // Show modal UI
         showModal() {
             this.modal.classList.remove('hidden');
             this.modal.classList.add('flex');
@@ -323,7 +302,6 @@
             this.loading.classList.remove('hidden');
         }
 
-        // Load product data from API
         async loadProduct(productId) {
             try {
                 const response = await fetch(`/client/product/infos/${encodeURIComponent(productId)}`, {
@@ -335,19 +313,16 @@
                 });
 
                 const data = await response.json();
-
                 if (!response.ok) throw data;
 
                 this.loading.classList.add('hidden');
                 this.populateProductData(data);
 
             } catch (error) {
-                console.error('Error fetching product:', error);
                 this.showError('Error loading product. Please try again later.');
             }
         }
 
-        // Populate modal with product data
         populateProductData(product) {
             if (!product) {
                 this.showError('Product not found');
@@ -356,23 +331,26 @@
 
             const productData = Array.isArray(product) ? product[0] : product;
 
+            // Reset quantity to 1
+            const quantityInput = document.getElementById('orderQuantity');
+            if (quantityInput) {
+                quantityInput.value = 1;
+            }
+
             // Set product IDs
             this.setElementValue('product_id', productData.id);
             this.setElementValue('modal_product_id', productData.id);
 
-            // Check stock
-            if (productData.quantity <= 0) {
-                document.getElementById('addToCartBtn').disabled = true;
-                document.getElementById('orderForm').classList.add('cursor-not-allowed', 'opacity-50');
-            }
-
-            // Update add button 'form' action
+            // Update form action
             const orderForm = document.getElementById('orderForm');
             if (orderForm) {
                 orderForm.action = `/client/cart/add/${productData.id}`;
             }
 
-            // Update text content by id
+            // Update stock status and button state
+            this.updateStockStatus(productData.quantity);
+
+            // Update text content
             this.setElementText('productName', productData.name || 'Product Name');
             this.setElementText('productCategory', productData.category?.name || 'Uncategorized');
             this.setElementText('productCategoryLink', productData.category?.name || 'Uncategorized');
@@ -380,23 +358,6 @@
             this.setElementText('productDescription', productData.description || 'No description available.');
             this.setElementText('productSKU', productData.sku || `PRD-${productData.id}`);
             this.setElementText('productBrand', productData.brand || 'LocalMarket');
-
-            // Update likes count
-            const likesCount = productData.likes?.length || 0;
-            this.setElementText('productLikes', `${likesCount} Favorite${likesCount !== 1 ? 's' : ''}`);
-
-            // Update stock
-            let Stok = document.querySelector('.Stock');
-            Stok.textContent = productData.quantity;
-            if (productData.quantity <= 5) {
-                let style = document.querySelector('.Stok1');
-                style.classList.remove('bg-green-700');
-                style.classList.add('bg-red-500');
-            } else {
-                let style = document.querySelector('.Stok1');
-                style.classList.add('bg-green-700');
-                style.classList.remove('bg-red-500');
-            }
 
             // Update image
             this.updateProductImage(productData);
@@ -411,7 +372,61 @@
             this.fadeInResult();
         }
 
-        // Update product image
+        updateStockStatus(quantity) {
+            const stockBadge = document.getElementById('stockBadge');
+            const stockQuantity = document.getElementById('stockQuantity');
+            const addToCartBtn = document.getElementById('addToCartBtn');
+            const addToCartText = document.getElementById('addToCartText');
+            const quantityInput = document.getElementById('orderQuantity');
+            const productIdInput = document.getElementById('modal_product_id');
+
+            // Update stock display
+            stockQuantity.textContent = `${quantity} units`;
+
+            if (quantity <= 0) {
+                // Out of stock
+                stockBadge.textContent = 'Out of Stock';
+                stockBadge.classList.remove('bg-green-600');
+                stockBadge.classList.add('bg-red-500');
+
+                // Disable button and inputs
+                addToCartBtn.disabled = true;
+                addToCartText.textContent = 'Out of Stock';
+                quantityInput.disabled = true;
+                productIdInput.disabled = true;
+
+            } else if (quantity <= 5) {
+                // Low stock
+                stockBadge.textContent = 'Stock';
+                stockBadge.classList.remove('bg-green-600');
+                stockBadge.classList.add('bg-orange-500');
+
+                // Enable button and inputs
+                addToCartBtn.disabled = false;
+                addToCartText.textContent = 'Add to Cart';
+                quantityInput.disabled = false;
+                productIdInput.disabled = false;
+
+                // Update max quantity
+                quantityInput.max = quantity;
+
+            } else {
+                // In stock
+                stockBadge.textContent = 'In Stock';
+                stockBadge.classList.remove('bg-orange-500', 'bg-red-500');
+                stockBadge.classList.add('bg-green-600');
+
+                // Enable button and inputs
+                addToCartBtn.disabled = false;
+                addToCartText.textContent = 'Add to Cart';
+                quantityInput.disabled = false;
+                productIdInput.disabled = false;
+
+                // Update max quantity
+                quantityInput.max = Math.min(quantity, 10);
+            }
+        }
+
         updateProductImage(productData) {
             const imageUrl = productData.image ?
                 `/storage/${productData.image}` :
@@ -422,7 +437,6 @@
             imgElement.alt = productData.name || 'Product';
         }
 
-        // Update pricing with discount
         updatePricing(productData) {
             const oldPriceElement = document.getElementById('productOldPrice');
             const discountElement = document.getElementById('productDiscount');
@@ -444,7 +458,6 @@
             }
         }
 
-        // Display product reviews
         displayReviews(reviews) {
             const reviewsList = document.getElementById('reviewsList');
 
@@ -464,11 +477,9 @@
             reviewsList.innerHTML = reviews.map(review => this.createReviewHTML(review)).join('');
         }
 
-        // Create review HTML
         createReviewHTML(review) {
             const initials = review.user?.name ?
-                review.user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) :
-                'UN';
+                review.user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : 'UN';
             const userName = review.user?.name || 'Anonymous';
             const timeAgo = this.getTimeAgo(review.created_at);
 
@@ -490,7 +501,6 @@
         `;
         }
 
-        // Calculate time ago
         getTimeAgo(date) {
             const now = new Date();
             const createdAt = new Date(date);
@@ -505,7 +515,6 @@
             return `${Math.floor(diffInDays / 365)} years ago`;
         }
 
-        // Show error message
         showError(message) {
             this.loading.classList.add('hidden');
             document.getElementById('result_Product').innerHTML = `
@@ -515,7 +524,6 @@
         `;
         }
 
-        // Fade-in animation
         fadeInResult() {
             const resultDiv = document.getElementById('result_Product');
             resultDiv.classList.add('opacity-0');
@@ -525,19 +533,16 @@
             }, 50);
         }
 
-        // Helper: Set element value
         setElementValue(id, value) {
             const element = document.getElementById(id);
             if (element) element.value = value;
         }
 
-        // Helper: Set element text
         setElementText(id, text) {
             const element = document.getElementById(id);
             if (element) element.textContent = text;
         }
 
-        // Setup event listeners
         setupEventListeners() {
             const reviewForm = document.getElementById('reviewForm');
             if (reviewForm) {
@@ -545,7 +550,6 @@
             }
         }
 
-        // Handle Submit Review
         async handleSubmitReview(e) {
             e.preventDefault();
 
@@ -575,7 +579,7 @@
                 if (data.status === 'success') {
                     document.getElementById('review_input').value = '';
                     this.displayReviews(data.data);
-                    alert('Review submitted successfully!');
+                    showSuccessPopup('Review submitted successfully!');
                     submitButton.disabled = false;
                     submitButton.innerHTML = originalButtonContent;
                 } else {
@@ -584,13 +588,12 @@
 
             } catch (error) {
                 console.error('Error submitting review:', error);
-                alert(error.message || 'Error submitting review. Please try again.');
+                showSuccessPopup('Error submitting review. Please try again.');
                 submitButton.disabled = false;
                 submitButton.innerHTML = originalButtonContent;
             }
         }
 
-        // Get spinner HTML
         getSpinnerHTML(color = 'white') {
             return `
             <svg class="animate-spin h-5 w-5 mx-auto text-${color}-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -600,7 +603,6 @@
         `;
         }
 
-        // Setup escape key
         setupEscapeKey() {
             document.addEventListener('keydown', (event) => {
                 if (event.key === 'Escape') {
@@ -608,6 +610,17 @@
                 }
             });
         }
+    }
+
+    function showSuccessPopup(message) {
+        const popup = document.getElementById('successPopup');
+        popup.classList.remove('hidden');
+        popup.classList.add('flex');
+        popup.textContent = message;
+        setTimeout(() => {
+            popup.classList.add('hidden');
+            popup.classList.remove('flex');
+        }, 3000);
     }
 
     function incrementQuantity(button) {
