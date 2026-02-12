@@ -2,12 +2,13 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-4">Mes commandes</h1>
+    <h1 class="text-2xl font-bold mb-4">Historique des commandes</h1>
 
     @if($orders->isEmpty())
         <p>Vous n'avez aucune commande pour le moment.</p>
     @else
-        <div class="space-y-4">
+        <div class="grid gap-4"> 
+
             @foreach($orders as $order)
                 <div class="border p-4 rounded shadow-sm">
                     <div class="flex justify-between mb-2">
@@ -40,6 +41,7 @@
                     </div>
                 </div>
             @endforeach
+
         </div>
     @endif
 </div>

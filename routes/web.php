@@ -149,5 +149,7 @@ Route::middleware(['auth', 'role:admin|seller|moderator'])->prefix('admin')
     ->name('admin.users.ban');
 
 
-
-
+//order route
+Route::get('/client/orders', [OrderController::class, 'index'])
+     ->name('client.orders.index')
+     ->middleware('auth');
