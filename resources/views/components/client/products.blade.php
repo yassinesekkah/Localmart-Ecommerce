@@ -170,8 +170,12 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                                             </svg>
                                         </button>
-                                        <input type="number" name="quantity" id="orderQuantity" value="1" min="1" max="10"
-                                            class="w-16 px-4 py-3 text-center border-x border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500" readonly />
+                                        <input type="number"
+                                            name="quantity"
+                                            id="orderQuantity"
+                                            class="w-16"
+                                            oninput="validateQuantity(this)"
+                                            onblur="validateQuantity(this)">
                                         <button type="button" onclick="incrementQuantity(this)"
                                             class="px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -284,7 +288,9 @@
             this.loadProduct(productId);
 
             if (typeof Livewire !== 'undefined') {
-                Livewire.dispatch('load-product-favorites', { id: productId });
+                Livewire.dispatch('load-product-favorites', {
+                    id: productId
+                });
             }
         }
 
@@ -300,6 +306,33 @@
             this.modal.classList.add('flex');
             document.body.style.overflow = 'hidden';
             this.loading.classList.remove('hidden');
+
+            let orderQuantity = document.getElementById('orderQuantity');
+
+            if (orderQuantity) {
+                // Écoute les changements de l'input
+                orderQuantity.addEventListener('input', function() {
+                    validateQuantity(this);
+                });
+
+                // Valide aussi quand l'utilisateur quitte le champ
+                orderQuantity.addEventListener('blur', function() {
+                    validateQuantity(this);
+                });
+
+                // Empêche la saisie de caractères non-numériques avec le clavier
+                orderQuantity.addEventListener('keypress', function(e) {
+                    // Autorise uniquement les chiffres
+                    if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                    }
+                });
+
+                // Empêche le scroll de la molette de modifier la valeur
+                orderQuantity.addEventListener('wheel', function(e) {
+                    e.preventDefault();
+                });
+            }
         }
 
         async loadProduct(productId) {
@@ -423,7 +456,7 @@
                 productIdInput.disabled = false;
 
                 // Update max quantity
-                quantityInput.max = Math.min(quantity, 10);
+                quantityInput.max = quantity;
             }
         }
 
@@ -622,19 +655,62 @@
             popup.classList.remove('flex');
         }, 3000);
     }
+    // Function to validate quantity input
+    function validateQuantity(input) {
+        // Removes non-numeric characters
+        input.value = input.value.replace(/[^0-9]/g, '');
+
+        // Récupère les valeurs
+        const value = parseInt(input.value) || 0;
+        const min = parseInt(input.getAttribute('min')) || 1;
+        const max = parseInt(input.getAttribute('max')) || currentStockMax;
+        // Validates against min/max
+        if (value < min && input.value !== '') {
+            input.value = min;
+            showSuccessPopup(`Minimum quantity is ${min}`);
+            return;
+        } else if (value > max) {
+            input.value = max;
+            showSuccessPopup(`Maximum available quantity is ${max}`);
+            return;
+        } else {
+            checkServerQuantity(value, input);
+        }
+        // Si l'input est désactivé (rupture de stock), empêcher toute saisie
+        if (input.disabled) {
+            input.value = '';
+            showSuccessPopup('Product is out of stock');
+            return;
+        }
+    }
 
     function incrementQuantity(button) {
         const input = button.previousElementSibling;
-        const value = parseInt(input.value);
-        const max = parseInt(input.max);
-        if (value < max) input.value = value + 1;
+        const value = parseInt(input.value) || 0;
+        const max = parseInt(input.getAttribute('max')) || currentStockMax;
+        if (value < max) {
+            input.value = value + 1;
+            validateQuantity(input);
+        } else {
+            showSuccessPopup(`Maximum available quantity is ${max}`);
+        }
     }
 
     function decrementQuantity(button) {
         const input = button.nextElementSibling;
-        const value = parseInt(input.value);
-        const min = parseInt(input.min);
-        if (value > min) input.value = value - 1;
+        const value = parseInt(input.value) || 0;
+        const min = parseInt(input.getAttribute('min')) || 1;
+        if (input.disabled) {
+            showSuccessPopup('Product is out of stock');
+            return;
+        }
+
+        if (value > min) {
+            input.value = value - 1;
+            validateQuantity(input);
+        } else {
+            showSuccessPopup(`Minimum quantity is ${min}`);
+        }
     }
 
     let quickViewModal;
@@ -655,5 +731,114 @@
     document.addEventListener('DOMContentLoaded', function() {
         quickViewModal = new QuickViewModal();
     });
+
+
+
+    // ============================================
+    // SOLUTION COMPLÈTE POUR LA VALIDATION DE QUANTITÉ
+    // ============================================
+
+    // Variable globale pour le debounce
+    let quantityCheckTimer;
+    let currentStockMax = 999; // Stock maximum par défaut
+
+    /**
+     * Valide la quantité saisie par l'utilisateur
+     * - Bloque si produit en rupture de stock
+     * - Nettoie les caractères non-numériques
+     * - Vérifie min/max
+     * - Déclenche vérification serveur
+     */
+
+
+    /**
+     * Vérifie la disponibilité du stock côté serveur
+     * Utilise un debounce pour éviter trop de requêtes
+     */
+    async function checkServerQuantity(quantity, input) {
+        // Annule le timer précédent
+        clearTimeout(quantityCheckTimer);
+
+        // Lance une nouvelle vérification après 500ms
+        quantityCheckTimer = setTimeout(async () => {
+            const productId = document.getElementById('modal_product_id').value;
+
+            if (!productId) {
+                console.error('Product ID not found');
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    `/client/product/Quantity/${encodeURIComponent(productId)}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch stock information');
+                }
+
+                const data = await response.json();
+
+                // Met à jour le stock maximum basé sur la réponse serveur
+                if (data.quantity !== undefined) {
+                    currentStockMax = parseInt(data.quantity);
+                    input.setAttribute('max', currentStockMax);
+
+                    // Vérifie si la quantité actuelle dépasse le stock disponible
+                    if (quantity > currentStockMax) {
+                        input.value = currentStockMax;
+
+                        if (currentStockMax === 0) {
+                            // Rupture de stock
+                            showSuccessPopup('Product is now out of stock');
+                            input.disabled = true;
+
+                            const addToCartBtn = document.getElementById('addToCartBtn');
+                            if (addToCartBtn) {
+                                addToCartBtn.disabled = true;
+                                document.getElementById('addToCartText').textContent = 'Out of Stock';
+                            }
+                        } else {
+                            // Stock limité
+                            showSuccessPopup(`Only ${currentStockMax} unit(s) available in stock`);
+                        }
+                    }
+                }
+
+            } catch (error) {
+                console.error('Error checking quantity:', error);
+                showSuccessPopup('Unable to verify stock availability');
+            }
+        }, 500); // Attends 500ms après la dernière frappe
+    }
+    /**
+     * Initialisation quand le DOM est chargé
+     */
+
+    // ============================================
+    // EXEMPLE DE RÉPONSE SERVEUR ATTENDUE
+    // ============================================
+    /*
+    Route côté serveur (Laravel):
+    Route::get('/client/product/Quantity/{productId}', function($productId) {
+        $product = Product::find($productId);
+        
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+        
+        return response()->json([
+            'quantity' => $product->quantity,
+            'product_id' => $product->id,
+            'name' => $product->name
+        ]);
+    });
+    */
 </script>
 @endpush
