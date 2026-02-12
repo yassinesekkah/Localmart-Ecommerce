@@ -5,7 +5,7 @@
 <div class="w-full p-6 space-y-6">
 
     <!-- ================= USERS SECTION ================= -->
-    <h2 class="text-lg font-semibold text-gray-700">Users Overview</h2>
+    @role('admin') <h2 class="text-lg font-semibold text-gray-700">Users Overview</h2>
 
     <div class="grid md:grid-cols-4 gap-6">
 
@@ -40,6 +40,7 @@
         </div>
 
     </div>
+    @endrole
 
 
     <!-- ================= PRODUCTS SECTION ================= -->
@@ -93,13 +94,17 @@
                 {{ $delivered }}
             </h3>
         </div>
-    <div class="bg-white p-6 rounded-xl shadow">
-    <h2 class="text-lg font-semibold mb-4">Orders by Status</h2>
-    <canvas id="ordersChart"></canvas>
-</div>
+
 
 
     </div>
+ <div class="bg-white p-6 rounded-xl shadow w-64">
+    <h2 class="text-lg font-semibold mb-4">Orders by Status</h2>
+
+    <div class="h-64">  
+        <canvas id="ordersChart"></canvas>
+    </div>
+</div>
 
 
     <!-- ================= REVENUE SECTION ================= -->
@@ -124,5 +129,25 @@
     </div>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+const ctx = document.getElementById('ordersChart');
+
+new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ['Pending', 'Paid', 'Delivered'],
+        datasets: [{
+            label: 'Commandes',
+            data: @json([$pendings ?? 0, $paids ?? 0, $delivered ?? 0]),
+            borderWidth: 1
+        }]
+    }
+});
+</script>
+
 
 @endsection
