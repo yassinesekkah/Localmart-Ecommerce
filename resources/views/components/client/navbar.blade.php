@@ -71,7 +71,7 @@
                                 Profile
                             </a>
                             <a href="{{ route('client.favorite') }}" class="block px-4 py-2 hover:bg-gray-100">
-                                Favorite
+                                My favorites
                             </a>
 
                             <form method="POST" action="{{ route('logout') }}">
