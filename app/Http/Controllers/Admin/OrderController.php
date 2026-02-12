@@ -62,18 +62,17 @@ class OrderController extends Controller
     }
 
 
-    public function deliver(Order $order)
-    {
-        if ($order->status !== 'shipped') {
-            return back()->with('error', 'order cannot be delivered');
-        }
-        $order->update(['status' => 'delivered']);
-        Mail::to($order->user->email)
-            ->send(new OrderStatusUpdatedMail($order));
+    // public function deliver(Order $order)
+    // {
+    //     if ($order->status !== 'shipped') {
+    //         return back()->with('error', 'order cannot be delivered');
+    //     }
+    //     $order->update(['status' => 'delivered']);
+    //     Mail::to($order->user->email)
+    //         ->send(new OrderStatusUpdatedMail($order));
 
-
-        return back()->with('success', 'order delivered');
-    }
+    //     return back()->with('success', 'order delivered');
+    // }
 
 
     public function cancel(Order $order)
@@ -86,9 +85,9 @@ class OrderController extends Controller
         Mail::to($order->user->email)
             ->send(new OrderStatusUpdatedMail($order));
 
-
         return back()->with('success', 'order canceled');
     }
+
 
     public function confirmDelivery(Order $order)
     {   
@@ -99,7 +98,6 @@ class OrderController extends Controller
         if($order->status !== 'shipped'){
             return back()->with('error', 'You cannot confirm this order.');
         }
-
         $order->update(['status' => 'delivered']);
         
         return back()->with('success', 'order confirmed successfully');

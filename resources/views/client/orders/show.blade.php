@@ -49,7 +49,6 @@
 
         <main class="grid grid-cols-1  lg:grid-cols-4  gap-6 space-y-4">
 
-
             {{-- Products --}}
             <div class="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-gray-100">
 
