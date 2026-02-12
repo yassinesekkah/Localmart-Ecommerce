@@ -37,21 +37,6 @@ class AdminDashboardController extends Controller
         }
 
     }
-    // $roles = User::role('client')->count();
-        // dd($totalClient);
-
-        // dd($ordersCount);
-    // Seller dashboard
-    if ($user->hasRole('seller')) {
-
-        return view('admin.dashboard', [
-            'role' => 'seller',
-            'productsCount' => Product::count(),
-            'ordersCount'   => 23, //static for now
-            'revenue' => 0,  ///static
-        ]);
-    }
-
     // Admin / Moderator dashboard
     return view('admin.dashboard', [
         'role' => 'admin',
@@ -66,7 +51,7 @@ class AdminDashboardController extends Controller
         'pendings' => Order::where('status' , 'pending')->count(),
         'paids' => Order::where('status' , 'paid')->count(),
         'delivered' => Order::where('status' , 'delivered')->count() ,
-        'revenue' => Order::where('status' , 'delivered')->sum('total')
+        'revenue' => Order::where('status' , 'delivered')->sum('total') ,
     ]);
 }
 }
