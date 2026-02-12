@@ -87,20 +87,4 @@ class OrderController extends Controller
 
         return back()->with('success', 'order canceled');
     }
-
-
-    public function confirmDelivery(Order $order)
-    {   
-        if($order->user_id !== auth()->id()){
-            abort(403);
-        }
-
-        if($order->status !== 'shipped'){
-            return back()->with('error', 'You cannot confirm this order.');
-        }
-        $order->update(['status' => 'delivered']);
-        
-        return back()->with('success', 'order confirmed successfully');
-
-    }
 }
