@@ -125,9 +125,26 @@
                         </p>
                     </div>
 
-                    <span class="text-sm text-green-600 font-medium">
-                        Paiement confirmé
-                    </span>
+
+                    @if ($order->status === 'shipped')
+                        <form method="POST" action="{{ route('client.orders.confirm', $order) }}">
+                            @csrf
+                            @method('PATCH')
+
+                            <button type="submit"
+                                class="inline-flex items-center justify-center
+                                                    px-4 py-2 text-sm font-medium
+                                                    rounded-lg
+                                                    bg-green-600 text-white
+                                                    hover:bg-green-700 transition">
+                                Confirmer réception
+                            </button>
+                        </form>
+                    @else
+                        <span class="text-sm text-green-600 font-medium">
+                            Paiement confirmé
+                        </span>
+                    @endif
 
                 </div>
 

@@ -90,6 +90,9 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     //client order route
     Route::get('/orders', [OrderController::class, 'clientIndex'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'clientShow'])->name('orders.show');
+    //confirmation beli chad order
+    Route::patch('/orders/{order}/confirm', [OrderController::class, 'confirmDelivery'])->name('orders.confirm');
+
 
 
     // Products by category

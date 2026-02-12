@@ -70,13 +70,36 @@
                                       {{ $statusStyles[$order->status] ?? 'bg-gray-100 text-gray-600 border border-gray-200' }}">
                                 {{ ucfirst($order->status) }}
                             </span>
+                            <div class="flex gap-3">
 
-                            {{-- Details Button --}}
-                            <a href="{{ route('client.orders.show', $order) }}"
-                                class="px-4 py-2 bg-gray-900 text-white text-sm rounded-lg 
-                                                 hover:bg-gray-700 transition shadow-sm">
-                                Voir détails
-                            </a>
+                                {{-- Details Button --}}
+                                <a href="{{ route('client.orders.show', $order) }}"
+                                    class="inline-flex items-center justify-center
+                                            px-4 py-2 text-sm font-medium
+                                            rounded-lg border border-gray-300
+                                            bg-white text-gray-800
+                                            hover:bg-gray-100 transition">
+                                    Voir détails
+                                </a>
+
+                                @if ($order->status === 'shipped')
+                                    <form method="POST" action="{{ route('client.orders.confirm', $order) }}">
+                                        @csrf
+                                        @method('PATCH')
+
+                                        <button type="submit"
+                                            class="inline-flex items-center justify-center
+                                                    px-4 py-2 text-sm font-medium
+                                                    rounded-lg
+                                                    bg-green-600 text-white
+                                                    hover:bg-green-700 transition">
+                                            Confirmer réception
+                                        </button>
+                                    </form>
+                                @endif
+
+                            </div>
+
 
                         </div>
 
