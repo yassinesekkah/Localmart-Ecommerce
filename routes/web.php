@@ -7,16 +7,14 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\DashboardController;
-use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewsController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\StripeCheckoutController;
 
 use Illuminate\Support\Facades\Mail;
 
@@ -46,7 +44,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/test-mail', function () {
     Mail::raw('Test Mailtrap', function ($message) {
         $message->to('test@test.com')
-            ->subject('Test Email');
+                ->subject('Test Email');
     });
 
     return 'Mail envoyé !';
@@ -84,7 +82,6 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     ////place order post
     Route::post('/checkout/confirm', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
 
-    Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite');
     // routes/web.php
     Route::get('/checkout/thank-you/{order}', [CheckoutController::class, 'thankYou'])->name('checkout.thankyou')
         ->middleware(['auth']);
@@ -93,6 +90,16 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::get('/orders/{order}', [OrderController::class, 'clientShow'])->name('orders.show');
     
 });
+
+// Orders route 
+Route::get('/orders', [App\Http\Controllers\Client\OrderController::class, 'index'])
+     ->name('client.orders.index')
+     ->middleware('auth');
+
+// Favorite route
+Route::get('/favorite', [App\Http\Controllers\FavoriteController::class, 'index'])
+     ->name('client.favorite')
+     ->middleware('auth');
 
 // Routes SELLER 
 Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->group(function () {
@@ -126,25 +133,37 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 // Routes MODERATOR 
-Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () {
-
-    // delete review clients
-    Route::get('review/{id}/Delete', [ReviewsController::class, 'Delete'])->name('admin.review.Delete');
-});
+Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () {});
 
 
 
-Route::middleware(['auth', 'role:admin|seller|moderator'])->prefix('admin')
+Route::get('/checkout', [CheckoutController::class, 'info'])->name('checkout.index');
+
+Route::post('/checkout', [CheckoutController::class, 'payement'])->name('checkout.payment');
+
+Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+
+
+
+Route::middleware(['auth', 'role:admin|seller|moderator'])
+    ->prefix('admin')
     ->group(function () {
 
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
         Route::get('/products', [ProductController::class, 'index'])->name('seller.products.index');
-        Route::get('/ShowReview/{id}', [ReviewsController::class, 'show'])->name('ShowReview');
-        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-        Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     });
 
 
+
+Route::get('/stripe/checkout', [StripeCheckoutController::class, 'index']);
+Route::post('/stripe/checkout', [StripeCheckoutController::class, 'checkout'])->name('stripe.checkout');
+Route::get('/stripe/success', [StripeCheckoutController::class, 'success'])->name('stripe.success');
+Route::get('/stripe/cancel', [StripeCheckoutController::class, 'cancel'])->name('stripe.cancel');
+
+Route::get('/test-cart', [StripeCheckoutController::class, 'testCart']);
+
+Route::post('/stripe/webhook', [StripeCheckoutController::class, 'webhook']);
 Route::patch('/admin/users/{id}/ban', [RoleController::class, 'toggleBan'])
     ->name('admin.users.ban');
