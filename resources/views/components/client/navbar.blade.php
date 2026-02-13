@@ -1,9 +1,5 @@
 @props(['categories'])
 
-@php
-    $cart = session('cart', []);
-    $cartCount = collect($cart)->count('cart');
-@endphp
 
 <!-- Header/Navbar -->
 <header class="bg-white shadow-sm sticky top-0 z-50">
@@ -97,13 +93,7 @@
                                m0 0a2 2 0 100 4 2 2 0 000-4
                                zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
-
-                    @if ($cartCount > 0)
-                        <span
-                            class="absolute -top-2 -right-2 bg-green-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                            {{ $cartCount }}
-                        </span>
-                    @endif
+                    <livewire:cart-counter />
                 </a>
             </div>
         </div>
