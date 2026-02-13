@@ -20,11 +20,15 @@ class Cart extends Component
     {
         $product = Product::find($this->productId);
 
-
-        if ($product->quantity <= 0) {
-            return back()->with('error', 'Product is out of stock');
+        if ($product->quantity<= 0) {
+                $this->dispatch(
+                'notify',
+                type: 'error',
+                message: 'Product is out of stock'
+            );
         }
         ///njibo lcart mn session
+        else{
         $cart = session()->get('cart', []);
 
         //ila l product deja kayen felcart
@@ -50,11 +54,18 @@ class Cart extends Component
 
         //save cart f session
         session()->put('cart', $cart);
-        session()->flash('success', 'Product added to cart');
+        
 
         $this->dispatch('cartUpdated');
 
-    }
+
+        $this->dispatch(
+            'notify',
+            type: 'success',
+            message: 'Product added to cart'
+        );
+
+    }}
 
     public function render()
     {
