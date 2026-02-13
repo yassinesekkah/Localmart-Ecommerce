@@ -105,7 +105,7 @@ class ProductController extends Controller
             ->route('seller.products.index')
             ->with('success', 'Product updated successfully');
     }
-    
+
     public function destroy(Product $product)
     {
         if ($product->user_id !== auth()->id()) {
@@ -124,5 +124,20 @@ class ProductController extends Controller
             ->with('success', 'Product deleted successfully');
     }
 
-    
+
+    // responce input quantity check pass quantity of stok
+    function getProductQuantity($productId)
+    {
+        $product = Product::find($productId);
+
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        return response()->json([
+            'quantity' => $product->quantity,
+            'product_id' => $product->id,
+            'name' => $product->name
+        ]);
+    }
 }

@@ -14,8 +14,8 @@
                         <th class="p-3">Total</th>
                         <th class="p-3">Status</th>
                         <th class="p-3">Date</th>
-                        @if(auth()->user()->hasRole('seller') )
-                        <th class="p-3">Actions</th>
+                        @if (auth()->user()->hasRole('seller'))
+                            <th class="p-3">Actions</th>
                         @endif
                     </tr>
                 </thead>
@@ -46,21 +46,22 @@
                                 <td class="p-3 flex gap-2">
 
                                     {{-- Ship --}}
-                                    @if ($order->status === 'pending')    
-                                            <a href="{{ route('seller.orders.ship', $order) }}" class="px-3 py-1 text-xs bg-blue-600 text-white rounded">
-                                                Ship
-                                            </a> 
+                                    @if ($order->status === 'pending')
+                                        <a href="{{ route('seller.orders.ship', $order) }}"
+                                            class="px-3 py-1 text-xs bg-blue-600 text-white rounded">
+                                            Ship
+                                        </a>
                                     @endif
 
-                                    {{-- Deliver --}}
+                                    {{-- Awaiting confirmation --}}
                                     @if ($order->status === 'shipped')
-                                        <form method="POST" action="{{ route('seller.orders.deliver', $order) }}">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button class="px-3 py-1 text-xs bg-green-600 text-white rounded">
-                                                Deliver
-                                            </button>
-                                        </form>
+                                        <div
+                                            class="px-3 py-1 text-xs rounded-full 
+                                                    bg-yellow-50 text-yellow-700 
+                                                    border border-yellow-200 
+                                                    font-medium flex items-center">
+                                            Awaiting client confirmation
+                                        </div>
                                     @endif
 
                                     {{-- Cancel --}}
@@ -72,6 +73,28 @@
                                                 Cancel
                                             </button>
                                         </form>
+                                    @endif
+
+                                    {{-- Delivered --}}
+                                    @if ($order->status === 'delivered')
+                                        <span
+                                            class="px-3 py-1 text-xs rounded-full 
+                                                    bg-green-50 text-green-700 
+                                                    border border-green-200 
+                                                    font-medium">
+                                            Order completed
+                                        </span>
+                                    @endif
+                                    
+                                    {{-- Canceled --}}
+                                    @if ($order->status === 'canceled')
+                                        <span
+                                            class="px-3 py-1 text-xs rounded-full 
+                                                    bg-gray-100 text-gray-600 
+                                                    border border-gray-200 
+                                                    font-medium">
+                                            Order closed
+                                        </span>
                                     @endif
 
                                 </td>

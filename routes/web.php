@@ -61,6 +61,7 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::get('/product/{id}', [DashboardController::class, 'CategorieProducts'])->name('categorieProducts');
     Route::get('/product/infos/{id}', [DashboardController::class, 'productDetails']);
+    Route::get('/product/Quantity/{productId}', [ProductController::class, 'getProductQuantity']);
     Route::post('/product/create-Review/{id}', [ReviewsController::class, 'createReview']);
     // Add to panier
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
@@ -87,10 +88,10 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     // routes/web.php
     Route::get('/checkout/thank-you/{order}', [CheckoutController::class, 'thankYou'])->name('checkout.thankyou')
         ->middleware(['auth']);
-
-
-
-    // Products by category
+    //client order route
+    Route::get('/orders', [OrderController::class, 'clientIndex'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'clientShow'])->name('orders.show');
+    
 });
 
 // Routes SELLER 
@@ -105,7 +106,7 @@ Route::middleware(['auth', 'role:seller'])->prefix('seller')->name('seller.')->g
     ///order status
     Route::get('/orders/{order}/ship', [OrderController::class, 'shipForm'])->name('orders.ship.form');
     Route::patch('/orders/{order}/ship', [OrderController::class, 'ship'])->name('orders.ship');
-    Route::patch('/orders/{order}/deliver', [OrderController::class, 'deliver'])->name('orders.deliver');
+    // Route::patch('/orders/{order}/deliver', [OrderController::class, 'deliver'])->name('orders.deliver');
     Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 });
 
@@ -145,11 +146,5 @@ Route::middleware(['auth', 'role:admin|seller|moderator'])->prefix('admin')
     });
 
 
-    Route::patch('/admin/users/{id}/ban', [RoleController::class, 'toggleBan'])
+Route::patch('/admin/users/{id}/ban', [RoleController::class, 'toggleBan'])
     ->name('admin.users.ban');
-
-
-//order route
-Route::get('/client/orders', [OrderController::class, 'index'])
-     ->name('client.orders.index')
-     ->middleware('auth');

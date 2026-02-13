@@ -10,6 +10,9 @@ class CartController extends Controller
 {
     public function add(Request $request, Product $product)
     {
+        $qty = $request->input('quantity', 1);
+        $qty = (int) $qty;
+        if ($qty < 1) $qty = 1;
 
         //check stock 
         if ($product->quantity <= 0) {
@@ -20,20 +23,23 @@ class CartController extends Controller
 
         //ila l product deja kayen felcart
         if (isset($cart[$product->id])) {
-
+            $newQty = $cart[$product->id]['quantity'] + $qty;
             ///check wach l quantity lifel cart depasat l quantity dyal lproduct
             if ($cart[$product->id]['quantity'] >= $product->quantity) {
                 return back()->with('error', 'No more stock available');
             }
 
             ///nzido l quantity dyal l product fel cart
-            $cart[$product->id]['quantity']++;
+            $cart[$product->id]['quantity'] = $newQty;
         } else {
+            if ($qty > $product->quantity) {
+            $qty = $product->quantity;
+        }
             $cart[$product->id] = [
                 'id' => $product->id,
                 'name' => $product->name,
                 'price' => $product->price,
-                'quantity' => 1,
+                'quantity' => $qty,
                 'image' => $product->image,
                 'stock' => $product->quantity
             ];
@@ -83,12 +89,12 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
-        if(!isset($cart[$productId])){
+        if (!isset($cart[$productId])) {
             return back()->with('error', 'Product not found in cart');
         }
 
         ///check stock
-        if($cart[$productId]['quantity'] >= $cart[$productId]['stock']){
+        if ($cart[$productId]['quantity'] >= $cart[$productId]['stock']) {
             return back()->with('error', 'No more stock available');
         }
 
@@ -103,12 +109,12 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
-        if(!isset($cart[$productId])){
+        if (!isset($cart[$productId])) {
             return back()->with('error', 'Product not found in cart');
         }
 
         ///manhabtoch l quantity 3la 1
-        if($cart[$productId]['quantity'] <= 1){
+        if ($cart[$productId]['quantity'] <= 1) {
             return back()->with('error', 'Quantity cannot be less than 1');
         }
 

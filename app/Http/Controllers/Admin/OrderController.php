@@ -17,6 +17,23 @@ class OrderController extends Controller
         return view('admin.orders.index', compact('orders'));
     }
 
+    public function clientIndex()
+    {
+        $orders = auth()->user()->orders()->with(['items.product'])->latest()->get();
+        
+        return view('client.orders.index', compact('orders'));
+    }
+
+    public function clientShow(Order $order)
+    {
+        if($order->user_id !== auth()->id()){
+            abort(403);
+        }
+
+        $order->load('items.product');
+
+        return view('client.orders.show', compact('order'));
+    }
 
     public function shipForm(Order $order)
     {
@@ -45,18 +62,17 @@ class OrderController extends Controller
     }
 
 
-    public function deliver(Order $order)
-    {
-        if ($order->status !== 'shipped') {
-            return back()->with('error', 'order cannot be delivered');
-        }
-        $order->update(['status' => 'delivered']);
-        Mail::to($order->user->email)
-            ->send(new OrderStatusUpdatedMail($order));
+    // public function deliver(Order $order)
+    // {
+    //     if ($order->status !== 'shipped') {
+    //         return back()->with('error', 'order cannot be delivered');
+    //     }
+    //     $order->update(['status' => 'delivered']);
+    //     Mail::to($order->user->email)
+    //         ->send(new OrderStatusUpdatedMail($order));
 
-
-        return back()->with('success', 'order delivered');
-    }
+    //     return back()->with('success', 'order delivered');
+    // }
 
 
     public function cancel(Order $order)
@@ -68,7 +84,6 @@ class OrderController extends Controller
 
         Mail::to($order->user->email)
             ->send(new OrderStatusUpdatedMail($order));
-
 
         return back()->with('success', 'order canceled');
     }
