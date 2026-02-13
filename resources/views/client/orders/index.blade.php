@@ -52,31 +52,6 @@
 
                         </div>
 
-                    <div class="text-right mt-1">
-                        Statut: 
-                        @if($order->status == 'pending')
-                            <span class="text-yellow-500 font-semibold">En attente</span>
-                        @elseif($order->status == 'completed')
-                            <span class="text-green-600 font-semibold">Livrée</span>
-                        @elseif($order->status == 'canceled')
-                            <span class="text-red-600 font-semibold">Annulée</span>
-                        @endif
-                        <br>
-                        Paiement: 
-                        @if($order->payment_method == 'delivery')
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                 À la livraison
-                            </span>
-                        @elseif($order->payment_method == 'receipt')
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                                En ligne
-                            </span>
-                        @else
-                            <span class="text-gray-500 text-sm">Non spécifié</span>
-                        @endif
-                    </div>
-                </div>
-            @endforeach
                         {{-- Right Section --}}
                         <div class="flex flex-col items-end gap-3">
 
@@ -107,7 +82,7 @@
                                     Voir détails
                                 </a>
 
-                                <livewire:client.confirm-delivery :order="$order" :key="'confirm-'.$order->id"/> 
+                                <livewire:client.confirm-delivery :order="$order" :key="'confirm-' . $order->id" />
 
                             </div>
 
