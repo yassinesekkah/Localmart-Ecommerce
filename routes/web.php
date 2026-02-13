@@ -153,6 +153,9 @@ Route::middleware(['auth', 'role:admin|seller|moderator'])
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
         Route::get('/products', [ProductController::class, 'index'])->name('seller.products.index');
+        Route::get('/ShowReview/{id}', [ReviewsController::class, 'show'])->name('ShowReview');     
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     });
 
 
