@@ -1,12 +1,4 @@
 <div>
-
-
-    @if (session()->has('success'))
-        <div class="bg-green-500 text-white px-4 py-2 rounded mb-2">
-            {{ session('success') }}
-        </div>
-    @endif
-    
 <form wire:submit.prevent="add" method="POST" class="inline-block" onclick="event.stopPropagation()">
     @csrf
     <button type="submit"
