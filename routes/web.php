@@ -7,9 +7,12 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\DashboardController;
+use App\Http\Controllers\Client\OrderController as ClientOrderController;
 use App\Http\Controllers\ModeratorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewsController;
@@ -86,14 +89,14 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->name('client.')->g
     Route::get('/checkout/thank-you/{order}', [CheckoutController::class, 'thankYou'])->name('checkout.thankyou')
         ->middleware(['auth']);
     //client order route
-    Route::get('/orders', [OrderController::class, 'clientIndex'])->name('orders.index');
+    Route::get('/orders', [ClientOrderController::class, 'clientIndex'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'clientShow'])->name('orders.show');
     
 });
 
 // Orders route 
 Route::get('/orders', [App\Http\Controllers\Client\OrderController::class, 'index'])
-     ->name('client.orders.index')
+     ->name('orders.index')
      ->middleware('auth');
 
 // Favorite route
