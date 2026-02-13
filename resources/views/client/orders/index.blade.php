@@ -38,6 +38,19 @@
                         @elseif($order->status == 'canceled')
                             <span class="text-red-600 font-semibold">Annulée</span>
                         @endif
+                        <br>
+                        Paiement: 
+                        @if($order->payment_method == 'delivery')
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                 À la livraison
+                            </span>
+                        @elseif($order->payment_method == 'receipt')
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                En ligne
+                            </span>
+                        @else
+                            <span class="text-gray-500 text-sm">Non spécifié</span>
+                        @endif
                     </div>
                 </div>
             @endforeach

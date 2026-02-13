@@ -44,10 +44,12 @@
                     </div>
 
                     <!-- New Order Link -->
-                    <a href="{{ route('client.orders.index') }}"
-                        class="text-gray-700 hover:text-green-600 transition">
-                        Order
-                    </a>
+                    @auth
+                        <a href="{{ route('client.orders.index') }}"
+                            class="text-gray-700 hover:text-green-600 transition">
+                            Order
+                        </a>
+                    @endauth
                 </nav>
             </div>
 

@@ -41,13 +41,35 @@
             @endforeach
             <hr class="my-4">
 
+            {{-- Payment Method --}}
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-3">Méthode de paiement</h3>
+                <div class="space-y-3">
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition">
+                        <input type="radio" name="payment_method" value="delivery" checked class="mr-3 text-blue-600">
+                        <div>
+                            <p class="font-medium">Paiement à la livraison</p>
+                            <p class="text-sm text-gray-500">Payez lorsque vous recevez votre commande</p>
+                        </div>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition">
+                        <input type="radio" name="payment_method" value="receipt" class="mr-3 text-blue-600">
+                        <div>
+                            <p class="font-medium">Paiement en ligne</p>
+                            <p class="text-sm text-gray-500">Payez directement avec carte bancaire</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
             <div class="flex justify-between font-semibold text-lg mb-6">
                 <span>Total</span>
-                <span>{{ $total }}</span>
+                <span>{{ $total }} DH</span>
             </div>
 
             {{-- Confirm Order --}}
-            <form action="{{ route('client.checkout.placeOrder') }}" method="POST">
+            
+            <form action="{{ route('stripe.checkout') }}" method="POST">
                 @csrf
                 <button type="submit" class="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800"
                     onclick="this.disabled=true; this.form.submit();">

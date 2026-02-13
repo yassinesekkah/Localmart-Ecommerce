@@ -3,9 +3,9 @@
 <p>Bonjour {{ $recipient->name ?? 'Cher client' }},</p>
 
 <div class="order-info">
-    <h3>📋 Informations de la commande</h3>
+    <h3>Informations de la commande</h3>
     <p><strong>Numéro de commande:</strong> #{{ $order->id ?? 'N/A' }}</p>
-    <p><strong>Date:</strong> {{ $order->created_at->format('d/m/Y H:i') ?? now()->format('d/m/Y H:i') }}</p>
+    <p><strong>Date:</strong> {{ optional($order->created_at)->format('d/m/Y H:i') ?? now()->format('d/m/Y H:i') }}</p>
     <p><strong>Client:</strong> {{ $order->user->name ?? 'Client' }}</p>
     <p><strong>Email:</strong> {{ $order->user->email ?? 'N/A' }}</p>
     <p><strong>Total:</strong> {{ number_format($order->total ?? 0, 2, ',', ' ') }} MAD</p>

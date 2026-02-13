@@ -9,6 +9,8 @@ use App\Models\Product;
 use App\Services\OrderNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 
 class CheckoutController extends Controller
 {
