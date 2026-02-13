@@ -7,11 +7,11 @@ use App\Models\Product;
 
 class Cart extends Component
 {
-    public $cart = [] ;
+    public $cart = [];
     public $total = 0;
     public $productId;
 
-        public function mount($productId)
+    public function mount($productId)
     {
         $this->productId = $productId;
     }
@@ -19,9 +19,9 @@ class Cart extends Component
     public function add()
     {
         $product = Product::find($this->productId);
-   
 
-        if ($product->quantity<= 0) {
+
+        if ($product->quantity <= 0) {
             return back()->with('error', 'Product is out of stock');
         }
         ///njibo lcart mn session
@@ -50,7 +50,9 @@ class Cart extends Component
 
         //save cart f session
         session()->put('cart', $cart);
-            session()->flash('success', 'Product added to cart');
+        session()->flash('success', 'Product added to cart');
+
+        $this->dispatch('cartUpdated');
 
     }
 
@@ -58,7 +60,4 @@ class Cart extends Component
     {
         return view('livewire.cart');
     }
-
-
-
 }

@@ -21,7 +21,7 @@
     @elseif ($order->status === 'delivered')
         @if ($showThankYou)
             <span class="text-sm text-green-600 font-medium">
-                Thank you for your order 🙌
+                Thank you for your order
             </span>
         @endif
 
