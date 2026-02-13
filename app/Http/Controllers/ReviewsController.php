@@ -45,12 +45,12 @@ class ReviewsController extends Controller
 
     function show($productId)
     {
-        $reviews = Product::with(['reviews.user','likes','favorites' => function($query){
+        $reviews = Product::with(['reviews.user', 'likes', 'favorites' => function ($query) {
             $query->select('product_id', 'rating', 'created_at')
-                  ->with('user:name'); 
+                ->with('user:name');
         }])
-        ->withCount('favorites')
-        ->withAvg('favorites', 'rating')
+            ->withCount('favorites')
+            ->withAvg('favorites', 'rating')
             ->find($productId);
         if (!$reviews) {
             return response()->json(['message' => 'aucun review'], 404);
@@ -61,10 +61,28 @@ class ReviewsController extends Controller
             'data'   => $reviews
         ], 200);
     }
-    function Delete($productId)
+
+    function delete($reviewId)
     {
-        $product = Reviews::findOrFail($productId);
-        $product->delete();
-        return redirect()->back()->with('success', 'le produit est bien archiver!');
+        try {
+            $review = Reviews::find($reviewId);
+            
+            if (!$review) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'This review not exist!'
+                ], 404);
+            }
+            $review->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Review supprimée avec succès'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Erreur: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
