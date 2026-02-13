@@ -43,7 +43,7 @@
 
             <div class="flex justify-between font-semibold text-lg mb-6">
                 <span>Total</span>
-                <span>{{ $total }}</span>
+                <span>{{ $total }} DH</span>
             </div>
 
             {{-- Confirm Order --}}
