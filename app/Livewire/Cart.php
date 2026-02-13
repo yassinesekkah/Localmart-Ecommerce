@@ -7,11 +7,11 @@ use App\Models\Product;
 
 class Cart extends Component
 {
-    public $cart = [] ;
+    public $cart = [];
     public $total = 0;
     public $productId;
 
-        public function mount($productId)
+    public function mount($productId)
     {
         $this->productId = $productId;
     }
@@ -19,7 +19,6 @@ class Cart extends Component
     public function add()
     {
         $product = Product::find($this->productId);
-   
 
         if ($product->quantity<= 0) {
                 $this->dispatch(
@@ -55,6 +54,9 @@ class Cart extends Component
 
         //save cart f session
         session()->put('cart', $cart);
+        
+
+        $this->dispatch('cartUpdated');
 
 
         $this->dispatch(
@@ -69,7 +71,4 @@ class Cart extends Component
     {
         return view('livewire.cart');
     }
-
-
-
 }

@@ -124,7 +124,7 @@
                         </p>
                     </div>
 
-                    <livewire:client.confirm-delivery :order="$order" />
+                    <livewire:client.confirm-delivery :order="$order" :showThankYou="true" />
                 </div>
 
             </div>

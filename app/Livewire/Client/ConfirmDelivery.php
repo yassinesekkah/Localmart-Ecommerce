@@ -8,6 +8,7 @@ use Livewire\Component;
 class ConfirmDelivery extends Component
 {
     public Order $order;
+    public bool $showThankYou = false;
 
     public function confirm()
     {
@@ -32,6 +33,8 @@ class ConfirmDelivery extends Component
         ]);
 
         $this->order->refresh();
+
+        $this->showThankYou = true;
 
         // Success notification
         $this->dispatch(
