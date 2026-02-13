@@ -125,22 +125,6 @@
                     </div>
 
                     <livewire:client.confirm-delivery :order="$order" />
-
-                    @switch($order->status)
-                        @case('pending')
-                            <span class="text-sm text-blue-600 font-medium">
-                                En préparation
-                            </span>
-                        @break
-
-                        @case('delivered')
-                            <span class="text-sm text-yellow-600 font-medium">
-                                Thank you for your order
-                            </span>
-                        @break
-                    @endSwitch
-
-
                 </div>
 
             </div>
