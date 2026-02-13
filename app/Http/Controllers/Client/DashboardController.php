@@ -30,11 +30,21 @@ class DashboardController extends Controller
 
     function productDetails($id)
     {
-        $product = Product::with(['category', 'reviews.user', 'likes'])->find($id);
+        $product = Product::with(['category', 'reviews.user', 'likes', 'favorites'])->find($id);
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
 
+
+        $product->reviews->map(function ($review) use ($product) {
+            
+            $userRating = $product->favorites
+                ->where('user_id', $review->user_id)
+                ->first();
+
+            $review->user_rating = $userRating ? $userRating->rating : 0;
+            return $review;
+        });
         $product->likes_count = $product->likes->count();
         $product->is_liked = auth()->check() ? $product->isLikeBy(auth()->user()) : false;
         return response()->json($product, 200);
@@ -42,7 +52,6 @@ class DashboardController extends Controller
 
     function profile()
     {
-
         $user = Auth()->user();
         return view('dashboard', compact('user'));
     }

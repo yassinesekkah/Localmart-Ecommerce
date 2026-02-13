@@ -51,8 +51,8 @@
     @endif
 
 
-
 @livewireScripts
+
 @stack('scripts')
     <!-- Libs JS -->
     <script>
@@ -221,6 +221,37 @@
     </script>
     @stack('scripts')
 
+
+<script>
+document.addEventListener('livewire:init', () => {
+
+    Livewire.on('notify', ({ type, message }) => {
+
+        const toast = document.createElement('div');
+
+        toast.className = `
+            fixed bottom-5 left-5 z-50
+            flex items-center gap-3
+            px-4 py-3 rounded-lg shadow-lg
+            text-sm font-medium
+            transition-all duration-300
+            ${type === 'success'
+                ? 'bg-green-600 text-white'
+                : 'bg-red-600 text-white'}
+        `;
+
+        toast.innerHTML = message;
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+
+    });
+
+});
+</script>
 </body>
 
 </html>

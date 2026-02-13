@@ -7,7 +7,7 @@ use App\Models\Like;
 
 class Product extends Model
 {
-      protected $fillable = [
+    protected $fillable = [
         'name',
         'slug',
         'price',
@@ -17,7 +17,7 @@ class Product extends Model
         'category_id',
         'user_id',
     ];
-    
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -25,27 +25,33 @@ class Product extends Model
 
     public function seller()
     {
-    return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function likes() {
+    public function likes()
+    {
         return $this->hasMany(Like::class);
     }
 
-    public function isLikeBy($user) {
-        return $this->likes()->where('user_id', $user->id )->exists();
+    public function isLikeBy($user)
+    {
+        return $this->likes()->where('user_id', $user->id)->exists();
     }
 
-        public function favorites(){
+    public function favorites()
+    {
         return $this->hasMany(Favorite::class);
     }
 
-    public function isFavoriteBy($user){
-        return $this->favorites()->where('user_id' , $user->id )->exists();
+    public function isFavoriteBy($user)
+    {
+        if (!$user) return false;
+        return $this->favorites()->where('user_id', $user->id)->exists();
     }
 
 
-    public function reviews() { 
+    public function reviews()
+    {
         return $this->hasMany(Reviews::class);
     }
 }

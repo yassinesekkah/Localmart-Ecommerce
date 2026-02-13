@@ -14,11 +14,9 @@
             <!-- Product Card -->
             <div class="group bg-white border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all duration-300">
                 <!-- Product Image Container -->
-                <div class="relative mb-4 cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
-
+                <div class="relative mb-4 cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
                     <div class="w-full h-48 rounded-lg overflow-hidden bg-cover bg-center relative"
                         style="background-image: url('{{ $product->image ? asset('storage/' . $product->image) : 'https://via.placeholder.com/300x300/e5e7eb/1f2937?text=No+Image' }}');">
-
                         @if (empty($product->image))
                         <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
                             <span class="text-sm text-gray-500">No image available</span>
@@ -26,37 +24,32 @@
                         @endif
                     </div>
 
-                    <!-- Livewire Like Button (Top Right - Absolute Position) -->
+                    <!-- Livewire Like Button -->
                     <div class="absolute top-0 right-1 z-10" onclick="event.stopPropagation()">
                         @livewire('product-likes', ['product' => $product], key($product->id))
                     </div>
                 </div>
 
-                <!-- Product Info (Clickable to open modal) -->
+                <!-- Product Info -->
                 <div class="space-y-3">
-                    <div class="cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
+                    <div class="cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
                         <!-- Category -->
-                        <a href="#" class="text-xs text-gray-500 hover:text-green-600 transition-colors" onclick="event.stopPropagation()">
+                        <span class="text-xs text-gray-500 hover:text-green-600 transition-colors">
                             {{ $product->category->name ?? 'Uncategorized' }}
-                        </a>
+                        </span>
 
                         <!-- Product Name -->
                         <h3 class="font-semibold text-gray-900 line-clamp-2 min-h-[2.5rem]">
-                            <a href="#" class="hover:text-green-600 transition-colors" onclick="event.stopPropagation()">
+                            <span class="hover:text-green-600 transition-colors">
                                 {{ $product->name }}
-                            </a>
+                            </span>
                         </h3>
-
-                        <!-- Like Count -->
-                        <div class="flex items-center gap-2">
-                            <span class="text-sm text-gray-500">{{ $product->likes->count() }} Favorite{{ $product->likes->count() !== 1 ? 's' : '' }}</span>
-                        </div>
                     </div>
 
                     <!-- Price & Add to Cart -->
                     <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                        <!-- Price (Clickable to open modal) -->
-                        <div class="flex flex-col cursor-pointer" wire:click="$dispatch('openModal', { id: {{ $product->id }} })" onclick="openQuickViewModal({{ $product->id }})">
+                        <!-- Price -->
+                        <div class="flex flex-col cursor-pointer" onclick="openQuickViewModal({{ $product->id }})">
                             <span class="text-lg font-bold text-gray-900">{{ number_format($product->price, 2) }} MAD</span>
                             @if($product->old_price && $product->old_price > $product->price)
                             <span class="text-xs text-gray-400 line-through">{{ number_format($product->old_price, 2) }} MAD</span>
@@ -64,19 +57,8 @@
                         </div>
 
                         <!-- Add to Cart Button (Does NOT open modal) -->
-                        <form action="{{ route('client.cart.add', $product->id) }}" method="POST" class="inline-block" onclick="event.stopPropagation()">
-                            @csrf
-                            <button type="submit"
-                                class="flex items-center gap-1 px-3 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow-md">
-                                <svg class="w-6 h-6 texy-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4
-                            M7 13L5.4 5
-                            M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17
-                            m0 0a2 2 0 100 4 2 2 0 000-4
-                            zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                            </button>
-                        </form>
+                     @livewire('cart' , ['productId'=>$product->id])
+
                     </div>
                 </div>
             </div>
@@ -86,14 +68,13 @@
 </section>
 
 <!-- Quick View Modal -->
-<div id="quickViewModal" class="fixed flex items-center justify-center inset-0 z-50 hidden">
+<div id="quickViewModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
     <!-- Backdrop -->
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeQuickViewModal()"></div>
 
-    <!-- Modal Container -->
-    <div class="relative min-h-screen flex items-center justify-center p-4">
-        <!-- Modal Content -->
-        <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden">
+    <!-- Modal Content -->
+    <div class="relative w-full max-w-5xl">
+        <div class="relative bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-hidden">
             <!-- Loading Spinner -->
             <div id="modalLoading" class="absolute inset-0 bg-white/90 backdrop-blur-sm flex items-center justify-center z-20 hidden">
                 <div class="text-center">
@@ -142,15 +123,6 @@
                                 Loading...
                             </h2>
 
-                            <!-- Like Count -->
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
-                                </svg>
-                                <span id="productLikes" class="text-sm text-gray-600 font-medium">0 Likes</span>
-                            </div>
-
                             <!-- Price -->
                             <div class="flex items-baseline gap-3">
                                 <span id="productPrice" class="text-3xl font-bold text-gray-900">0 MAD</span>
@@ -160,10 +132,10 @@
 
                             <!-- Stock Status -->
                             <div class="flex items-center gap-2">
-                                <span class="Stok1 px-3 py-1 bg-green-600 text-white text-xs font-semibold rounded-full">
+                                <span id="stockBadge" class="px-3 py-1 text-white text-xs font-semibold rounded-full bg-green-600">
                                     Stock
                                 </span>
-                                <span class="Stock text-sm text-gray-600 font-medium"></span>
+                                <span id="stockQuantity" class="text-sm text-gray-600 font-medium"></span>
                             </div>
 
                             <!-- Description -->
@@ -179,7 +151,7 @@
                             <!-- Order Form -->
                             <form action="{{ route('client.cart.add', 0) }}" method="POST" id="orderForm" class="space-y-6 border-t border-gray-200 pt-6">
                                 @csrf
-                                <input type="hidden" id="modal_product_id" name="product_id">
+                                <input type="hidden" id="modal_product_id" name="product_id" value="">
 
                                 <!-- Quantity Selector -->
                                 <div class="flex items-center gap-4">
@@ -191,8 +163,12 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                                             </svg>
                                         </button>
-                                        <input type="number" name="quantity" id="orderQuantity" value="1" min="1" max="10"
-                                            class="w-16 px-4 py-3 text-center border-x border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500" readonly />
+                                        <input type="number"
+                                            name="quantity"
+                                            id="orderQuantity"
+                                            class="w-16"
+                                            oninput="validateQuantity(this)"
+                                            onblur="validateQuantity(this)">
                                         <button type="button" onclick="incrementQuantity(this)"
                                             class="px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -204,11 +180,11 @@
 
                                 <!-- Add to Cart Button -->
                                 <button type="submit" id="addToCartBtn"
-                                    class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-200">
+                                    class="w-full flex items-center justify-center gap-3 px-6 py-4 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-200 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-300">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
-                                    <span>Add to Cart</span>
+                                    <span id="addToCartText">Add to Cart</span>
                                 </button>
                             </form>
 
@@ -234,7 +210,7 @@
                     <div id="reviews" class="mt-12 border-t border-gray-200 pt-8">
                         <h3 class="text-2xl font-bold text-gray-900 mb-6">Customer Reviews</h3>
 
-                        <!-- Add Review Form (Authenticated Users Only) -->
+                        <!-- Add Review Form -->
                         @auth
                         <div class="relative mb-8 p-6 bg-gray-50 rounded-xl">
                             <form id="reviewForm" class="space-y-4">
@@ -252,8 +228,7 @@
                                 <!-- Review Input -->
                                 <div class="relative">
                                     <input type="text" name="comment" id="review_input" placeholder="Write your review..."
-                                        class="w-full pl-4 pr-12 py-3 bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        required />
+                                        class="w-full pl-4 pr-12 py-3 bg-white border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent" />
                                     <button type="submit"
                                         class="absolute right-3 top-1/2 -translate-y-1/2 text-green-600 hover:text-green-700 focus:outline-none">
                                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -261,11 +236,11 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <!-- ✅ Single Livewire Favorites Button - top right of image -->
-                                <div id="modalFavoriteWrapper" class="absolute top-4 right-4 z-10">
-                                    @livewire('product-favorites', key('modal-favorites'))
-                                </div>
                             </form>
+                            <!-- Favorites Button -->
+                            <div id="modalFavoriteWrapper" class="absolute top-4 right-4 z-10" onclick="event.stopPropagation()">
+                                @livewire('product-favorites', ['product' => $product], key('modal-favorites'.$product->id))
+                            </div>
                         </div>
                         @endauth
 
@@ -280,12 +255,12 @@
     </div>
 </div>
 
+<!-- Success Popup -->
+<div id="successPopup" class="fixed top-5 right-5 hidden items-center gap-2 bg-green-600 text-white px-4 py-3 rounded-lg shadow-lg transition-all duration-300 z-50">
+</div>
+
 @push('scripts')
 <script>
-    // ========================================
-    // QUICK VIEW MODAL - Product Management
-    // ========================================
-
     class QuickViewModal {
         constructor() {
             this.currentProductId = null;
@@ -299,19 +274,18 @@
             this.setupEscapeKey();
         }
 
-        // Open modal and load product
         open(productId) {
             this.currentProductId = productId;
             this.showModal();
             this.loadProduct(productId);
 
-            // ✅ Dispatch Livewire event to load the correct product's favorites
             if (typeof Livewire !== 'undefined') {
-                Livewire.dispatch('load-product-favorites', { id: productId });
+                Livewire.dispatch('load-product-favorites', {
+                    id: productId
+                });
             }
         }
 
-        // Close modal
         close() {
             this.modal.classList.add('hidden');
             this.modal.classList.remove('flex');
@@ -319,15 +293,40 @@
             this.currentProductId = null;
         }
 
-        // Show modal UI
         showModal() {
             this.modal.classList.remove('hidden');
             this.modal.classList.add('flex');
             document.body.style.overflow = 'hidden';
             this.loading.classList.remove('hidden');
+
+            let orderQuantity = document.getElementById('orderQuantity');
+
+            if (orderQuantity) {
+                // Écoute les changements de l'input
+                orderQuantity.addEventListener('input', function() {
+                    validateQuantity(this);
+                });
+
+                // Valide aussi quand l'utilisateur quitte le champ
+                orderQuantity.addEventListener('blur', function() {
+                    validateQuantity(this);
+                });
+
+                // Empêche la saisie de caractères non-numériques avec le clavier
+                orderQuantity.addEventListener('keypress', function(e) {
+                    // Autorise uniquement les chiffres
+                    if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                    }
+                });
+
+                // Empêche le scroll de la molette de modifier la valeur
+                orderQuantity.addEventListener('wheel', function(e) {
+                    e.preventDefault();
+                });
+            }
         }
 
-        // Load product data from API
         async loadProduct(productId) {
             try {
                 const response = await fetch(`/client/product/infos/${encodeURIComponent(productId)}`, {
@@ -339,19 +338,16 @@
                 });
 
                 const data = await response.json();
-
                 if (!response.ok) throw data;
 
                 this.loading.classList.add('hidden');
                 this.populateProductData(data);
 
             } catch (error) {
-                console.error('Error fetching product:', error);
                 this.showError('Error loading product. Please try again later.');
             }
         }
 
-        // Populate modal with product data
         populateProductData(product) {
             if (!product) {
                 this.showError('Product not found');
@@ -360,23 +356,26 @@
 
             const productData = Array.isArray(product) ? product[0] : product;
 
+            // Reset quantity to 1
+            const quantityInput = document.getElementById('orderQuantity');
+            if (quantityInput) {
+                quantityInput.value = 1;
+            }
+
             // Set product IDs
             this.setElementValue('product_id', productData.id);
             this.setElementValue('modal_product_id', productData.id);
 
-            // Check stock
-            if (productData.quantity <= 0) {
-                document.getElementById('addToCartBtn').disabled = true;
-                document.getElementById('orderForm').classList.add('cursor-not-allowed', 'opacity-50');
-            }
-
-            // Update add button 'form' action
+            // Update form action
             const orderForm = document.getElementById('orderForm');
             if (orderForm) {
                 orderForm.action = `/client/cart/add/${productData.id}`;
             }
 
-            // Update text content by id
+            // Update stock status and button state
+            this.updateStockStatus(productData.quantity);
+
+            // Update text content
             this.setElementText('productName', productData.name || 'Product Name');
             this.setElementText('productCategory', productData.category?.name || 'Uncategorized');
             this.setElementText('productCategoryLink', productData.category?.name || 'Uncategorized');
@@ -384,19 +383,6 @@
             this.setElementText('productDescription', productData.description || 'No description available.');
             this.setElementText('productSKU', productData.sku || `PRD-${productData.id}`);
             this.setElementText('productBrand', productData.brand || 'LocalMarket');
-
-            // Update likes count
-            const likesCount = productData.likes?.length || 0;
-            this.setElementText('productLikes', `${likesCount} Favorite${likesCount !== 1 ? 's' : ''}`);
-
-            // Update stock
-            let Stok = document.querySelector('.Stock');
-            Stok.textContent = productData.quantity;
-            if (productData.quantity <= 5) {
-                let style = document.querySelector('.Stok1');
-                style.classList.remove('bg-green-700');
-                style.classList.add('bg-red-500');
-            }
 
             // Update image
             this.updateProductImage(productData);
@@ -411,7 +397,61 @@
             this.fadeInResult();
         }
 
-        // Update product image
+        updateStockStatus(quantity) {
+            const stockBadge = document.getElementById('stockBadge');
+            const stockQuantity = document.getElementById('stockQuantity');
+            const addToCartBtn = document.getElementById('addToCartBtn');
+            const addToCartText = document.getElementById('addToCartText');
+            const quantityInput = document.getElementById('orderQuantity');
+            const productIdInput = document.getElementById('modal_product_id');
+
+            // Update stock display
+            stockQuantity.textContent = `${quantity} units`;
+
+            if (quantity <= 0) {
+                // Out of stock
+                stockBadge.textContent = 'Out of Stock';
+                stockBadge.classList.remove('bg-green-600');
+                stockBadge.classList.add('bg-red-500');
+
+                // Disable button and inputs
+                addToCartBtn.disabled = true;
+                addToCartText.textContent = 'Out of Stock';
+                quantityInput.disabled = true;
+                productIdInput.disabled = true;
+
+            } else if (quantity <= 5) {
+                // Low stock
+                stockBadge.textContent = 'Stock';
+                stockBadge.classList.remove('bg-green-600');
+                stockBadge.classList.add('bg-orange-500');
+
+                // Enable button and inputs
+                addToCartBtn.disabled = false;
+                addToCartText.textContent = 'Add to Cart';
+                quantityInput.disabled = false;
+                productIdInput.disabled = false;
+
+                // Update max quantity
+                quantityInput.max = quantity;
+
+            } else {
+                // In stock
+                stockBadge.textContent = 'In Stock';
+                stockBadge.classList.remove('bg-orange-500', 'bg-red-500');
+                stockBadge.classList.add('bg-green-600');
+
+                // Enable button and inputs
+                addToCartBtn.disabled = false;
+                addToCartText.textContent = 'Add to Cart';
+                quantityInput.disabled = false;
+                productIdInput.disabled = false;
+
+                // Update max quantity
+                quantityInput.max = quantity;
+            }
+        }
+
         updateProductImage(productData) {
             const imageUrl = productData.image ?
                 `/storage/${productData.image}` :
@@ -422,7 +462,6 @@
             imgElement.alt = productData.name || 'Product';
         }
 
-        // Update pricing with discount
         updatePricing(productData) {
             const oldPriceElement = document.getElementById('productOldPrice');
             const discountElement = document.getElementById('productDiscount');
@@ -444,7 +483,6 @@
             }
         }
 
-        // Display product reviews
         displayReviews(reviews) {
             const reviewsList = document.getElementById('reviewsList');
 
@@ -464,33 +502,68 @@
             reviewsList.innerHTML = reviews.map(review => this.createReviewHTML(review)).join('');
         }
 
-        // Create review HTML
-        createReviewHTML(review) {
-            const initials = review.user?.name ?
-                review.user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) :
-                'UN';
-            const userName = review.user?.name || 'Anonymous';
-            const timeAgo = this.getTimeAgo(review.created_at);
+        // createReviewHTML(review) {
+        //     const initials = review.user?.name ?
+        //         review.user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : 'UN';
+        //     const userName = review.user?.name || 'Anonymous';
+        //     const timeAgo = this.getTimeAgo(review.created_at);
 
-            return `
-            <div class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition">
-                <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center font-bold text-green-600 flex-shrink-0">
-                        ${initials}
+        //     return `
+        //     <div class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition">
+        //         <div class="flex items-start gap-3">
+        //             <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center font-bold text-green-600 flex-shrink-0">
+        //                 ${initials}
+        //             </div>
+        //             <div class="flex-1 min-w-0">
+        //                 <div class="flex items-center justify-between mb-1">
+        //                     <h4 class="font-semibold text-gray-900">${userName}</h4>
+        //                     <span class="text-xs text-gray-500">${timeAgo}</span>
+        //                 </div>
+        //                 <p class="text-gray-600 text-sm">${review.comment}</p>
+        //             </div>
+        //         </div>
+        //     </div>
+        // `;
+        // }
+
+        createReviewHTML(review) {
+    const initials = review.user?.name ?
+        review.user.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : 'UN';
+    const userName = review.user?.name || 'Anonymous';
+    const timeAgo = this.getTimeAgo(review.created_at);
+    
+    // توليد النجوم بناءً على التقييم (user_rating)
+    let starsHTML = '';
+    for (let i = 1; i <= 5; i++) {
+        starsHTML += `
+            <svg class="w-3 h-3 ${review.user_rating >= i ? 'text-yellow-400' : 'text-gray-300'}" 
+                 fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>`;
+    }
+
+    return `
+        <div class="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition border border-gray-100">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center font-bold text-green-600 flex-shrink-0">
+                    ${initials}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between mb-0.5">
+                        <h4 class="font-semibold text-gray-900 text-sm">${userName}</h4>
+                        <span class="text-[10px] text-gray-400">${timeAgo}</span>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center justify-between mb-1">
-                            <h4 class="font-semibold text-gray-900">${userName}</h4>
-                            <span class="text-xs text-gray-500">${timeAgo}</span>
-                        </div>
-                        <p class="text-gray-600 text-sm">${review.comment}</p>
+                    <div class="flex items-center mb-2">
+                        ${starsHTML}
                     </div>
+                    <p class="text-gray-600 text-sm leading-relaxed">${review.comment}</p>
                 </div>
             </div>
-        `;
-        }
+        </div>
+    `;
+}
 
-        // Calculate time ago
+
         getTimeAgo(date) {
             const now = new Date();
             const createdAt = new Date(date);
@@ -505,7 +578,6 @@
             return `${Math.floor(diffInDays / 365)} years ago`;
         }
 
-        // Show error message
         showError(message) {
             this.loading.classList.add('hidden');
             document.getElementById('result_Product').innerHTML = `
@@ -515,7 +587,6 @@
         `;
         }
 
-        // Fade-in animation
         fadeInResult() {
             const resultDiv = document.getElementById('result_Product');
             resultDiv.classList.add('opacity-0');
@@ -525,19 +596,16 @@
             }, 50);
         }
 
-        // Helper: Set element value
         setElementValue(id, value) {
             const element = document.getElementById(id);
             if (element) element.value = value;
         }
 
-        // Helper: Set element text
         setElementText(id, text) {
             const element = document.getElementById(id);
             if (element) element.textContent = text;
         }
 
-        // Setup event listeners
         setupEventListeners() {
             const reviewForm = document.getElementById('reviewForm');
             if (reviewForm) {
@@ -545,7 +613,6 @@
             }
         }
 
-        // Handle Submit Review
         async handleSubmitReview(e) {
             e.preventDefault();
 
@@ -575,7 +642,7 @@
                 if (data.status === 'success') {
                     document.getElementById('review_input').value = '';
                     this.displayReviews(data.data);
-                    alert('Review submitted successfully!');
+                    showSuccessPopup('Review submitted successfully!');
                     submitButton.disabled = false;
                     submitButton.innerHTML = originalButtonContent;
                 } else {
@@ -584,13 +651,12 @@
 
             } catch (error) {
                 console.error('Error submitting review:', error);
-                alert(error.message || 'Error submitting review. Please try again.');
+                showSuccessPopup('Error submitting review. Please try again.');
                 submitButton.disabled = false;
                 submitButton.innerHTML = originalButtonContent;
             }
         }
 
-        // Get spinner HTML
         getSpinnerHTML(color = 'white') {
             return `
             <svg class="animate-spin h-5 w-5 mx-auto text-${color}-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -600,7 +666,6 @@
         `;
         }
 
-        // Setup escape key
         setupEscapeKey() {
             document.addEventListener('keydown', (event) => {
                 if (event.key === 'Escape') {
@@ -610,18 +675,72 @@
         }
     }
 
+    function showSuccessPopup(message) {
+        const popup = document.getElementById('successPopup');
+        popup.classList.remove('hidden');
+        popup.classList.add('flex');
+        popup.textContent = message;
+        setTimeout(() => {
+            popup.classList.add('hidden');
+            popup.classList.remove('flex');
+        }, 3000);
+    }
+    // Function to validate quantity input
+    function validateQuantity(input) {
+        // Removes non-numeric characters
+        input.value = input.value.replace(/[^0-9]/g, '');
+
+        // Récupère les valeurs
+        const value = parseInt(input.value) || 0;
+        const min = parseInt(input.getAttribute('min')) || 1;
+        const max = parseInt(input.getAttribute('max')) || currentStockMax;
+        // Validates against min/max
+        if (value < min && input.value !== '') {
+            input.value = min;
+            showSuccessPopup(`Minimum quantity is ${min}`);
+            return;
+        } else if (value > max) {
+            input.value = max;
+            showSuccessPopup(`Maximum available quantity is ${max}`);
+            return;
+        } else {
+            checkServerQuantity(value, input);
+        }
+        // Si l'input est désactivé (rupture de stock), empêcher toute saisie
+        if (input.disabled) {
+            input.value = '';
+            showSuccessPopup('Product is out of stock');
+            return;
+        }
+    }
+
     function incrementQuantity(button) {
         const input = button.previousElementSibling;
-        const value = parseInt(input.value);
-        const max = parseInt(input.max);
-        if (value < max) input.value = value + 1;
+        const value = parseInt(input.value) || 0;
+        const max = parseInt(input.getAttribute('max')) || currentStockMax;
+        if (value < max) {
+            input.value = value + 1;
+            validateQuantity(input);
+        } else {
+            showSuccessPopup(`Maximum available quantity is ${max}`);
+        }
     }
 
     function decrementQuantity(button) {
         const input = button.nextElementSibling;
-        const value = parseInt(input.value);
-        const min = parseInt(input.min);
-        if (value > min) input.value = value - 1;
+        const value = parseInt(input.value) || 0;
+        const min = parseInt(input.getAttribute('min')) || 1;
+        if (input.disabled) {
+            showSuccessPopup('Product is out of stock');
+            return;
+        }
+
+        if (value > min) {
+            input.value = value - 1;
+            validateQuantity(input);
+        } else {
+            showSuccessPopup(`Minimum quantity is ${min}`);
+        }
     }
 
     let quickViewModal;
@@ -642,5 +761,114 @@
     document.addEventListener('DOMContentLoaded', function() {
         quickViewModal = new QuickViewModal();
     });
+
+
+
+    // ============================================
+    // SOLUTION COMPLÈTE POUR LA VALIDATION DE QUANTITÉ
+    // ============================================
+
+    // Variable globale pour le debounce
+    let quantityCheckTimer;
+    let currentStockMax = 999; // Stock maximum par défaut
+
+    /**
+     * Valide la quantité saisie par l'utilisateur
+     * - Bloque si produit en rupture de stock
+     * - Nettoie les caractères non-numériques
+     * - Vérifie min/max
+     * - Déclenche vérification serveur
+     */
+
+
+    /**
+     * Vérifie la disponibilité du stock côté serveur
+     * Utilise un debounce pour éviter trop de requêtes
+     */
+    async function checkServerQuantity(quantity, input) {
+        // Annule le timer précédent
+        clearTimeout(quantityCheckTimer);
+
+        // Lance une nouvelle vérification après 500ms
+        quantityCheckTimer = setTimeout(async () => {
+            const productId = document.getElementById('modal_product_id').value;
+
+            if (!productId) {
+                console.error('Product ID not found');
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    `/client/product/Quantity/${encodeURIComponent(productId)}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch stock information');
+                }
+
+                const data = await response.json();
+
+                // Met à jour le stock maximum basé sur la réponse serveur
+                if (data.quantity !== undefined) {
+                    currentStockMax = parseInt(data.quantity);
+                    input.setAttribute('max', currentStockMax);
+
+                    // Vérifie si la quantité actuelle dépasse le stock disponible
+                    if (quantity > currentStockMax) {
+                        input.value = currentStockMax;
+
+                        if (currentStockMax === 0) {
+                            // Rupture de stock
+                            showSuccessPopup('Product is now out of stock');
+                            input.disabled = true;
+
+                            const addToCartBtn = document.getElementById('addToCartBtn');
+                            if (addToCartBtn) {
+                                addToCartBtn.disabled = true;
+                                document.getElementById('addToCartText').textContent = 'Out of Stock';
+                            }
+                        } else {
+                            // Stock limité
+                            showSuccessPopup(`Only ${currentStockMax} unit(s) available in stock`);
+                        }
+                    }
+                }
+
+            } catch (error) {
+                console.error('Error checking quantity:', error);
+                showSuccessPopup('Unable to verify stock availability');
+            }
+        }, 500); // Attends 500ms après la dernière frappe
+    }
+    /**
+     * Initialisation quand le DOM est chargé
+     */
+
+    // ============================================
+    // EXEMPLE DE RÉPONSE SERVEUR ATTENDUE
+    // ============================================
+    /*
+    Route côté serveur (Laravel):
+    Route::get('/client/product/Quantity/{productId}', function($productId) {
+        $product = Product::find($productId);
+        
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+        
+        return response()->json([
+            'quantity' => $product->quantity,
+            'product_id' => $product->id,
+            'name' => $product->name
+        ]);
+    });
+    */
 </script>
 @endpush
