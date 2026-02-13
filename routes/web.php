@@ -136,7 +136,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 // Routes MODERATOR 
-Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () {});
+Route::middleware(['auth', 'role:moderator'])->prefix('moderator')->name('moderator.')->group(function () {
+    
+    Route::delete('/review/{id}', [ReviewsController::class, 'delete'])->name('moderator.review.delete'); 
+});
 
 
 
