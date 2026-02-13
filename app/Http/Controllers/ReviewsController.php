@@ -45,8 +45,12 @@ class ReviewsController extends Controller
 
     function show($productId)
     {
-
-        $reviews = Product::with('reviews.user','likes')
+        $reviews = Product::with(['reviews.user','likes','favorites' => function($query){
+            $query->select('product_id', 'rating', 'created_at')
+                  ->with('user:name'); 
+        }])
+        ->withCount('favorites')
+        ->withAvg('favorites', 'rating')
             ->find($productId);
         if (!$reviews) {
             return response()->json(['message' => 'aucun review'], 404);
